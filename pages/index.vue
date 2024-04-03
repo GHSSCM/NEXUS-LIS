@@ -11,7 +11,7 @@
             <div class="card shadow-none">
               <div class="card-body">
                 <div class="text-center">
-                  <h4>Sign In</h4>
+                  <h4>Welcome Back !</h4>
                   <p>Sign In to your account</p>
                 </div>
                 <form class="form-body row g-3">
@@ -34,9 +34,9 @@
                     <a href="authentication-reset-password-cover.html">Forgot Password?</a>
                   </div>
                   <div class="col-12 col-lg-12">
-                    <div class="d-grid">
-                      <button type="button" class="btn btn-primary">Sign In</button>
-                    </div>
+                    <NuxtLink to="/home"> <div class="d-grid">
+                      <button type="button" class="btn btn-primary">Sign In</button>  
+                    </div></NuxtLink>
                   </div>
                   <div class="col-12 col-lg-12 d-none">
                     <div class="position-relative border-bottom my-3">
@@ -50,9 +50,11 @@
                       <a href="javascript:;" class=""><img src="assets/images/icons/google.png" alt=""></a>
                     </div>
                   </div>
-                  <div class="col-12 col-lg-12 text-center d-none">
-                    <p class="mb-0">Don't have an account? <a href="authentication-sign-up-cover.html">Sign up</a></p>
-                  </div>
+                  
+                    <div class="col-12 col-lg-12 text-center d-none">
+                        <p class="mb-0">Don't have an account? <a href="authentication-sign-up-cover.html">Sign up</a></p>
+                      </div>
+                
                 </form>
               </div>
             </div>
