@@ -9,13 +9,13 @@ $(function() {
 
 
    
-        $('#date-time').bootstrapMaterialDatePicker({
+        $('.date-time-picker').bootstrapMaterialDatePicker({
             format: 'YYYY-MM-DD HH:mm'
         });
-        $('#date').bootstrapMaterialDatePicker({
+        $('.date-picker').bootstrapMaterialDatePicker({
             time: false
         });
-        $('#time').bootstrapMaterialDatePicker({
+        $('.time-picker').bootstrapMaterialDatePicker({
             date: false,
             format: 'HH:mm'
         });

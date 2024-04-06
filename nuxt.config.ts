@@ -23,8 +23,29 @@ export default defineNuxtConfig({
         // { src: '/assets/plugins/easyPieChart/jquery.easypiechart.js' },
         // { src: '/assets/plugins/chartjs/chart.min.js' },
         // { src: '/assets/js/index.js' },
-        { src: '/assets/js/main.js' },  
+    
         { src: 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js', type:"module" },
+
+
+
+        //datatables
+        { src: '/assets/plugins/datatable/js/jquery.dataTables.min.js' },  
+        { src: '/assets/plugins/datatable/js/dataTables.bootstrap5.min.js' },  
+     
+        {src:'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'},
+        
+
+
+        {src:'/assets/plugins/datetimepicker/js/legacy.js'},
+        {src:'/assets/plugins/datetimepicker/js/picker.js'},
+        {src:'/assets/plugins/datetimepicker/js/picker.time.js'},
+        {src:'/assets/plugins/datetimepicker/js/picker.date.js'},
+        {src:'/assets/plugins/datetimepicker/js/picker.time.js'},
+        {src:'/assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js'},
+        {src:'/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js'},
+       
+       
+        
       
       ],
       link: [
@@ -35,6 +56,7 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' },
         { rel: 'stylesheet', href: '/assets/plugins/simplebar/css/simplebar.css' },
         { rel: 'stylesheet', href: '/assets/plugins/metismenu/css/metisMenu.min.css' },
+
 
         { rel: 'stylesheet', href: '/assets/css/bootstrap.min.css' },
         { rel: 'stylesheet', href: '/assets/css/bootstrap-extended.css' },
@@ -49,7 +71,21 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/assets/css/semi-dark.css' },
         { rel: 'stylesheet', href: '/assets/css/header-colors.css' },
 
+        { rel: 'stylesheet', href:'/assets/plugins/datatable/css/dataTables.bootstrap5.min.css' },  
         
+        { rel: 'stylesheet',href:'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'},
+        { rel: 'stylesheet',href:'https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css'},
+        
+
+
+        { rel: 'stylesheet', href:'/assets/plugins/datetimepicker/css/classic.css' },
+        { rel: 'stylesheet', href:'/assets/plugins/datetimepicker/css/classic.time.css' },
+        { rel: 'stylesheet', href:'/assets/plugins/datetimepicker/css/classic.date.css' },
+        { rel: 'stylesheet', href:'/assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css' },
+
+        { rel: 'stylesheet', href:'https://fonts.googleapis.com/icon?family=Material+Icons' },
+        
+  
       ]
     },
   }

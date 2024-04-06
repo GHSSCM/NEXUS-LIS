@@ -6,7 +6,42 @@ export default {
         class: 'bg-white'
       }
     })
-  }
+  },
+  mounted() {
+      this.loadScript();
+    },
+    methods: {
+      loadScript() {
+        console.log("Load script");
+
+        var s=[
+        { src: '/assets/js/main.js' }
+      
+      ];
+
+      for(var i=0;i<s.length;i++){
+
+        var elementToRemove = document.getElementById("script_"+i);
+
+          // Check if the element exists before attempting to remove it
+          if (elementToRemove) {
+              // Find the parent node of the element
+              var parentElement = elementToRemove.parentNode;
+
+              // Remove the element from its parent
+              parentElement.removeChild(elementToRemove);
+          }
+
+        // Load your script here
+        const script = document.createElement('script');
+        script.id="script_"+i;
+        script.src = s[i].src;
+        script.async = true;
+        document.body.appendChild(script);
+      }
+      
+      }
+    }
 }
 </script>
 

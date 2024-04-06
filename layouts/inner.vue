@@ -1,17 +1,4 @@
-<script>
-export default {
-  setup () {
-    useHead({
-      bodyAttrs: {
-        class: 'bg-white'
-      },
-      htmlAttrs:{
-        class: 'semi-dark'
-      }
-    })
-  }
-}
-</script>
+
 <template>
 
   
@@ -50,388 +37,90 @@ export default {
                     <ion-icon name="ellipse-outline"></ion-icon>All Patients
                   </NuxtLink>
                 </li>
-                <li><NuxtLink href="/newspecimen">
+
+                <li><NuxtLink href="/new/patient">
+                  <ion-icon name="ellipse-outline"></ion-icon>New Patient
+                </NuxtLink>
+              </li>
+
+                <!-- <li><NuxtLink href="/new/addspecimen">
                     <ion-icon name="ellipse-outline"></ion-icon>Register Specimens
                   </NuxtLink>
-                </li>
+                </li> -->
+
              
               </ul>
             </li>
-            <li class="menu-label">UI Elements</li>
+            <li class="menu-label">Laboratory </li>
             <li>
               <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon">
-                  <ion-icon name="briefcase-outline"></ion-icon>
+                  
+                  <i class="fadeIn animated bx bx-vial me-1 md "></i>
+
                 </div>
-                <div class="menu-title">Widgets</div>
+                <div class="menu-title">Tests</div>
               </a>
               <ul>
-                <li> <a href="widgets-static-widgets.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Static Widgets
-                  </a>
+                <li> <NuxtLink to="/tests">
+                    <ion-icon name="ellipse-outline"></ion-icon>All test types
+                  </NuxtLink>
                 </li>
-                <li> <a href="widgets-data-widgets.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Data Widgets
-                  </a>
+                <li> <NuxtLink to="/new/testtype">
+                    <ion-icon name="ellipse-outline"></ion-icon>New Test type
+                  </NuxtLink>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  <i class="fadeIn animated bx bx-donate-blood me-1 md "></i>
+                </div>
+                <div class="menu-title">Specimens</div>
+              </a>
+              <ul>
+                <li> <NuxtLink to="/specimens">
+                    <ion-icon name="ellipse-outline"></ion-icon>
+                   
+
+                    All specimen types
+                  </NuxtLink>
+                </li>
+                <li> <NuxtLink to="/new/specimentype">
+                    <ion-icon name="ellipse-outline"></ion-icon>New specimen type
+                  </NuxtLink>
                 </li>
               </ul>
             </li>
     
+    
+            <li class="menu-label">Configuration </li>
+        
+
             <li>
-              <a class="has-arrow" href="javascript:;">
+              <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon">
-                  <ion-icon name="gift-outline"></ion-icon>
+                  
+                  <ion-icon name="ellipse-outline"></ion-icon>
+
                 </div>
-                <div class="menu-title">Components</div>
+                <div class="menu-title">Custom fields (CF)</div>
               </a>
               <ul>
-                <li> <a href="component-alerts.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Alerts
-                  </a>
+                <li> <NuxtLink to="/custom-fields/test">
+                    <ion-icon name="ellipse-outline"></ion-icon>Test types CF
+                  </NuxtLink>
                 </li>
-                <li> <a href="component-accordions.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Accordions
-                  </a>
-                </li>
-                <li> <a href="component-badges.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Badges
-                  </a>
-                </li>
-                <li> <a href="component-buttons.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Buttons
-                  </a>
-                </li>
-                <li> <a href="component-cards.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Cards
-                  </a>
-                </li>
-                <li> <a href="component-carousels.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Carousels
-                  </a>
-                </li>
-                <li> <a href="component-list-groups.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>List Groups
-                  </a>
-                </li>
-                <li> <a href="component-media-object.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Media Objects
-                  </a>
-                </li>
-                <li> <a href="component-modals.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Modals
-                  </a>
-                </li>
-                <li> <a href="component-navs-tabs.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Navs & Tabs
-                  </a>
-                </li>
-                <li> <a href="component-paginations.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Pagination
-                  </a>
-                </li>
-                <li> <a href="component-popovers-tooltips.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Popovers & Tooltips
-                  </a>
-                </li>
-                <li> <a href="component-progress-bars.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Progress
-                  </a>
-                </li>
-                <li> <a href="component-spinners.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Spinners
-                  </a>
-                </li>
-                <li> <a href="component-notifications.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Notifications
-                  </a>
+                <li> <NuxtLink to="/custom-fields/specimen">
+                    <ion-icon name="ellipse-outline"></ion-icon>Specimen CF
+                  </NuxtLink>
                 </li>
               </ul>
             </li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="leaf-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Icons</div>
-              </a>
-              <ul>
-                <li> <a href="icons-line-icons.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Line Icons
-                  </a>
-                </li>
-                <li> <a href="icons-boxicons.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Boxicons
-                  </a>
-                </li>
-                <li> <a href="icons-feather-icons.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Feather Icons
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-label">Forms & Tables</li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="newspaper-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Forms</div>
-              </a>
-              <ul>
-                <li> <a href="form-elements.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Form Elements
-                  </a>
-                </li>
-                <li> <a href="form-input-group.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Input Groups
-                  </a>
-                </li>
-                <li> <a href="form-layouts.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Forms Layouts
-                  </a>
-                </li>
-                <li> <a href="form-validations.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Form Validation
-                  </a>
-                </li>
-                <li> <a href="form-wizard.html">
-                  <ion-icon name="ellipse-outline"></ion-icon>Form Wizard
-                </a>
-                </li>
-                <li> <a href="form-radios-and-checkboxes.html">
-                  <ion-icon name="ellipse-outline"></ion-icon>Radio & Checkboxes
-                </a>
-                </li>
-                <li> <a href="form-date-time-pickes.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Date Pickers
-                  </a>
-                </li>
-                <li> <a href="form-select2.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Select2
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="server-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Tables</div>
-              </a>
-              <ul>
-                <li> <a href="table-basic-table.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Basic Table
-                  </a>
-                </li>
-                <li> <a href="table-advance-tables.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Advance Tables
-                  </a>
-                </li>
-                <li> <a href="table-datatable.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Data Table
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-label">Pages</li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="lock-closed-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Authentication</div>
-              </a>
-              <ul>
-                <li> <a href="authentication-sign-in-basic.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign In Basic
-                  </a>
-                </li>
-                <li> <a href="authentication-sign-in-cover.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign In Cover
-                  </a>
-                </li>
-                <li> <a href="authentication-sign-in-simple.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign In Simple
-                  </a>
-                </li>
-                <li> <a href="authentication-sign-up-basic.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign Up Basic
-                  </a>
-                </li>
-                <li> <a href="authentication-sign-up-cover.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign Up Cover
-                  </a>
-                </li>
-                <li> <a href="authentication-sign-up-simple.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Sign Up Simple
-                  </a>
-                </li>
-                <li> <a href="authentication-reset-password-basic.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Reset Password Basic
-                  </a>
-                </li>
-                <li> <a href="authentication-reset-password-cover.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Reset Password Cover
-                  </a>
-                </li>
-                <li> <a href="authentication-reset-password-simple.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Reset Password Simple
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="pages-user-profile.html">
-                <div class="parent-icon">
-                  <ion-icon name="person-circle-outline"></ion-icon>
-                </div>
-                <div class="menu-title">User Profile</div>
-              </a>
-            </li>
-            <li>
-              <a href="pages-edit-profile.html">
-                <div class="parent-icon">
-                  <ion-icon name="create-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Edit Profile</div>
-              </a>
-            </li>
-            <li>
-              <a href="pages-invoices.html">
-                <div class="parent-icon">
-                  <ion-icon name="receipt-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Invoice</div>
-              </a>
-            </li>
-            <li>
-              <a href="pages-to-do.html">
-                <div class="parent-icon">
-                  <ion-icon name="shield-checkmark-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Invoice</div>
-              </a>
-            </li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="copy-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Extra Pages</div>
-              </a>
-              <ul>
-                <li><a href="pages-faq.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>FAQ
-                  </a>
-                </li>
-                <li><a href="pages-pricing-tables.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Pricing
-                  </a>
-                </li>
-                <li><a href="pages-errors-404-error.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>404 Error
-                  </a>
-                </li>
-                <li><a href="pages-errors-500-error.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>500 Error
-                  </a></li>
-                <li><a href="pages-errors-coming-soon.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Coming Soon
-                  </a></li>
-                <li><a href="pages-starter-page.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Blank Page
-                  </a></li>
-              </ul>
-            </li>
-            <li class="menu-label">Charts & Maps</li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="bar-chart-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Charts</div>
-              </a>
-              <ul>
-                <li> <a href="charts-apex-chart.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Apex
-                  </a>
-                </li>
-                <li> <a href="charts-chartjs.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Chartjs
-                  </a>
-                </li>
-                <li> <a href="charts-peity.html">
-                  <ion-icon name="ellipse-outline"></ion-icon>Peity
-                </a>
-               </li>
-               <li> <a href="charts-other.html">
-                <ion-icon name="ellipse-outline"></ion-icon>Other Charts
-                </a>
-               </li>
-              </ul>
-            </li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="map-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Maps</div>
-              </a>
-              <ul>
-                <li> <a href="map-google-maps.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Google Maps
-                  </a>
-                </li>
-                <li> <a href="map-vector-maps.html">
-                    <ion-icon name="ellipse-outline"></ion-icon>Vector Maps
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-label">Others</li>
-            <li>
-              <a class="has-arrow" href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="list-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Menu Levels</div>
-              </a>
-              <ul>
-                <li> <a class="has-arrow" href="javascript:;">
-                    <ion-icon name="ellipse-outline"></ion-icon>Level One
-                  </a>
-                  <ul>
-                    <li> <a class="has-arrow" href="javascript:;">
-                        <ion-icon name="ellipse-outline"></ion-icon>Level Two
-                      </a>
-                      <ul>
-                        <li> <a href="javascript:;">
-                            <ion-icon name="ellipse-outline"></ion-icon>Level Three
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="document-text-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Documentation</div>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <div class="parent-icon">
-                  <ion-icon name="link-outline"></ion-icon>
-                </div>
-                <div class="menu-title">Support</div>
-              </a>
-            </li>
+
+
           </ul>
           <!--end navigation-->
         </aside>
@@ -778,3 +467,56 @@ export default {
       <!--end wrapper-->
 
     </template>
+
+<script>
+  export default {
+    setup () {
+    useHead({
+      bodyAttrs: {
+        class: 'bg-white'
+      },
+      htmlAttrs:{
+        class: 'semi-dark'
+      }
+    })
+  },
+    mounted() {
+      this.loadScript();
+    },
+    methods: {
+      loadScript() {
+        console.log("Load script");
+
+        var s=[{src:'/assets/js/form-date-time-pickes.js'},
+        { src: '/assets/js/table-datatable.js' },  
+
+        {src:'/assets/plugins/select2/js/select2-custom.js'},
+        { src: '/assets/js/main.js' },  
+      
+      ];
+
+      for(var i=0;i<s.length;i++){
+
+        var elementToRemove = document.getElementById("script_"+i);
+
+          // Check if the element exists before attempting to remove it
+          if (elementToRemove) {
+              // Find the parent node of the element
+              var parentElement = elementToRemove.parentNode;
+
+              // Remove the element from its parent
+              parentElement.removeChild(elementToRemove);
+          }
+
+        // Load your script here
+        const script = document.createElement('script');
+        script.id="script_"+i;
+        script.src = s[i].src;
+        script.async = true;
+        document.body.appendChild(script);
+      }
+      
+      }
+    }
+  }
+</script>

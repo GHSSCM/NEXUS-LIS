@@ -34,6 +34,9 @@
             <!--end breadcrumb-->
 
             <div>
+                     
+              <h6 class="mb-0 text-uppercase">Page</h6>
+              <hr/>
               <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>
               </div>
 

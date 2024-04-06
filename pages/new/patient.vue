@@ -3,7 +3,7 @@
         
               <!--start breadcrumb-->
               <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Custom Fields</div>
+                <div class="breadcrumb-title pe-3">Dashboard</div>
                 <div class="ps-3">
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Specimen</li>
+                      <li class="breadcrumb-item active" aria-current="page">New patient</li>
                     </ol>
                   </nav>
                 </div>
@@ -34,41 +34,38 @@
               <!--end breadcrumb-->
   
               <div>
-                       
-                <h6 class="mb-0 text-uppercase">Specimen CFs</h6>
+               
+                  
+                <h6 class="mb-0 text-uppercase">Register a patient</h6>
                 <hr/>
 
-                <div v-for="f in fields">
-                    <hr/>
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <label >Name</label>
-                          <input class="form-control mb-3 mt-2" type="text" placeholder="Enter field name">
-                       </div>
-                       <div class="col-sm-5">
-                            <label class="mb-2">Data type</label>
-                            <select class="form-control single-select-field " id="idk1" data-placeholder="Data type">
-                                <option></option>
-                                <option>Free input/text</option>
-                                <option>Number</option>
-                                <option>Yes/No</option>
-                                <option>Limited values</option>
-                                <option>Date/Time</option>
-                                <option>Date Only</option>
-                                <option>Time Only</option>
-                            </select>
-                     </div>
-                
-                     <div class="col-sm-2 d-flex align-items-center">
-                        <center><i class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red"></i></center>
-                     </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        <label for="single-select-field3" class="form-label">Patient Name</label>
                     </div>
-                    <hr/>
+                <div class="col-sm-12 col-md-9">
+
+                    <div class="mb-4">
+                        
+                        <select class="form-select single-select-field-tags" id="single-select-field1" data-placeholder="Enter patient name">
+                          <option></option>
+                          <option>Proposed Name, 22yo, Address:Nsimeyong</option>
+                          <option>Other name 1, 22yo, Address:Nsimeyong</option>
+                          <option>Other name 2, 22yo, Address:Nsimeyong</option>
+                          <option>Other name 3, 22yo, Address:Nsimeyong</option>
+                          <option>Last name, 22yo, Address:Nsimeyong</option>
+                        </select>
+                      </div>
+            
+                      
+                </div>
+
                 </div>
 
 
                 <div class="d-flex flex-row justify-content-end">
-                    <button class="btn btn-primary btn-sm" @click="fields.push(1)">Add fields</button>
+                    <NuxtLink class="btn btn-primary btn-sm" to="/new/createpatient">Continue</NuxtLink>
                 </div>
                 
                 <br/>
@@ -82,17 +79,3 @@
   
     </NuxtLayout>
   </template>
-  <script>
- export default {
-    data() {
-        return {
-            fields:[
-1
-            ]
-        }
-    },
-    mounted() {
-        
-    },
- }
-</script>
