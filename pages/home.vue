@@ -1,9 +1,9 @@
 <template>
-    <NuxtLayout name="main">
+    <NuxtLayout name="inner">
         
               <!--start breadcrumb-->
               <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <div class="breadcrumb-title pe-3">Home</div>
                 <div class="ps-3">
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Empty page</li>
+                      <li class="breadcrumb-item active" aria-current="page"></li>
                     </ol>
                   </nav>
                 </div>
@@ -34,7 +34,14 @@
               <!--end breadcrumb-->
   
               <div>
-                <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>
+
+                
+
+
                 </div>
+  
+      
+    
+  
     </NuxtLayout>
   </template>

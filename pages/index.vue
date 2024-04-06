@@ -1,6 +1,16 @@
-<template>
+<script>
+export default {
+  setup () {
+    useHead({
+      bodyAttrs: {
+        class: 'bg-white'
+      }
+    })
+  }
+}
+</script>
 
-<body class="bg-white">
+<template>
 
   <!--start wrapper-->
   <div class="wrapper">
@@ -72,9 +82,5 @@
     </div>
   </div>
   <!--end wrapper-->
-
-
-</body>
-
 
 </template>

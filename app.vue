@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <!-- <html lang="en" class="semi-dark">
+
+<body style="background-color:white"> -->
+
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout> 
+
+  <!-- </body></html>/ -->
+
 </template>
