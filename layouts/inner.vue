@@ -63,10 +63,18 @@
               </a>
               <ul>
                 <li> <NuxtLink to="/tests">
+                    <ion-icon name="ellipse-outline"></ion-icon>Registered tests
+                  </NuxtLink>
+                </li>
+                <li> <NuxtLink to="/test-types">
                     <ion-icon name="ellipse-outline"></ion-icon>All test types
                   </NuxtLink>
                 </li>
                 <li> <NuxtLink to="/new/testtype">
+                    <ion-icon name="ellipse-outline"></ion-icon>New Test type
+                  </NuxtLink>
+                </li>
+                <li> <NuxtLink to="/new/grouptesttype">
                     <ion-icon name="ellipse-outline"></ion-icon>New Test type
                   </NuxtLink>
                 </li>
@@ -117,6 +125,11 @@
                     <ion-icon name="ellipse-outline"></ion-icon>Specimen CF
                   </NuxtLink>
                 </li>
+
+                <li> <NuxtLink to="/custom-fields/patient">
+                  <ion-icon name="ellipse-outline"></ion-icon>Patient CF
+                </NuxtLink>
+              </li>
               </ul>
             </li>
 

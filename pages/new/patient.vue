@@ -57,7 +57,7 @@
                           <option>Last name, 22yo, Address:Nsimeyong</option>
                         </select>
                       </div>
-            
+                      <span  data-bs-toggle="popover" title="Help content" data-bs-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" class=" fw-bold text-orange" style="cursor:pointer"> <i class="fadeIn animated bx bx-help-circle"></i> Need help?</span>
                       
                 </div>
 

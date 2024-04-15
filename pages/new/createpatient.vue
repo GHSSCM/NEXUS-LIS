@@ -159,34 +159,9 @@
                 
                     </div>
 
-                    <div class="col-sm-12 col-md-6">
-                        <div class="mb-4">
-                            <input class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
-                            <label class="form-check-label ms-2" for="referredout">HIV Diagnosis?</label>
-
-                          </div>
-                
-                    </div>
+              
 
 
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <label class="form-label">Date of TARV initiation</label>
-                            <input class="result form-control date-picker" type="text" placeholder="Date of TARV initiation">
-                          </div>
-                
-                          
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <label class="form-label">Line of treatment</label>
-                            <input class="form-control" type="text" placeholder="Line of treatment">
-                          </div>
-                
-                        
-                    </div>
 
                 </div>
 

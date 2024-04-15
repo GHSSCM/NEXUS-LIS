@@ -44,6 +44,9 @@ export default defineNuxtConfig({
         {src:'/assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js'},
         {src:'/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js'},
        
+
+
+        {src:'/assets/js/component-popovers-tooltips.js'}
        
         
       

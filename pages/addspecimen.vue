@@ -64,8 +64,8 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <label for="single-select-field2" class="form-label">Test type</label>
-                            <select class="form-select single-select-field" :id="'single-select-field2'+pos" data-placeholder="Choose test type">
+                            <label for="single-select-field2" class="form-label">Test type(s)</label>
+                            <select class="form-select multiple-select-field" :id="'multiple-select-field2'+pos" data-placeholder="Choose test type(s)" multiple>
                               <option></option>
                               <option>Name</option>
                               <option>Other name 1</option>
@@ -81,12 +81,23 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <label class="form-label">Date/Time of reception</label>
-                            <input class="result form-control date-time-picker" type="text" placeholder="Date/Time of reception">
+                            <label class="form-label">Date of reception</label>
+                            <input class="result form-control " type="date" placeholder="Date of reception">
                           </div>
                 
                           
                     </div>
+
+
+                    <div class="col-sm-12 col-md-6">
+
+                      <div class="mb-4">
+                          <label class="form-label">TIme of reception (optional)</label>
+                          <input class="result form-control " type="time" placeholder="Time of reception">
+                        </div>
+              
+                        
+                  </div>
 
                     <div class="col-sm-12 col-md-6">
 

@@ -46,12 +46,14 @@
                     <div class="col-12 col-lg-8 col-xl-9">
                       <div class="card overflow-hidden radius-10">
                         <div class="profile-cover bg-dark position-relative mb-4">
-                          <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x">
-                            <img src="assets/images/avatars/06.png" alt="...">
+                          <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x" style="width: 80px;
+                          height: 80px;
+                          margin-left: 4.5rem;">
+                            <img src="assets/images/man.png" alt="...">
                           </div>
                         </div>
                         <div class="card-body">
-                          <div class="mt-5 d-flex align-items-start justify-content-between">
+                          <div class="mt-2 d-flex align-items-start justify-content-between">
                             <div class="">
                               <h3 class="mb-2">Tamko Clarence</h3>
                               <p class="mb-1">My Profession</p>
