@@ -3,8 +3,11 @@
 
   
       <!--start wrapper-->
-      <div class="wrapper">
-    
+      <div class="wrapper mainwrapper">
+        <!-- <div id="mainloaderwrapper" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;">
+          <div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span>
+          </div>
+        </div> -->
         <!--start sidebar -->
         <aside class="sidebar-wrapper" data-simplebar="true" style="background-color:#19257B">
           <div class="sidebar-header" style="background-color:#19257B">

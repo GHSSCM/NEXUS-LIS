@@ -1,40 +1,7 @@
 $(function() {
     "use strict";
 
-setTimeout(function(){
-    var singlefields = document.querySelectorAll( '.single-select-field' );
-    for(var i=0;i<singlefields.length;i++){
-        $(singlefields[i]).select2( {
-            theme: "bootstrap-5",
-            width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-            placeholder: $( this ).data( 'placeholder' ),
-        } )
-    }
 
-
-    var singlefieldstags = document.querySelectorAll( '.single-select-field-tags' );
-    for(var i=0;i<singlefieldstags.length;i++){
-        $(singlefieldstags[i]).select2( {
-            tags:true,
-            theme: "bootstrap-5",
-            width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-            placeholder: $( this ).data( 'placeholder' ),
-        } )
-    }
-
-    
-    var singlefieldstags = document.querySelectorAll( '.multiple-select-field' );
-    for(var i=0;i<singlefieldstags.length;i++){
-        $(singlefieldstags[i]).select2( {
-            tags:true,
-            theme: "bootstrap-5",
-            width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-            placeholder: $( this ).data( 'placeholder' ),
-        } )
-    }
-
-
-},1000);
 
 
     // $( '#single-select-field' ).select2( {

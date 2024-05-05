@@ -81,3 +81,6 @@
   
     </NuxtLayout>
   </template>
+
+<script>
+</script>

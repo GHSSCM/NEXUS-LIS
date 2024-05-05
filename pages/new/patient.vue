@@ -79,3 +79,20 @@
   
     </NuxtLayout>
   </template>
+<script>
+export default{
+  data(){
+    return {
+        patientId:"",
+        patientName:"",
+        gender:"",
+        dateOfBirth:"",
+        gender:"",
+        region:"",
+        address:"",
+        profession:"",
+        
+    }
+  }
+}
+</script>

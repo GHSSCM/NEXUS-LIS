@@ -47,7 +47,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Patient ID</label>
-                            <input class="form-control" type="text" placeholder="Patient ID" disabled value="128723">
+                            <input class="form-control" type="text" placeholder="Patient ID" disabled v-model="patient_id">
                           </div>
                 
                         
@@ -57,16 +57,16 @@
 
                     <div class="col-sm-12 col-md-6">
                         <label class="form-label">Patient Name</label>
-                        <input type="text" class="form-control" placeholder="Patient Name"/>
+                        <input type="text" class="form-control" placeholder="Patient Name" v-model="name"/>
                     </div>
                 <div class="col-sm-12 col-md-6">
 
                     <div class="mb-4">
                         <label class="form-label">Gender</label>
-                        <select class="form-select single-select-field-tags" id="single-select-field1" data-placeholder="Enter gender">
+                        <select class="form-select single-select-field-tags" id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
                          
-                          <option>Male</option>
-                          <option>Female</option>
+                          <option value="M" selected>Male</option>
+                          <option value="F">Female</option>
                         </select>
                       </div>
             
@@ -78,7 +78,7 @@
 
                     <div class="mb-4">
                         <label class="form-label">Date of birth</label>
-                        <input class="result form-control date-picker" type="text" placeholder="Date of birth">
+                        <input v-model="dob" required class=" form-control" type="date" placeholder="Date of birth">
                       </div>
             
                       
@@ -90,18 +90,18 @@
 
                     <div class="mb-4">
                         <label class="form-label">Region of origin</label>
-                        <select class="form-select single-select-field-tags" id="single-select-field2" data-placeholder="Region of origin">
+                        <select v-model="region" class="form-select single-select-field-tags" id="single-select-field2" data-placeholder="Region of origin">
                          
-                          <option>Far north</option>
-                          <option>North</option>
-                          <option>Adamoua</option>
-                          <option>East</option>
-                          <option>South</option>
-                          <option>North-West</option>
-                          <option>South-West</option>
-                          <option>West</option>
-                          <option>Centre</option>
-                          <option>Littoral</option>
+                          <option value="Far North">Far north</option>
+                          <option value="North">North</option>
+                          <option value="Adamoua">Adamoua</option>
+                          <option value="East">East</option>
+                          <option value="South">South</option>
+                          <option value="North-West">North-West</option>
+                          <option value="South-West">South-West</option>
+                          <option value="West" selected>West</option>
+                          <option value="Centre">Centre</option>
+                          <option value="Littoral">Littoral</option>
                         </select>
                       </div>
             
@@ -113,7 +113,7 @@
 
                     <div class="mb-4">
                         <label class="form-label">Address</label>
-                        <input class="form-control" type="text" placeholder="Address">
+                        <input v-model="address" class="form-control" type="text" placeholder="Address">
                       </div>
             
                     
@@ -124,7 +124,7 @@
 
                     <div class="mb-4">
                         <label class="form-label">Profession</label>
-                        <input class="form-control" type="text" placeholder="Profession">
+                        <input v-model="profession" class="form-control" type="text" placeholder="Profession">
                       </div>
             
                     
@@ -150,14 +150,7 @@
                           </div>
                 
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="mb-4">
-                            <input class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
-                            <label class="form-check-label ms-2" for="referredout">Breastfeeding?</label>
-
-                          </div>
-                
-                    </div>
+                 
 
               
 
@@ -181,3 +174,28 @@
   
     </NuxtLayout>
   </template>
+
+  <script>
+  import {getRequest_} from "@/utils/helper";
+export default{
+  data(){
+    return {
+        patient_id:"",
+        uniqid:"",
+        reference:"",
+        name:"",
+        dob:"",
+        gender:"",
+        region:"",
+        address:"",
+        profession:"",
+        meta:null
+    }
+  },
+  methods:{
+    save(){
+      getRequest_("/patient",)
+    }
+  }
+}
+</script>

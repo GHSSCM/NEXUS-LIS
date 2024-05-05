@@ -11,7 +11,7 @@
                         <ion-icon name="home-outline"></ion-icon>
                       </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Patient Information</li>
+                    <li class="breadcrumb-item active" aria-current="page">Patient Information </li>
                   </ol>
                 </nav>
               </div>
@@ -38,29 +38,38 @@
               <h6 class="mb-0 text-uppercase">Test type CFs</h6>
               <hr/>
 
-              <div v-for="f in fields">
+              <div v-for="(f,i) in fields" :key="'ct-'+i">
                   <hr/>
                   <div class="row">
                       <div class="col-sm-5">
                           <label >Name</label>
-                        <input class="form-control mb-3 mt-2" type="text" placeholder="Enter field name">
+                        <input   v-model="fields[i].name" class="form-control mb-3 mt-2" type="text" placeholder="Enter field name">
                      </div>
-                     <div class="col-sm-5">
+                     <div class="col-sm-3">
                           <label class="mb-2">Data type</label>
-                          <select class="form-control single-select-field " id="idk1" data-placeholder="Data type">
-                              <option></option>
-                              <option>Free input/text</option>
-                              <option>Number</option>
-                              <option>Yes/No</option>
-                              <option>Limited values</option>
-                              <option>Date/Time</option>
-                              <option>Date Only</option>
-                              <option>Time Only</option>
+                          <select v-model="fields[i].type" class="form-control " :id="'idk1'+i" data-placeholder="Data type">
+                              <!-- <option></option> -->
+                              <option value="freeinput">Free input/text</option>
+                              <option value="number">Number</option>
+                              <option value="yesno">Yes/No</option>
+                              <option value="limitedvalues">Limited values</option>
+                              <option value="datetime">Date/Time</option>
+                              <option value="dateonly">Date Only</option>
+                              <option value="timeonly">Time Only</option>
                           </select>
                    </div>
               
-                   <div class="col-sm-2 d-flex align-items-center">
-                      <center><i class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red"></i></center>
+                   
+                   <div class="col-sm-3" v-if="fields[i].type=='limitedvalues'">
+                    <label class="mb-2">Possible values</label> 
+                    <!-- multiple-select-field -->
+                    <multiselect v-model="fields[i].meta.enum" :options="[]" :taggable="true"
+                    @tag="addNewOption(i,$event)" :multiple="true" ></multiselect>
+
+                    
+                  </div>
+                   <div class="col-sm-1 d-flex align-items-center">
+                      <center><i  class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red;cursor:pointer" @click="deleteField(i)"></i></center>
                    </div>
                   </div>
                   <hr/>
@@ -68,13 +77,14 @@
 
 
               <div class="d-flex flex-row justify-content-end">
-                  <button class="btn btn-primary btn-sm" @click="fields.push(1)">Add fields</button>
+                  <button class="btn btn-outline-primary btn-sm " style="border:0" @click="addNew">+ Add fields</button>
               </div>
               
               <br/>
               <br/>
               <br/>
               <br/>
+              <button class="btn btn-primary w-100 " style="border:0" @click="save">+ Save</button>
               </div>
 
     
@@ -87,12 +97,78 @@ export default {
   data() {
       return {
           fields:[
-1
-          ]
+
+          ],
+          category:"patient"
       }
   },
+  watch: {
+  
+  },
+  methods:{
+    save(){
+      const context=this;
+      // return console.log(JSON.stringify(this.fields));
+      postRequestLoad_('/customfields',{
+        fields:this.fields,
+        category:this.category
+      },(fields)=>{
+          context.fields=fields;
+      },()=>{
+        alert("Connection error. Please refresh and try again.");
+      })
+    },
+    addNewOption(i,newOption){
+
+      console.log(i, newOption);
+
+      if(this.fields[i].meta.enum==null){
+
+        this.fields[i].meta.enum=[newOption];
+
+      }else{
+
+        this.fields[i].meta.enum.push(newOption);
+
+      }
+    },
+    addNew(){
+      this.fields.push({
+        type:'freeinput',
+        name:'',
+        meta:{noop:true},
+        category:this.category
+    });
+    },
+    deleteField(index){
+        var field = this.fields[index];
+        
+          if (confirm("Sure you want to delete?")) {
+              if(field.id){
+                getRequestLoad_('/customfield/'+field.id+'/delete',{},()=>{
+                      this.fields.splice(index, 1);
+                  },()=>{
+                    alert("Connection error. Please refresh and try again.");
+                  })
+              }else{
+                 this.fields.splice(index, 1);
+              }
+          } else {
+        
+          }
+        
+    }
+  },
   mounted() {
-      
+    const context=this;
+      getRequestLoad_('/customfields',{
+        category:this.category
+      },(fields)=>{
+        context.fields= fields;
+   
+      },()=>{
+        alert("Connection error. Please refresh and try again.");
+      })
   },
 }
 </script>

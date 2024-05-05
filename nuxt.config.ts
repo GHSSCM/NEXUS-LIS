@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  plugins: [
+    {src:'~/plugins/vuemultiselect.js',ssr:false}
+  ],
   app:{
     head: {
       meta: [
@@ -13,11 +16,13 @@ export default defineNuxtConfig({
         }
       ],
       script: [
+        
         { src: '/assets/js/pace.min.js' },
         { src: '/assets/js/jquery.min.js' },
         { src: '/assets/plugins/metismenu/js/metisMenu.min.js' },
         { src: '/assets/js/bootstrap.bundle.min.js' },
         { src: '/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' },
+        { src: '/assets/js/custom.js' },
         // { src: '/assets/plugins/simplebar/js/simplebar.min.js' },
         // { src: '/assets/plugins/apexcharts-bundle/js/apexcharts.min.js' },
         // { src: '/assets/plugins/easyPieChart/jquery.easypiechart.js' },
@@ -46,8 +51,12 @@ export default defineNuxtConfig({
        
 
 
-        {src:'/assets/js/component-popovers-tooltips.js'}
+        {src:'/assets/js/component-popovers-tooltips.js'},
+        {src:'/assets/plugins/notifications/js/lobibox.min.js'},
+
        
+        
+        
         
       
       ],
@@ -88,7 +97,11 @@ export default defineNuxtConfig({
 
         { rel: 'stylesheet', href:'https://fonts.googleapis.com/icon?family=Material+Icons' },
         
-  
+        {rel:'stylesheet',href:'/assets/plugins/others/vue-multiselect.css'},
+
+        {rel:'stylesheet',href:'/assets/plugins/notifications/css/lobibox.min.css'}
+
+        
       ]
     },
   }
