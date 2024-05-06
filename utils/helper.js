@@ -8,6 +8,7 @@ export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunctio
         window.reloadComps();
     }).catch(e=>{
         console.error(e);
+        handleAxiosError(e);
         errorFunction(e);
     }).finally(()=>{
         finallyFunction();
@@ -53,8 +54,71 @@ export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFuncti
         window.reloadComps();
     }).catch(e=>{
         console.error(e);
+        handleAxiosError(e);
         errorFunction(e);
     }).finally(()=>{
         finallyFunction();
     })
+}
+
+export const successToast=(ms)=>{
+    Lobibox.notify('success', {
+		pauseDelayOnHover: true,
+		size: 'mini',
+		rounded: true,
+		icon: 'bx bx-check-circle',
+		delayIndicator: false,
+		continueDelayOnInactiveTab: false,
+		position: 'top right',
+		msg: ms
+	});
+}
+
+export const errorToast=(ms)=>{
+    Lobibox.notify('error', {
+		pauseDelayOnHover: true,
+		size: 'mini',
+		rounded: true,
+		icon: 'bx bx-x-circle',
+		delayIndicator: false,
+		continueDelayOnInactiveTab: false,
+		position: 'top right',
+		msg: ms
+	});
+}
+
+const handleAxiosError=(error)=>{
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log('Status Code:', error.response.status);
+        console.log('Data:', error.response.data);
+        console.log('Headers:', error.response.headers);
+        errorToast(error.response.data.message);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('Request:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.log('Error:', error.message);
+        errorToast(error.message);
+      }
+      console.log('Config:', error.config);
+}
+
+export const calculateAge = (dateString) =>{
+    if(!dateString){
+        return "";
+    }
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    // If the birth month is greater than the current month, or if it's the same month but the birth day
+    // is greater than the current day, we subtract 1 from the age
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    
+    return age;
 }

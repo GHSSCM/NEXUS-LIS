@@ -137,6 +137,33 @@
             </li>
 
 
+
+            <li class="menu-label">Access </li>
+        
+
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  
+                  <ion-icon name="ellipse-outline"></ion-icon>
+
+                </div>
+                <div class="menu-title">User accounts</div>
+              </a>
+              <ul>
+                <li> <NuxtLink to="/accounts">
+                    <ion-icon name="ellipse-outline"></ion-icon>All accounts
+                  </NuxtLink>
+                </li>
+                <li> <NuxtLink to="/accounts/create">
+                    <ion-icon name="ellipse-outline"></ion-icon>New Account
+                  </NuxtLink>
+                </li>
+
+               
+              </ul>
+            </li>
+
           </ul>
           <!--end navigation-->
         </aside>

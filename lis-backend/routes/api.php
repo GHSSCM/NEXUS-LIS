@@ -2,6 +2,7 @@
 
 use App\Models\CustomField;
 use App\Models\Patient;
+use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,4 +64,57 @@ Route::put("/customfield/{id}",function($id){
     $patient =  CustomField::findOrFail($id);
     $patient->update(request()->all());
     return $patient;
+});
+
+
+# user accounts
+
+Route::get("/accounts",function(){
+   
+    return UserAccount::query()->where(request()->all())->get();
+});
+
+Route::get("/account/{id}",function($id){
+    return UserAccount::query()->findOrFail($id);
+});
+Route::post("/account/{id}",function($id){
+    $data= request()->all();
+    if(empty($data['password'])){
+        try{
+            unset($data['password']);
+        }catch(\Exception $e){
+
+        }
+    }else{
+        $data['password']=sha1( $data['password']);
+    }
+    return UserAccount::find($id)->update($data);
+});
+
+Route::post("/account",function(){
+
+    if(UserAccount::query()->where('username',request()->get('username'))->count()>0){
+        return error_response(400,"Username already in use. Use a different username");
+    }  
+    $data= request()->all();
+    $data['password']=sha1( $data['password']);
+    return UserAccount::create($data);
+});
+
+Route::post("/login",function(){
+
+    if(UserAccount::query()->where('username',request()->get('username'))->count()==0){
+        return error_response(400,"Incorrect username. Verify and try again!");
+    }  
+   
+    $account = UserAccount::query()->where('username',request()->get('username'))->where('password',sha1(request()->get('password')))->first();
+    if(empty($account)){
+        return error_response(400,"Incorrect password. Verify and try again!");
+    }
+
+    return  $account;
+});
+
+Route::get("/search-patient",function(){
+    return  Patient::where('name', 'like', '%' . request()->get("query") . '%')->get();
 });

@@ -10,7 +10,7 @@ $(function() {
 
         var dts = $('.dttable');
         for(var i=0;i<dts.length;i++){
-            var table = dts[i].DataTable( {
+            var table = $(dts[i]).DataTable( {
                 lengthChange: false,
                 buttons: [ 'copy', 'excel', 'pdf', 'print']
             } );

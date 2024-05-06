@@ -11,11 +11,13 @@
                         <ion-icon name="home-outline"></ion-icon>
                       </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Patient Information </li>
+                    <li class="breadcrumb-item active" aria-current="page" v-if="category=='patient'">Patient Information </li>
+                    <li class="breadcrumb-item active" aria-current="page" v-if="category=='specimen'">Specimen Information </li>
+                    <li class="breadcrumb-item active" aria-current="page" v-if="category=='test'">Test Information </li>
                   </ol>
                 </nav>
               </div>
-              <div class="ms-auto">
+              <!-- <div class="ms-auto">
                 <div class="btn-group">
                   <button type="button" class="btn btn-outline-primary">Options</button>
                   <button type="button"
@@ -29,7 +31,7 @@
                     <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <!--end breadcrumb-->
 
@@ -95,11 +97,13 @@
 <script>
 export default {
   data() {
+    const route = useRoute()
+    const category = route.params.category;
       return {
           fields:[
 
           ],
-          category:"patient"
+          category
       }
   },
   watch: {
@@ -113,9 +117,10 @@ export default {
         fields:this.fields,
         category:this.category
       },(fields)=>{
+            successToast("Saved successfully");
           context.fields=fields;
       },()=>{
-        alert("Connection error. Please refresh and try again.");
+        // alert("Connection error. Please refresh and try again.");
       })
     },
     addNewOption(i,newOption){
@@ -147,8 +152,7 @@ export default {
               if(field.id){
                 getRequestLoad_('/customfield/'+field.id+'/delete',{},()=>{
                       this.fields.splice(index, 1);
-                  },()=>{
-                    alert("Connection error. Please refresh and try again.");
+                    successToast("Field deleted successfully");
                   })
               }else{
                  this.fields.splice(index, 1);
@@ -167,7 +171,7 @@ export default {
         context.fields= fields;
    
       },()=>{
-        alert("Connection error. Please refresh and try again.");
+        // alert("Connection error. Please refresh and try again.");
       })
   },
 }

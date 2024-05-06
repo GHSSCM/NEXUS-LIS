@@ -11,6 +11,15 @@ export default {
       this.loadScript();
     },
     methods: {
+      login(){
+        const context=this;
+        postRequestLoad_('/login',JSON.parse(JSON.stringify(this)),(user)=>{
+              successToast("Login successful!");
+              window.localStorage.setItem("user",JSON.stringify(user));
+              window.localStorage.setItem("lab_ref",user.lab_ref);
+              context.$router.push('/home');   
+        });
+      },
       loadScript() {
         console.log("Load script");
 
@@ -41,6 +50,12 @@ export default {
       }
       
       }
+    },
+    data(){
+      return {
+        username:"",
+        password:""
+      }
     }
 }
 </script>
@@ -59,29 +74,29 @@ export default {
                   <h4>Welcome Back !</h4>
                   <p>Sign In to your account</p>
                 </div>
-                <form class="form-body row g-3">
+                <form class="form-body row g-3" @submit.prevent="login">
           
                   <div class="col-12">
-                    <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail">
+                    <label for="inputEmail" class="form-label">Username *</label>
+                    <input required v-model="username" type="text" class="form-control" id="inputUsername">
                   </div>
                   <div class="col-12">
                     <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword">
+                    <input required v-model="password" type="password" class="form-control" id="inputPassword">
                   </div>
                   <div class="col-12 col-lg-6">
-                    <div class="form-check form-switch">
+                    <!-- <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckRemember">
                       <label class="form-check-label" for="flexSwitchCheckRemember">Remember Me</label>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-12 col-lg-6 text-end d-none">
                     <a href="authentication-reset-password-cover.html">Forgot Password?</a>
                   </div>
                   <div class="col-12 col-lg-12">
-                    <NuxtLink to="/home"> <div class="d-grid">
-                      <button type="button" class="btn btn-primary">Sign In</button>  
-                    </div></NuxtLink>
+                     <div class="d-grid">
+                      <button type="submit" class="btn btn-primary">Sign In</button>  
+                    </div>
                   </div>
                   <div class="col-12 col-lg-12 d-none">
                     <div class="position-relative border-bottom my-3">
