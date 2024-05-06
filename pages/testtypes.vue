@@ -1,0 +1,134 @@
+<template>
+  <NuxtLayout name="inner">
+      
+            <!--start breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+              <div class="breadcrumb-title pe-3">Dashboard</div>
+              <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0 p-0 align-items-center">
+                    <li class="breadcrumb-item"><a href="javascript:;">
+                        <ion-icon name="home-outline"></ion-icon>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Test types</li>
+                  </ol>
+                </nav>
+              </div>
+              <div class="ms-auto">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-primary">Options</button>
+                  <button type="button"
+                    class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> 
+                    <NuxtLink class="dropdown-item"
+                      to="/testtype/create">New single test type</NuxtLink>
+                      <NuxtLink class="dropdown-item"
+                      to="/grouptesttype/create">New group test type</NuxtLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <div>
+            
+            
+              <!-- <br/>
+              <h6 class="mb-0 text-uppercase">Tamko Clarence</h6>
+              <hr/> -->
+
+
+              <!-- start -->
+              <div class="row">
+              
+                  <div class="col-sm-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4 class="mb-2">Test Types</h4>
+                            <br/>
+                            
+                            <div class="table-responsive">
+
+                              <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
+                                   
+                             <div class="row">
+                               <div class="col-sm-12">
+                                   <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
+                                     <thead>
+                                         <tr role="row">
+                                          <th rowspan="1" colspan="1">Name</th>
+                                          <th rowspan="1" colspan="1">Description</th>
+                                          <th rowspan="1" colspan="1">Type</th>
+                                          <th rowspan="1" colspan="1">Creation date</th>
+                                          <th></th>
+                                           </tr>
+                                     </thead>
+                                     <tbody>
+         
+                                         
+                                     <tr role="row" v-for="(u,i) in testtypes" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                             <td class="">{{ u.name }}</td>
+                                             <td class="">{{u.description}}</td>
+                                             <td class="">{{u.type}}</td>
+                                             <td class="sorting_1">{{u.created_at.split(".")[0].split('T').join(" ")}}</td>
+                                             
+                                             <td>
+                                                 <NuxtLink class="btn btn-primary btn-sm" :to="u.type=='SINGLE'?('/testtype/'+u.id):('/grouptesttype/'+u.id)">View/Edit</NuxtLink>
+                                             </td>
+                                             
+                                       </tr>
+                                     </tbody>
+                                     <tfoot>
+                                         <tr>
+                                           <th rowspan="1" colspan="1">Name</th>
+                                           <th rowspan="1" colspan="1">Description</th>
+                                           <th rowspan="1" colspan="1">Type</th>
+                                           <th rowspan="1" colspan="1">Creation date</th>
+                                           <th></th>
+                                         </tr>
+                                     </tfoot>
+                                 </table>
+                               </div>
+                             </div>
+                 
+                               </div>
+                           </div>
+  
+  
+  
+                        
+                            
+                          <!-- tab ends here -->
+                          </div>
+                        </div>
+                  </div>
+                </div>
+                <!-- end -->
+
+
+              </div>
+
+    
+  
+
+  </NuxtLayout>
+</template>
+
+<script>
+export default{
+  mounted(){
+    const context=this;
+    getRequestLoad_('/testtypes/',{},(testtypes)=>{
+      context.testtypes= testtypes;
+    })
+  },
+  data(){
+    return {
+      testtypes:[]
+    }
+  }
+}
+</script>

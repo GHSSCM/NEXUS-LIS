@@ -25,8 +25,8 @@
 
      
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <NuxtLink class="dropdown-item"
-                      to="/new/testtype">Create new type</NuxtLink>
-                      <NuxtLink to="/new/grouptesttype"  class="dropdown-item" href="javascript:;">Create new group</NuxtLink>
+                      to="/testtype/create">Create new type</NuxtLink>
+                      <NuxtLink to="/grouptesttype/create"  class="dropdown-item" href="javascript:;">Create new group</NuxtLink>
                       <!-- <a class="dropdown-item" href="javascript:;">Something else here</a> -->
                       <!-- <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a> -->
                     </div>
@@ -71,7 +71,7 @@
                                             <td v-if="u%2==0">SINGLE</td>
                                             <td v-else>GROUPED</td>
                                             <td>
-                                                <NuxtLink class="btn btn-primary btn-sm" to="/new/testtype">Edit</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm" to="/testtype/create">Edit</NuxtLink>
                                             </td>
                                             
                                        </tr>

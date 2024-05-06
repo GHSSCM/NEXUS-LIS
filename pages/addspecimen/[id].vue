@@ -15,7 +15,7 @@
                     </ol>
                   </nav>
                 </div>
-                <div class="ms-auto">
+                <!-- <div class="ms-auto">
                   <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary">Options</button>
                     <button type="button"
@@ -29,7 +29,7 @@
                       <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <!--end breadcrumb-->
   
@@ -38,7 +38,7 @@
               
                 <br/>
                 <h6 class="mb-0 text-uppercase">Register Specimen(s)</h6>
-                <p>Patient: <strong>Tamko Clarence, 19years old, Patient ID: 4595</strong></p>
+                <p>Patient: <strong>{{ patient.name }}, {{calculateAge(patient.dob)}} year(s) old, Patient REF: {{patient.reference}}</strong></p>
                 <hr/>
 
                
@@ -49,14 +49,9 @@
 
                         <div class="mb-4">
                             <label :for="'single-select-field1'+pos" class="form-label">Specimen type</label>
-                            <select class="form-select single-select-field" :id="'single-select-field1'+pos" data-placeholder="Choose specimen type">
-                              <option></option>
-                              <option>Name</option>
-                              <option>Other name 1</option>
-                              <option>Other name 2</option>
-                              <option>Other name 3</option>
-                              <option>Last name</option>
-                            </select>
+                           
+                          <multiselect v-model="specimen" :options="specimens" label="name" track-by="uniqid" searchable></multiselect>
+                            
                           </div>
                 
                           
@@ -65,14 +60,9 @@
 
                         <div class="mb-4">
                             <label for="single-select-field2" class="form-label">Test type(s)</label>
-                            <select class="form-select multiple-select-field" :id="'multiple-select-field2'+pos" data-placeholder="Choose test type(s)" multiple>
-                              <option></option>
-                              <option>Name</option>
-                              <option>Other name 1</option>
-                              <option>Other name 2</option>
-                              <option>Other name 3</option>
-                              <option>Last name</option>
-                            </select>
+                          
+                            <multiselect  v-if="specimen" v-model="tests" :options="specimen.tests" label="name" track-by="uniqid" searchable></multiselect>
+                            
                           </div>
                 
                           
@@ -196,10 +186,32 @@
   
 <script>
   export default{
+    methods:{
+      calculateAge(dob){
+        return calculateAge(dob);
+      }
+    },
     data(){
+      const route = useRoute();
+
         return {
-            specimens:[1]
+            patientId:route.params.id,
+            patient:{},
+            physicians:[],
+            preleveurs:[],
+            specimens:[]
         }
+    },
+    mounted(){
+      const context=this;
+      getRequestLoad_('/addspecimen-data/'+this.patientId,{},(data)=>{
+        context.patient = data.patient;
+        context.physicians = data.physicians;
+        context.preleveurs = data.preleveurs;
+        context.specimens = data.specimens;
+        
+      });
+    
     }
   }
 </script>

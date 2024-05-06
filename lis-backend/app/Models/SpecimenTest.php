@@ -12,10 +12,10 @@ class SpecimenTest extends Model
 
 
      
-    use SoftDeletes;
+    // use SoftDeletes;
 
 
-    protected $fillable=['specimen','test'];
+    protected $fillable=['specimen','test','uniqid'];
     protected $casts = [
         'meta' => 'json',
     ];

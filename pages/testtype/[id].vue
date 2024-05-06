@@ -11,11 +11,11 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">New Specimen Type</li>
+                      <li class="breadcrumb-item active" aria-current="page">New Test Type</li>
                     </ol>
                   </nav>
                 </div>
-                <div class="ms-auto">
+                <!-- <div class="ms-auto">
                   <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary">Options</button>
                     <button type="button"
@@ -29,21 +29,21 @@
                       <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <!--end breadcrumb-->
   
               <div>
                        
-                <h6 class="mb-0 text-uppercase">Create a new specimen</h6>
+                <h6 class="mb-0 text-uppercase">Create a new test type</h6>
                 <hr/>
-
+                <form @submit.prevent="save">
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
                             <label class="form-label">Name</label>
-                            <input class="form-control" type="text" placeholder="Name"/>
+                            <input v-model="name" required class="form-control" type="text" placeholder="Name"/>
                           </div>
                 
 
@@ -53,28 +53,25 @@
                     <div>
                         <div class="mb-4">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" type="text" placeholder="Description"></textarea>
+                            <textarea v-model="description" class="form-control" type="text" placeholder="Description"></textarea>
                           </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
 
                     <div class="mb-4">
-                        <label class="form-label">Tests</label>
-                        <select multiple class="form-select multiple-select-field" id="single-select-field2" data-placeholder="Test types in group">
-                         
-                          <option>HIV</option>
-                          <option>Haepatithis</option>
-                          <option>Malaria</option>
-                          <option>Typhoid</option>
-                         
-                        </select>
-                      </div>
+                        <label class="form-label">Compatible specimen(s)</label>
+                        <multiselect v-model="specimens" :options="loadedspecimens" label="name" track-by="uniqid" multiple></multiselect>
+
+                     
+
+                      
+                    </div>
                     </div>
             
                 </div>
 
 
-                <!-- <p><strong>Measures</strong></p>
+                <p><strong>Measures</strong></p>
                 <div v-for="f in fields">
                     <hr/>
                     <div class="row">
@@ -98,10 +95,12 @@
 
                      <div class="col-sm-4">
                         <label >Values</label>
+                      <!-- <input class="form-control mb-3 mt-2" type="text" placeholder="Enter name"> -->
                    </div>
 
                    <div class="col-sm-3">
                     <label >Unit</label>
+                  <!-- <input class="form-control mb-3 mt-2" type="text" placeholder="Enter name"> -->
                </div>
 
                 
@@ -110,28 +109,39 @@
                      </div>
                     </div>
                     <hr/>
-                </div>-->
+                </div>
 
                 <hr/>
-                <div class="row">
+              
+                  <div class="row">
 
                     <div class="col-sm-12 col-md-6">
                         <div class="mb-4">
-                            <input class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
+                            <input v-model="hidename" class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
                             <label class="form-check-label ms-2" for="referredout">Hide patient name in report?</label>
                      
                           </div>
                 
                     </div>
 
+                    <div class="col-sm-12 col-md-6">
+
+                        <div class="mb-4">
+                            <label class="form-label">Prevalence Threshold </label>
+                            <input required v-model="threshold" class="form-control" type="number" placeholder="Prevalence Threshold"/>
+                          </div>
                 
+
+                          
+
+                    </div>
 
 
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
                             <label class="form-label">Target TAT </label>
-                            <input class="result form-control time-picker" type="text" placeholder="Target TAT"/>
+                            <input required v-model="tat" class="result form-control" type="text" placeholder="Target TAT"/>
                           </div>
                 
 
@@ -143,7 +153,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Cost to patient in FCFA</label>
-                            <input class="form-control" type="number" placeholder="Cost to patient"/>
+                            <input required v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
                           </div>
                 
 
@@ -155,10 +165,12 @@
 
                 </div>
             
-
+                <br/>
+                <br/>
                 <div class="d-flex flex-row justify-content-end">
-                    <NuxtLink class="btn btn-primary" to="/profile">Save</NuxtLink>
+                    <button type="submit" class="btn btn-primary w-100" >+ Save</button>
                 </div>
+                </form>
                 <br/>
                 <br/>
                 <br/>
@@ -171,10 +183,62 @@
   </template>
   <script>
   export default{
+  
     data(){
+      const route = useRoute();
+    const id= route.params.id;
         return {
-            fields:[0]
+          id,
+            name:"",
+            description:"",
+            specimens:[],
+            tat:"",
+            cost:1000,
+            hidename:false,
+            threshold:"",
+            loadedspecimens:[]
         }
+    },
+    mounted(){
+      const context=this;
+      getRequestLoad_('/specimentypes',{},(loadedspecimens)=>{
+        context.loadedspecimens= loadedspecimens;
+        if(context.id!='create'){
+          getRequestLoad_('/testtype/'+context.id,{},(testtype)=>{
+              context.name=testtype.name;
+              context.description=testtype.description;
+              context.specimens=testtype.specimens;
+              context.tat=testtype.tat;
+              context.cost=testtype.cost;
+              context.hidename=testtype.hidename;
+              context.threshold=testtype.threshold;
+          })
+        }
+      })
+    },
+    methods:{
+      save(){
+        const context=this;
+        postRequestLoad_(context.id=='create'?'/testtype':'/testtype/'+context.id,{
+          description:this.description,
+          name:this.name,
+          specimens:JSON.parse(JSON.stringify(this.specimens.map(r=>r.uniqid))),
+          tat:this.tat,
+          hidename:this.hidename,
+          threshold:this.threshold,
+          cost:this.cost,
+          meta:{
+            "a":"b"
+          }
+        },(specimen)=>{
+          if(context.id=='create'){
+            successToast("Created successfully");
+          }else{
+            successToast("Updated successfully");
+          }
+        context.$router.push("/testtypes");
+      })
+      }
     }
   }
   </script>

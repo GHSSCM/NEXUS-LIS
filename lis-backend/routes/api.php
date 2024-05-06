@@ -2,6 +2,10 @@
 
 use App\Models\CustomField;
 use App\Models\Patient;
+use App\Models\RegisteredSpecimen;
+use App\Models\SpecimenTest;
+use App\Models\SpecimenType;
+use App\Models\TestType;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -117,4 +121,128 @@ Route::post("/login",function(){
 
 Route::get("/search-patient",function(){
     return  Patient::where('name', 'like', '%' . request()->get("query") . '%')->get();
+});
+
+
+Route::get("/testtypes",function(){
+    return  TestType::where(request()->all())->get();
+});
+
+Route::get("/specimentypes",function(){
+    return  SpecimenType::where(request()->all())->get();
+});
+
+Route::post("/specimentype",function(){
+    $sp =   SpecimenType::create(request()->all());
+    foreach(request()->get('tests') as $test){
+        SpecimenTest::create([
+            'specimen'=>$sp->uniqid,
+            'test'=>$test
+        ]);
+    }
+    return $sp;
+});
+
+Route::post("/testtype",function(){
+    $type =   TestType::create(request()->all());
+    foreach(request()->get('specimens') as $specimen){
+        SpecimenTest::create([
+            'specimen'=>$specimen,
+            'test'=>$type->uniqid
+        ]);
+    }
+    return $type;
+});
+
+Route::get("/testtype/{id}",function($id){
+    $test =   TestType::findOrFail($id);
+    if($test->type!="SINGLE"){
+        return error_response(400,"This is a group test type!");
+    }   
+    $test=$test->toArray();
+
+    $sp = SpecimenTest::where('test',$test['uniqid'])->get()->pluck('specimen')->toArray();
+ 
+    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('lab_ref',request('lab_ref'))->get();
+    return $test;
+});
+
+Route::post("/testtype/{id}",function($id){
+    $type =  TestType::findOrFail($id);
+    
+    $type->update(request()->all());
+
+    SpecimenTest::where('test',$type['uniqid'])->delete();
+    foreach(request()->get('specimens') as $specimen){
+        SpecimenTest::create([
+            'specimen'=>$specimen,
+            'test'=>$type->uniqid
+        ]);
+    }
+    return $type;
+});
+
+Route::get("/grouptesttype/{id}",function($id){
+    $test =   TestType::findOrFail($id);
+    if($test->type!="GROUP"){
+        return error_response(400,"This is a single test type!");
+    }
+    $test = $test->toArray();
+
+
+    $sp = SpecimenTest::where('test',$test['uniqid'])->get()->pluck('specimen')->toArray();
+ 
+    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('lab_ref',request('lab_ref'))->get();
+
+    $test['subtests']=TestType::query()->whereIn('uniqid',($test['meta']??[])['subtests']??[])->where('lab_ref',request('lab_ref'))->get();
+    return $test;
+});
+
+Route::get("/specimentype/{id}",function($id){
+    $specimen =   SpecimenType::findOrFail($id);
+    $specimen=$specimen->toArray();
+
+    $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
+ 
+    $specimen['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+    return $specimen;
+});
+
+
+Route::post("/specimentype/{id}",function($id){
+    $sp =  SpecimenType::findOrFail($id);
+    
+    $sp->update(request()->all());
+
+    SpecimenTest::where('specimen',$sp['uniqid'])->delete();
+    foreach(request()->get('tests') as $test){
+        SpecimenTest::create([
+            'specimen'=>$sp->uniqid,
+            'test'=>$test
+        ]);
+    }
+    return $sp;
+});
+
+Route::get("/addspecimen-data/{id}",function($id){
+   $patient = Patient::findOrFail($id);
+   $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
+   foreach($sp as $specimen){
+        $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
+       $specimen['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+   }
+
+   $uniquePhysicians= RegisteredSpecimen::pluck('physician')->unique()->values()->all();
+   $uniquePreleveurs= RegisteredSpecimen::pluck('preleveur')->unique()->values()->all();
+   return [
+    'patient'=>[
+        'name'=>$patient->name,
+        'reference'=>$patient->reference,
+        'dob'=>$patient->dob,
+        'uniqid'=>$patient->uniqid
+    ],
+    'physicians'=>$uniquePhysicians,
+    'preleveurs'=>$uniquePreleveurs,
+    'specimens'=>$sp
+    ];
 });

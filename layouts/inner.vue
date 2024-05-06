@@ -69,16 +69,16 @@
                     <ion-icon name="ellipse-outline"></ion-icon>Registered tests
                   </NuxtLink>
                 </li>
-                <li> <NuxtLink to="/test-types">
+                <li> <NuxtLink to="/testtypes">
                     <ion-icon name="ellipse-outline"></ion-icon>All test types
                   </NuxtLink>
                 </li>
-                <li> <NuxtLink to="/new/testtype">
+                <li> <NuxtLink to="/testtype/create">
                     <ion-icon name="ellipse-outline"></ion-icon>New Test type
                   </NuxtLink>
                 </li>
-                <li> <NuxtLink to="/new/grouptesttype">
-                    <ion-icon name="ellipse-outline"></ion-icon>New Test type
+                <li> <NuxtLink to="/grouptesttype/create">
+                    <ion-icon name="ellipse-outline"></ion-icon>New Group Test type
                   </NuxtLink>
                 </li>
               </ul>
@@ -93,13 +93,20 @@
               </a>
               <ul>
                 <li> <NuxtLink to="/specimens">
+                  <ion-icon name="ellipse-outline"></ion-icon>
+                 
+
+                  Registered specimens
+                </NuxtLink>
+              </li>
+                <li> <NuxtLink to="/specimentypes">
                     <ion-icon name="ellipse-outline"></ion-icon>
                    
 
                     All specimen types
                   </NuxtLink>
                 </li>
-                <li> <NuxtLink to="/new/specimentype">
+                <li> <NuxtLink to="/specimentype/create">
                     <ion-icon name="ellipse-outline"></ion-icon>New specimen type
                   </NuxtLink>
                 </li>

@@ -32,18 +32,19 @@
                 </div>
               </div>
               <!--end breadcrumb-->
-  
+ 
               <div>
-                       
+               
                 <h6 class="mb-0 text-uppercase">Create a new specimen</h6>
                 <hr/>
-
+                <form @submit.prevent="save">    
                 <div class="row">
+
                     <div class="col-sm-6 col-md-12">
 
                         <div class="mb-4">
                             <label class="form-label">Name</label>
-                            <input class="form-control" type="text" placeholder="Name"/>
+                            <input required v-model="name" class="form-control" type="text" placeholder="Name"/>
                           </div>
                 
 
@@ -53,7 +54,7 @@
                     <div>
                         <div class="mb-4">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" type="text" placeholder="Description"></textarea>
+                            <textarea v-model="description"  class="form-control" type="text" placeholder="Description"></textarea>
                           </div>
                     </div>
                     <div class="col-sm-6 col-md-12">
@@ -61,14 +62,20 @@
                     <div class="mb-4">
                         <label class="form-label">Compatible test(s)</label>
                        
-                          <multiselect v-model="tests" :options="loadedtests" label="name" value="id"></multiselect>
+                          <multiselect v-model="tests" :options="loadedtests" label="name" value="uniqid" multiple></multiselect>
                       
                       </div>
                     </div>
             
+                    <div class="d-flex flex-row justify-content-end" v-if="name">
+                      <button type="submit" class="btn btn-primary w-100">+ Save
+                        </button>
+                   
+                    </div>
+                 
                 </div>
-            
-
+              </form>
+                
 
                 </div>
   
@@ -79,8 +86,12 @@
   </template>
 <script>
   export default {
+    
+
     data(){
+      const route=useRoute();
         return {
+          id:route.params.id,
             loadedtests:[],
             tests:[],
             name:"",
@@ -89,18 +100,29 @@
     },
     mounted(){
       const context=this;
-      getRequestLoad_('/testtypes',{},(users)=>{
+      getRequestLoad_('/testtypes',{},(loadedtests)=>{
         context.loadedtests= loadedtests;
+        if(context.id!='create'){
+          getRequestLoad_('/specimentype/'+context.id,{},(specimentype)=>{
+              context.name=specimentype.name;
+              context.description=specimentype.description;
+              context.tests=specimentype.tests;
+          })
+        }
       })
     },
     methods:{
       save(){
         const context=this;
-        postRequestLoad_('/specimentype',{
+        postRequestLoad_(context.id=='create'?'/specimentype':'/specimentype/'+context.id,{
           description:this.description,
           name:this.name,
-          tests:this.tests
+          tests:JSON.parse(JSON.stringify(this.tests.map(r=>r.uniqid))),
+          meta:{
+            "a":"b"
+          }
         },(specimen)=>{
+          successToast("Created successfully");
         context.$router.push("/specimentypes");
       })
       }

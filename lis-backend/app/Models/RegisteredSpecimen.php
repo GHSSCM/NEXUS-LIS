@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TestType extends Model
+class RegisteredSpecimen extends Model
 {
     use HasFactory;
-
 
 
      
     use SoftDeletes;
 
 
-    protected $fillable=['uniqid','name','lab_ref','description','hidename','meta','threshold','tat','cost','type'];
-
+    protected $fillable=['uniqid','specimen','test','patient','lab_ref','receptiondate','meta',
+    'receptiontime','state','physician','preleveur','referredout','conformity'];
+    
 
     protected $casts = [
         'meta' => 'json',
