@@ -9,3 +9,7 @@ function error_response($code,$message){
         "message"=>$message
     ],$code);
 }
+
+function gen_uniqid(){
+    return uniqid(time());
+}

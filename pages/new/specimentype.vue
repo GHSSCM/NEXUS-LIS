@@ -60,14 +60,9 @@
 
                     <div class="mb-4">
                         <label class="form-label">Compatible test(s)</label>
-                        <select multiple class="form-select multiple-select-field" id="single-select-field2" data-placeholder="Compatible test(s)">
-                         
-                          <option>HIV</option>
-                          <option>Haepatithis</option>
-                          <option>Malaria</option>
-                          <option>Typhoid</option>
-                         
-                        </select>
+                       
+                          <multiselect v-model="tests" :options="loadedtests" label="name" value="id"></multiselect>
+                      
                       </div>
                     </div>
             
@@ -82,3 +77,34 @@
   
     </NuxtLayout>
   </template>
+<script>
+  export default {
+    data(){
+        return {
+            loadedtests:[],
+            tests:[],
+            name:"",
+            description:""
+        }
+    },
+    mounted(){
+      const context=this;
+      getRequestLoad_('/testtypes',{},(users)=>{
+        context.loadedtests= loadedtests;
+      })
+    },
+    methods:{
+      save(){
+        const context=this;
+        postRequestLoad_('/specimentype',{
+          description:this.description,
+          name:this.name,
+          tests:this.tests
+        },(specimen)=>{
+        context.$router.push("/specimentypes");
+      })
+      }
+    }
+    
+  }
+</script>

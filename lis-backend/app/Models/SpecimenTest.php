@@ -6,15 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CustomField extends Model
+class SpecimenTest extends Model
 {
     use HasFactory;
+
+
+     
+    use SoftDeletes;
+
+
+    protected $fillable=['specimen','test'];
     protected $casts = [
         'meta' => 'json',
     ];
-    protected $table="customfields";
-    protected $fillable=['name','type','category','meta','lab_ref','uniqid'];
-    use SoftDeletes;
     protected static function boot()
     {
         parent::boot();

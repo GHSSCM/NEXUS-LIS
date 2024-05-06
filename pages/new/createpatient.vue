@@ -39,7 +39,7 @@
                 <h6 class="mb-0 text-uppercase">Register a patient</h6>
                 <hr/>
 
-                <form>
+                <form @submit.prevent="save">
 
                 <div class="row">
 
@@ -48,7 +48,7 @@
 
                       <div class="mb-4">
                           <label class="form-label">Patient ID</label>
-                          <input class="form-control" type="text" placeholder="Patient ID" disabled v-model="reference">
+                          <input required class="form-control" type="text" placeholder="Patient ID"  v-model="reference">
                         </div>
               
                       
@@ -58,13 +58,13 @@
 
                   <div class="col-sm-12 col-md-6">
                       <label class="form-label">Patient Name</label>
-                      <input type="text" class="form-control" placeholder="Patient Name" v-model="name"/>
+                      <input required type="text" class="form-control" placeholder="Patient Name" v-model="name"/>
                   </div>
               <div class="col-sm-12 col-md-6">
 
                   <div class="mb-4">
                       <label class="form-label">Gender</label>
-                      <select class="form-select single-select-field-tags" id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
+                      <select required class="form-select " id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
                        
                         <option value="M" selected>Male</option>
                         <option value="F">Female</option>
@@ -79,7 +79,7 @@
 
                   <div class="mb-4">
                       <label class="form-label">Date of birth</label>
-                      <input v-model="dob" required class=" form-control" type="date" placeholder="Date of birth">
+                      <input  v-model="dob" required class=" form-control" type="date" placeholder="Date of birth">
                     </div>
           
                     
@@ -91,7 +91,7 @@
 
                   <div class="mb-4">
                       <label class="form-label">Region of origin</label>
-                      <select v-model="region" class="form-select single-select-field-tags" id="single-select-field2" data-placeholder="Region of origin">
+                      <select required v-model="region" class="form-select " id="single-select-field2" data-placeholder="Region of origin">
                        
                         <option value="Far North">Far north</option>
                         <option value="North">North</option>
@@ -131,8 +131,25 @@
                   
               </div>
 
+              <div class="col-sm-12 col-md-6">
 
+                <div class="mb-4">
+                    <label class="form-label">Phone number</label>
+                    <input v-model="phone" class="form-control" type="text" placeholder="Phone number">
+                  </div>
+        
+                
+            </div>
 
+              <div class="col-sm-12 col-md-6">
+
+                <div class="mb-4">
+                    <label class="form-label">Email</label>
+                    <input v-model="email" class="form-control" type="email" placeholder="Email">
+                  </div>
+        
+                
+            </div>
          
 
 
@@ -154,40 +171,40 @@
 
                     <div class="mb-4" v-if="f.type=='number'">
                       <label class="form-label">{{f.name}}</label>
-                      <input v-model="meta['fields'][f.name]" required class=" form-control" type="number" :placeholder="f.name">
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number" :placeholder="f.name">
                     </div>
 
 
                       <div class="mb-4" v-else-if="f.type=='yesno'">
-                          <input v-model="meta['fields'][f.name]" class="form-check-input" type="checkbox" role="switch">
+                          <input v-model="meta['fields'][f.name]" :required="f.required" class="form-check-input" type="checkbox" role="switch">
                           <label class="form-check-label ms-2" for="referredout">{{f.name}}</label>
                       </div>
               
 
                       <div class="mb-4" v-else-if="f.type=='limitedvalues'">
                         <label class="form-label">{{f.name}}</label>
-                        <multiselect v-model="meta['fields'][f.name]" :options="f.meta.enum??[]"></multiselect>
+                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
                       </div>
 
                       <div class="mb-4" v-else-if="f.type=='datetime'">
                         <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" required class=" form-control" type="datetime-local" :placeholder="f.name">
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="datetime-local" :placeholder="f.name">
                       </div>
 
                       <div class="mb-4" v-else-if="f.type=='dateonly'">
                         <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" required class=" form-control" type="date" :placeholder="f.name">
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="date" :placeholder="f.name">
                       </div>
 
                       <div class="mb-4" v-else-if="f.type=='timeonly'">
                         <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" required class=" form-control" type="time" :placeholder="f.name">
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="time" :placeholder="f.name">
                       </div>
 
 
                       <div class="mb-4" v-else>
                         <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" required class=" form-control" type="text" :placeholder="f.name">
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="text" :placeholder="f.name">
                       </div>
                   </div>
                
@@ -222,7 +239,7 @@ export default{
   data(){
     return {
       
-        uniqid:"",
+        // uniqid:"",
         reference:"",
         name:"",
         dob:"",
@@ -230,8 +247,10 @@ export default{
         region:"",
         address:"",
         profession:"",
+        email:"",
+        phone:"",
         meta:{
-          fields:[]
+          fields:{}
         },
         fields:[],
         
@@ -239,7 +258,14 @@ export default{
   },
   methods:{
     save(){
-      console.log({...this})
+      var data =JSON.parse(JSON.stringify(this));
+      delete data.fields;
+      const context=this;
+      // console.log(data);
+      // return;
+      postRequestLoad_('/patient',data,(user)=>{
+        context.$router.push("/profile/"+user.id);
+      })
     }
   },
   mounted(){
