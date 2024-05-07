@@ -62,7 +62,7 @@
                                     <tbody>
         
                                         
-                                    <tr role="row" v-for="u in [1,2,3,4,5,6,7,8]" class="odd">
+                                    <tr role="row" v-for="u in []" class="odd">
                                             <!-- <td class="">Blood</td> -->
                                             <td class="">HIV</td>
                                             <td class="sorting_1">Airi Satou</td>

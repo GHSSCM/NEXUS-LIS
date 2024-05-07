@@ -163,7 +163,58 @@
 
 
 
+
                 </div>
+
+                <div class="row">
+                  <div class="col-sm-12 col-md-6" v-for="(f,i) in fields" :key="'cf-'+i">
+
+                    <div class="mb-4" v-if="f.type=='number'">
+                      <label class="form-label">{{f.name}}</label>
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number" :placeholder="f.name">
+                    </div>
+
+
+                      <div class="mb-4" v-else-if="f.type=='yesno'">
+                          <input v-model="meta['fields'][f.name]" :required="f.required" class="form-check-input" type="checkbox" role="switch">
+                          <label class="form-check-label ms-2" for="referredout">{{f.name}}</label>
+                      </div>
+              
+
+                      <div class="mb-4" v-else-if="f.type=='limitedvalues'">
+                        <label class="form-label">{{f.name}}</label>
+                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
+                      </div>
+
+                      <div class="mb-4" v-else-if="f.type=='datetime'">
+                        <label class="form-label">{{f.name}}</label>
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="datetime-local" :placeholder="f.name">
+                      </div>
+
+                      <div class="mb-4" v-else-if="f.type=='dateonly'">
+                        <label class="form-label">{{f.name}}</label>
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="date" :placeholder="f.name">
+                      </div>
+
+                      <div class="mb-4" v-else-if="f.type=='timeonly'">
+                        <label class="form-label">{{f.name}}</label>
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="time" :placeholder="f.name">
+                      </div>
+
+
+                      <div class="mb-4" v-else>
+                        <label class="form-label">{{f.name}}</label>
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="text" :placeholder="f.name">
+                      </div>
+                  </div>
+               
+
+            
+
+
+
+              </div>
+
             
                 <br/>
                 <br/>
@@ -196,11 +247,18 @@
             cost:1000,
             hidename:false,
             threshold:"",
-            loadedspecimens:[]
+            loadedspecimens:[],
+            meta:{}
         }
     },
     mounted(){
       const context=this;
+      getRequestLoad_('/customfields',{
+        category:"test"
+      },(fields)=>{
+        context.fields= fields;
+      })
+
       getRequestLoad_('/specimentypes',{},(loadedspecimens)=>{
         context.loadedspecimens= loadedspecimens;
         if(context.id!='create'){
@@ -212,6 +270,10 @@
               context.cost=testtype.cost;
               context.hidename=testtype.hidename;
               context.threshold=testtype.threshold;
+              context.meta=testtype.meta;
+              if(!context.meta.fields){
+                context.meta.fields={};
+              }
           })
         }
       })
@@ -227,9 +289,7 @@
           hidename:this.hidename,
           threshold:this.threshold,
           cost:this.cost,
-          meta:{
-            "a":"b"
-          }
+          meta:this.meta
         },(specimen)=>{
           if(context.id=='create'){
             successToast("Created successfully");

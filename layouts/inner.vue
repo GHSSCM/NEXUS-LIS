@@ -65,10 +65,10 @@
                 <div class="menu-title">Tests</div>
               </a>
               <ul>
-                <li> <NuxtLink to="/tests">
+                <!-- <li> <NuxtLink to="/tests">
                     <ion-icon name="ellipse-outline"></ion-icon>Registered tests
                   </NuxtLink>
-                </li>
+                </li> -->
                 <li> <NuxtLink to="/testtypes">
                     <ion-icon name="ellipse-outline"></ion-icon>All test types
                   </NuxtLink>
@@ -256,7 +256,7 @@
                     </div>
                   </div>
                 </li>-->
-                <li class="nav-item dropdown dropdown-large">
+                <li class="nav-item dropdown dropdown-large d-none">
                   <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown">
                     <div class="position-relative">
                       <span class="notify-badge">1</span>

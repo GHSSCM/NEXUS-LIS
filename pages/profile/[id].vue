@@ -62,7 +62,7 @@
 
                               <div class="">
 
-                                <NuxtLink class="btn btn-primary me-2" to="/addspecimen" >Register Specimen</NuxtLink>
+                                <NuxtLink class="btn btn-primary me-2" :to="'/addspecimen/'+user.id" >Register Specimen</NuxtLink>
                                 <!-- <span class="badge rounded-pill bg-primary">UX Research</span>
                                 <span class="badge rounded-pill bg-primary">CX Strategy</span>
                                 <span class="badge rounded-pill bg-primary">Project Management</span>
@@ -116,107 +116,109 @@
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade active show" id="primary-pills-home" role="tabpanel">
-                                <div class="table-responsive">
-                                   <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
-                                        
-                                  <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="onetoone" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
-                                          <thead>
-                                              <tr role="row">
-                                                <th rowspan="1" colspan="1">Test</th>
-                                                <th rowspan="1" colspan="1">Physician</th>
-                                                <th rowspan="1" colspan="1">Received On</th>
-                                                <th rowspan="1" colspan="1">Specimen label</th>
-                                                <th rowspan="1" colspan="1">State</th>
-                                                <th></th>
-                                                </tr>
-                                          </thead>
-                                          <tbody>
-              
-                                              
-                                          <tr role="row" v-for="(u,i) in tests" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                                  <td class="">{{ u.test }}</td>
-                                                  <td class="">{{u.physician}}</td>
-                                                  <td class="sorting_1">{{u.received_on}}</td>
-                                                  <td>{{u.specimenlabel}}</td>
-                                                  <td>{{u.state}}</td>
-                                                  <!-- <td>{{u.created_at.split(".")[0].split("T").join(" ")}}</td> -->
-                                                  <td>
-                                                      <NuxtLink class="btn btn-primary btn-sm" :to="'/accounts/'+u.id">View/Edit account</NuxtLink>
-                                                  </td>
-                                                  
-                                            </tr>
-                                          </tbody>
-                                          <tfoot>
-                                              <tr>
-                                                <th rowspan="1" colspan="1">Test</th>
-                                                <th rowspan="1" colspan="1">Physician</th>
-                                                <th rowspan="1" colspan="1">Received On</th>
-                                                <th rowspan="1" colspan="1">Specimen label</th>
-                                                <th rowspan="1" colspan="1">State</th>
-                                                <th></th>
-                                              </tr>
-                                          </tfoot>
-                                      </table>
-                                    </div>
-                                  </div>
-                      
-                                    </div>
-                                </div>
+                              <div class="table-responsive">
+
+                                <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
+                                     
+                               <div class="row">
+                                 <div class="col-sm-12">
+                                     <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
+                                       <thead>
+                                           <tr role="row">
+                                            <th rowspan="1" colspan="1">Patient</th>
+                                            <th rowspan="1" colspan="1">Specimen</th>
+                                            <th rowspan="1" colspan="1">Test</th>
+                                            <th rowspan="1" colspan="1">Physician</th>
+                                            <th rowspan="1" colspan="1">Received On</th>
+                                            <th rowspan="1" colspan="1"></th>
+                                             </tr>
+                                       </thead>
+                                       <tbody>
+            
+                                           
+                                       <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                               <td class="">{{ u.patient.name }}</td>
+                                               <td class="">{{u.specimen.name}}</td>
+                                               <td class="">{{u.test.name}}</td>
+                                               <td class="">{{u.physician}}</td>
+                                               <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
+                                               
+                                               <td>
+                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/editspecimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
+                                                   <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
+                                               </td>
+                                               
+                                         </tr>
+                                       </tbody>
+                                       <tfoot>
+                                           <tr>
+                                            <th rowspan="1" colspan="1">Patient</th>
+                                            <th rowspan="1" colspan="1">Specimen</th>
+                                            <th rowspan="1" colspan="1">Test</th>
+                                            <th rowspan="1" colspan="1">Physician</th>
+                                            <th rowspan="1" colspan="1">Received On</th>
+                                            <th rowspan="1" colspan="1"></th>
+                                           </tr>
+                                       </tfoot>
+                                   </table>
+                                 </div>
+                               </div>
+                   
+                                 </div>
+                             </div>
                             </div>
                             <div class="tab-pane fade " id="primary-pills-profile" role="tabpanel">
                                 
-                                <div class="table-responsive">
+                              <div class="table-responsive">
 
-                                   <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
-                                        
-                                  <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
-                                          <thead>
-                                              <tr role="row">
-                                                <th rowspan="1" colspan="1">Specimen</th>
-                                                <th rowspan="1" colspan="1">Test</th>
-                                                <th rowspan="1" colspan="1">Physician</th>
-                                                <th rowspan="1" colspan="1">Received On</th>
-                                                <th rowspan="1" colspan="1">Specimen label</th>
-                                                  <th></th>
-                                                </tr>
-                                          </thead>
-                                          <tbody>
-              
-                                              
-                                          <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                                  <td class="">{{ u.test }}</td>
-                                                  <td class="">{{u.physician}}</td>
-                                                  <td class="sorting_1">{{u.received_on}}</td>
-                                                  <td>{{u.specimenlabel}}</td>
-                                                  <td>{{u.state}}</td>
-                                                  <!-- <td>{{u.created_at.split(".")[0].split("T").join(" ")}}</td> -->
-                                                  <td>
-                                                      <NuxtLink class="btn btn-primary btn-sm" :to="'/accounts/'+u.id">View/Edit account</NuxtLink>
-                                                  </td>
-                                                  
-                                            </tr>
-                                          </tbody>
-                                          <tfoot>
-                                              <tr>
-                                                <th rowspan="1" colspan="1">Specimen</th>
-                                                <th rowspan="1" colspan="1">Test</th>
-                                                <th rowspan="1" colspan="1">Physician</th>
-                                                <th rowspan="1" colspan="1">Received On</th>
-                                                <th rowspan="1" colspan="1">Specimen label</th>
-                                                <th></th>
-                                              </tr>
-                                          </tfoot>
-                                      </table>
-                                    </div>
-                                  </div>
-                      
-                                    </div>
-                                </div>
-
+                                <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
+                                     
+                               <div class="row">
+                                 <div class="col-sm-12">
+                                     <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
+                                       <thead>
+                                           <tr role="row">
+                                            <th rowspan="1" colspan="1">Patient</th>
+                                            <th rowspan="1" colspan="1">Specimen</th>
+                                            <th rowspan="1" colspan="1">Test</th>
+                                            <th rowspan="1" colspan="1">Physician</th>
+                                            <th rowspan="1" colspan="1">Received On</th>
+                                            <th rowspan="1" colspan="1"></th>
+                                             </tr>
+                                       </thead>
+                                       <tbody>
+           
+                                           
+                                       <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                               <td class="">{{ u.patient.name }}</td>
+                                               <td class="">{{u.specimen.name}}</td>
+                                               <td class="">{{u.test.name}}</td>
+                                               <td class="">{{u.physician}}</td>
+                                               <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
+                                               
+                                               <td>
+                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/editspecimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
+                                                   <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
+                                               </td>
+                                               
+                                         </tr>
+                                       </tbody>
+                                       <tfoot>
+                                           <tr>
+                                            <th rowspan="1" colspan="1">Patient</th>
+                                            <th rowspan="1" colspan="1">Specimen</th>
+                                            <th rowspan="1" colspan="1">Test</th>
+                                            <th rowspan="1" colspan="1">Physician</th>
+                                            <th rowspan="1" colspan="1">Received On</th>
+                                            <th rowspan="1" colspan="1"></th>
+                                           </tr>
+                                       </tfoot>
+                                   </table>
+                                 </div>
+                               </div>
+                   
+                                 </div>
+                             </div>
                             </div>
                         
                         </div>
@@ -276,6 +278,9 @@
       const context=this;
       getRequestLoad_('/patient/'+this.id,{},(user)=>{
         context.user= user;
+          getRequestLoad_('/specimens/',{patient:user.uniqid},(specimens)=>{
+            context.specimens= specimens;
+          });
       })
     },  
     methods:{

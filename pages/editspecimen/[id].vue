@@ -43,10 +43,10 @@
 
                
                 <div v-for="(po,i) in inputdata">
-                  <br/>
+                  <!-- <br/>
                   <strong class="text-primary">Specimen {{i+1}}</strong>
                   <br/>
-                  <br/>
+                  <br/> -->
                 <div class="row" >
                     
                     <div class="col-sm-12 col-md-6">
@@ -65,7 +65,7 @@
                         <div class="mb-4">
                             <label for="single-select-field2" class="form-label">Test type(s)</label>
                            
-                            <multiselect required  multiple v-if="inputdata[i].specimen" v-model="inputdata[i].tests" :options="inputdata[i].specimen.tests" label="name" track-by="uniqid" searchable></multiselect>
+                            <multiselect required  v-if="inputdata[i].specimen" v-model="inputdata[i].test" :options="inputdata[i].specimen.tests" label="name" track-by="uniqid" searchable></multiselect>
                             <p v-else> Choose a specimen type.</p>
                           </div>
                 
@@ -155,13 +155,9 @@
                   <hr/>
                 </div>
 
-                  
-
-                <div class="d-flex flex-row justify-content-end">
-                    <button class="btn btn-outline-primary btn-sm " style="border:0" @click="newspecimen">+ Add Specimens</button>
-                </div>
-
-                <div class="mt-5">
+      
+                
+                  <div class="mt-5">
                     <button class="btn btn-primary w-100" type="submit">+ Save</button>
                 </div>
                 
@@ -189,7 +185,7 @@
         this.inputdata.push({
                 specimen:null,
                 meta:{"a":"b"},
-                tests:[],
+                test:null,
                 patient:this.inputdata[0].patient,
                 receptiondate:null,
                 receptiontime:null,
@@ -219,6 +215,9 @@
       save(){
       
         var ata =JSON.parse(JSON.stringify(this.inputdata));
+
+        console.log(ata);
+        // return;
         var inf=[];
         for(var i=0; i<ata.length;i++){
           var r= ata[i];
@@ -226,22 +225,20 @@
               errorToast("No specimen choosen for specimen "+(i+1));
               return
             }
-            if(r.tests==null||r.tests.length==0){
-              errorToast("No test(s) choosen for specimen "+(i+1));
+            if(r.test==null){
+              errorToast("No test choosen for specimen "+(i+1));
               return
             }
             
             r.specimen =  r.specimen.uniqid;
-            r.tests = r.tests.map(t=>t.uniqid);
+            r.test = r.test.uniqid;
             inf.push(r);
         }
 
         // console.log(JSON.parse(JSON.stringify(inf)));
-        
+        // return;
         const context=this;
-      postRequestLoad_('/addspecimen',{
-        ata:inf
-      },()=>{
+      postRequestLoad_('/editspecimen/'+this.id,inf[0],()=>{
           successToast("Saved successfully");
           context.$router.push("/specimens")
         
@@ -254,7 +251,8 @@
       const route = useRoute();
 
         return {
-            patientId:route.params.id,
+          id:route.params.id,
+            patientId:null,
             patient:{},
             physicians:[],
             preleveurs:[],
@@ -264,7 +262,7 @@
               {
                 specimen:null,
                 meta:{"a":"b"},
-                tests:[],
+                test:null,
                 patient:null,
                 receptiondate:null,
                 receptiontime:null,
@@ -279,16 +277,24 @@
     },
     mounted(){
       const context=this;
-      getRequestLoad_('/addspecimen-data/'+this.patientId,{},(data)=>{
+      getRequestLoad_('/editspecimen-data/'+this.id,{},(data)=>{  
         context.patient = data.patient;
+        context.patientId = data.patientId;
+
+        context.patient.id = data.patient.id;
         context.physicians = data.physicians;
         context.preleveurs = data.preleveurs;
         context.specimens = data.specimens;
-        for(var i=0;i<context.inputdata.length;i++){
-          context.inputdata[i].patient = data.patient.uniqid;
-        }
-        
-        
+
+        // console.log(data.inputdata.specimen);
+        // context.inputdata[0].specimen = data.inputdata.specimen;
+        // for(var i=0;i<context.inputdata.length;i++){
+        //   context.inputdata[i].patient = data.patient.uniqid;
+        // }
+        // const r = data.inputdata;
+        // r.po
+        context.inputdata[0]=data.inputdata;
+        // console.log("OKAY",data.inputdata);
       });
     
     }

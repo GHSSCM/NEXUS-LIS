@@ -67,6 +67,56 @@
                       </div>
                     </div>
             
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6" v-for="(f,i) in fields" :key="'cf-'+i">
+    
+                        <div class="mb-4" v-if="f.type=='number'">
+                          <label class="form-label">{{f.name}}</label>
+                          <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number" :placeholder="f.name">
+                        </div>
+    
+    
+                          <div class="mb-4" v-else-if="f.type=='yesno'">
+                              <input v-model="meta['fields'][f.name]" :required="f.required" class="form-check-input" type="checkbox" role="switch">
+                              <label class="form-check-label ms-2" for="referredout">{{f.name}}</label>
+                          </div>
+                  
+    
+                          <div class="mb-4" v-else-if="f.type=='limitedvalues'">
+                            <label class="form-label">{{f.name}}</label>
+                            <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
+                          </div>
+    
+                          <div class="mb-4" v-else-if="f.type=='datetime'">
+                            <label class="form-label">{{f.name}}</label>
+                            <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="datetime-local" :placeholder="f.name">
+                          </div>
+    
+                          <div class="mb-4" v-else-if="f.type=='dateonly'">
+                            <label class="form-label">{{f.name}}</label>
+                            <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="date" :placeholder="f.name">
+                          </div>
+    
+                          <div class="mb-4" v-else-if="f.type=='timeonly'">
+                            <label class="form-label">{{f.name}}</label>
+                            <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="time" :placeholder="f.name">
+                          </div>
+    
+    
+                          <div class="mb-4" v-else>
+                            <label class="form-label">{{f.name}}</label>
+                            <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="text" :placeholder="f.name">
+                          </div>
+                      </div>
+                   
+    
+                
+    
+    
+    
+                  </div>
+
+                  
                     <div class="d-flex flex-row justify-content-end" v-if="name">
                       <button type="submit" class="btn btn-primary w-100">+ Save
                         </button>
@@ -74,6 +124,9 @@
                     </div>
                  
                 </div>
+
+            
+
               </form>
                 
 
@@ -95,11 +148,23 @@
             loadedtests:[],
             tests:[],
             name:"",
-            description:""
+            description:"",fields:[],
+            meta:{
+            "fields":{}
+          }
         }
     },
     mounted(){
+      
+
+
       const context=this;
+      getRequestLoad_('/customfields',{
+        category:"specimen"
+      },(fields)=>{
+        context.fields= fields;
+      })
+
       getRequestLoad_('/testtypes',{},(loadedtests)=>{
         context.loadedtests= loadedtests;
         if(context.id!='create'){
@@ -107,20 +172,23 @@
               context.name=specimentype.name;
               context.description=specimentype.description;
               context.tests=specimentype.tests;
+              context.meta= specimentype.meta;
+              if(!context.meta.fields){
+                context.meta.fields={};
+              }
           })
         }
       })
     },
     methods:{
       save(){
+        console.log(this.meta);
         const context=this;
         postRequestLoad_(context.id=='create'?'/specimentype':'/specimentype/'+context.id,{
           description:this.description,
           name:this.name,
           tests:JSON.parse(JSON.stringify(this.tests.map(r=>r.uniqid))),
-          meta:{
-            "a":"b"
-          }
+          meta:this.meta
         },(specimen)=>{
           successToast("Created successfully");
         context.$router.push("/specimentypes");

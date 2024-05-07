@@ -21,6 +21,8 @@ class RegisteredSpecimen extends Model
 
     protected $casts = [
         'meta' => 'json',
+        'referredout'=>'boolean',
+        'conformity'=>'boolean'
     ];
     protected static function boot()
     {

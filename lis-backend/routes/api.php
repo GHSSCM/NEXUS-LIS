@@ -227,9 +227,10 @@ Route::post("/specimentype/{id}",function($id){
 Route::get("/addspecimen-data/{id}",function($id){
    $patient = Patient::findOrFail($id);
    $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
-   foreach($sp as $specimen){
+   for($i=0;$i<count($sp);$i++){
+    $specimen=$sp[$i];
         $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
-       $specimen['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+        $sp[$i]['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
    }
 
    $uniquePhysicians= RegisteredSpecimen::pluck('physician')->unique()->values()->all();
@@ -246,3 +247,99 @@ Route::get("/addspecimen-data/{id}",function($id){
     'specimens'=>$sp
     ];
 });
+
+Route::post("/addspecimen",function(){
+    $ata =  request()->get('ata');
+    foreach($ata as $a){
+        foreach($a['tests'] as $t){
+            $b = $a;
+            $b['test']=$t;
+            unset($b['tests']);
+            $b['lab_ref']=request('lab_ref');
+            RegisteredSpecimen::create($b);
+        }
+    }
+    return "ok";
+ });
+
+ Route::get("/specimens",function(){
+    $specimens = RegisteredSpecimen::query()->where(request()->all())->get();
+    $data=[];
+    $i=0;
+    $patientsLoaded=[];//hashmap
+    $specimensLoaded=[];//hashmap
+    $testsLoaded=[];//hashmap
+    foreach($specimens as $specimen){
+        $patientsLoaded[$specimen['patient']] = isset($patientsLoaded[$specimen['patient']])?$patientsLoaded[$specimen['patient']]:Patient::query()->where("uniqid",$specimen['patient'])->first();
+        $specimensLoaded[$specimen['specimen']] = isset($specimensLoaded[$specimen['specimen']])?$specimensLoaded[$specimen['specimen']]:SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
+        $testsLoaded[$specimen['test']] = isset($testsLoaded[$specimen['test']])?$testsLoaded[$specimen['test']]:TestType::query()->where("uniqid",$specimen['test'])->first();
+   
+        $data[$i]['id']=$specimen['id'];
+
+        $data[$i]['patient']=[
+            "name"=>$patientsLoaded[$specimen['patient']]["name"],
+            "id"=>$patientsLoaded[$specimen['patient']]["id"]
+        ];
+
+        $data[$i]['specimen']=[
+                "name"=>$specimensLoaded[$specimen['specimen']]['name']
+        ];
+
+        $data[$i]['test']=[
+            "name"=>$testsLoaded[$specimen['test']]['name']
+        ];
+
+        $data[$i]['received']=[
+            "receptiondate"=>$specimen['receptiondate'],
+            "receptiontime"=>$specimen['receptiontime']
+        ];
+
+        $data[$i]['physician']=$specimen['physician'];
+        $data[$i]['preleveur']=$specimen['preleveur'];
+    }
+    return $data;
+ });
+
+
+
+ Route::get("/editspecimen-data/{id}",function($id){
+
+    $registeredSpecimen = RegisteredSpecimen::findOrFail($id)->toArray();
+
+    $registeredSpecimen['test']=TestType::query()->where('uniqid',$registeredSpecimen["test"])->firstOrFail();
+    $registeredSpecimen['specimen']=SpecimenType::query()->where('uniqid',$registeredSpecimen["specimen"])->firstOrFail()->toArray();
+
+    $patient = Patient::query()->where('uniqid',$registeredSpecimen["patient"])->firstOrFail();
+    $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
+
+    for($i=0;$i<count($sp);$i++){
+     $specimen=$sp[$i];
+         $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
+         $sp[$i]['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+
+         if($sp[$i]['uniqid']== $registeredSpecimen['specimen']['uniqid']){
+            $registeredSpecimen['specimen']['tests']=$sp[$i]['tests'];
+         }
+    }
+ 
+    $uniquePhysicians= RegisteredSpecimen::pluck('physician')->unique()->values()->all();
+    $uniquePreleveurs= RegisteredSpecimen::pluck('preleveur')->unique()->values()->all();
+    return [
+        'patient'=>[
+            'name'=>$patient->name,
+            'reference'=>$patient->reference,
+            'dob'=>$patient->dob,
+            'uniqid'=>$patient->uniqid,
+            'id'=>$patient->id
+        ],
+        'physicians'=>$uniquePhysicians,
+        'preleveurs'=>$uniquePreleveurs,
+        'specimens'=>$sp,
+        'inputdata'=>$registeredSpecimen
+    ];
+ });
+ 
+
+ Route::post("/editspecimen/{id}",function($id){
+    return RegisteredSpecimen::findOrFail($id)->update(request()->all());
+ });
