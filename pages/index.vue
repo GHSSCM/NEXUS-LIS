@@ -63,7 +63,7 @@ export default {
 <template>
 
   <!--start wrapper-->
-  <div class="wrapper">
+  <div class="wrapper mainwrapper">
     <div class="">
       <div class="row g-0 m-0">
         <div class="col-xl-6 col-lg-12">
