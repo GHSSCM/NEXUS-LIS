@@ -532,6 +532,10 @@
   },
     mounted() {
       this.loadScript();
+
+      if(window.localStorage.getItem("user")==null){
+        window.location.href=("/login")
+      }
     },
     methods: {
       loadScript() {
