@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const BASE_URL="http://localhost:8000/api";
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
-const BASE_URL="http://ghsscm-lisbe.novobyte-sarl.com/api";
+const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc";
     axios.get(BASE_URL+endpoint,{params}).then((d)=>{
@@ -25,15 +25,16 @@ export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFun
     if (!$('#'+id).length) {
         $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
     }
+
    getRequest_(endpoint,params,successFunction,errorFunction,()=>{
-    if ($('#'+id).length) {
-        $('#'+id).remove();
-    }
-        // setTimeout(function(){
-           
-        // },500);
-   })
+        if ($('#'+id).length) {
+            $('#'+id).remove();
+        }
+   });
+   
 }
+
+
 
 export const postRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     var id=endpoint.split("/").join("");
@@ -124,3 +125,30 @@ export const calculateAge = (dateString) =>{
     
     return age;
 }
+
+export const loadDataTables=()=>{
+    
+    var dts = $('.dttable');
+    for(var i=0;i<dts.length;i++){
+        var table = $(dts[i]).DataTable( {
+            lengthChange: false,
+            buttons: [ 'copy', 'excel', 'pdf', 'print']
+        } );
+     
+        table.buttons().container()
+            .appendTo( '.dttable_wrapper .col-md-6:eq(0)' );
+    }
+}
+
+// // Function to break circular reference in production. had an error
+// export const  getComponent = (this)=>{
+//     // Get an array of property names
+//     const keys = Object.keys(this.$data);
+
+//     const data={};
+//     // Iterate through each property name and access its value
+//     keys.forEach(key => {
+//       console.log(`${key}:`, this[key]);
+//       data[key]=
+//     });
+// }

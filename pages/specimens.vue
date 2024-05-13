@@ -120,6 +120,9 @@
       const context=this;
       getRequestLoad_('/specimens/',{},(specimens)=>{
         context.specimens= specimens;
+        setTimeout(() => {
+          loadDataTables();
+        }, 500);
       });
     }
   }

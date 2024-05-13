@@ -116,6 +116,9 @@ export default{
     const context=this;
       getRequestLoad_('/patients',{},(users)=>{
         context.users= users;
+        setTimeout(() => {
+          loadDataTables();
+        }, 1000);
       })
   }
 }

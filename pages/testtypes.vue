@@ -123,6 +123,9 @@ export default{
     const context=this;
     getRequestLoad_('/testtypes/',{},(testtypes)=>{
       context.testtypes= testtypes;
+      setTimeout(() => {
+          loadDataTables();
+        }, 500);
     })
   },
   data(){

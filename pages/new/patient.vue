@@ -24,8 +24,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> 
                       
-                      <NuxtLink to="/new/createpatient" class="dropdown-item"
-                        href="javascript:;">New patient</NuxtLink>
+                      <NuxtLink to="/patientinfo/create" class="dropdown-item" >New patient</NuxtLink>
 
                     </div>
                   </div>
@@ -103,7 +102,7 @@
                 <br/>
 
                 <div class="d-flex flex-row justify-content-end" v-if="searchname">
-                  <NuxtLink class="btn btn-primary w-100" to="/new/createpatient">+ Create New</NuxtLink>
+                  <NuxtLink class="btn btn-primary w-100" to="/patientinfo/create">+ Create New</NuxtLink>
               </div>
               
                 </div>

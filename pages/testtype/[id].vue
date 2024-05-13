@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">New Test Type</li>
+                      <li class="breadcrumb-item active" aria-current="page">{{id=='create'?"New Test Type":"Edit Test Type"}}</li>
                     </ol>
                   </nav>
                 </div>
@@ -35,7 +35,7 @@
   
               <div>
                        
-                <h6 class="mb-0 text-uppercase">Create a new test type</h6>
+                <h6 class="mb-0 text-uppercase">{{id=='create'?"Create a new test type":"Edit Test Type"}}</h6>
                 <hr/>
                 <form @submit.prevent="save">
                 <div class="row">
@@ -70,9 +70,9 @@
             
                 </div>
 
-
+                <hr/>
                 <p><strong>Measures</strong></p>
-                <div v-for="f in fields">
+                <div v-for="f in meta.fields.measures">
                     <hr/>
                     <div class="row">
                         <div class="col-sm-2">
@@ -110,6 +110,12 @@
                     </div>
                     <hr/>
                 </div>
+
+
+                <div class="d-flex flex-row justify-content-end">
+                  <button type="button" class="btn btn-outline-primary btn-sm " style="border:0" @click="meta.fields.measures.push({})">+ Add Measures</button>
+              </div>
+
 
                 <hr/>
               
@@ -248,7 +254,13 @@
             hidename:false,
             threshold:"",
             loadedspecimens:[],
-            meta:{}
+            meta:{
+              fields:{
+                measures:[
+
+                ]
+              }
+            }
         }
     },
     mounted(){
@@ -272,7 +284,10 @@
               context.threshold=testtype.threshold;
               context.meta=testtype.meta;
               if(!context.meta.fields){
-                context.meta.fields={};
+                context.meta.fields={
+                measures:[
+                  
+                ]};
               }
           })
         }

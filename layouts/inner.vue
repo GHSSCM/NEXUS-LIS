@@ -20,14 +20,14 @@
           </div>
           <!--navigation-->
           <ul class="metismenu" id="menu">
-            <li>
+            <!-- <li>
               <NuxtLink to="/home">
                 <div class="parent-icon">
                   <ion-icon name="home-outline"></ion-icon>
                 </div>
                 <div class="menu-title">Home</div>
               </NuxtLink>
-            </li>
+            </li> -->
             <li>
               <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon">
@@ -397,8 +397,8 @@
                         <div class="d-flex flex-row align-items-center gap-2">
                           <img src="assets/images/avatars/06.png" alt="" class="rounded-circle" width="54" height="54">
                           <div class="">
-                            <h6 class="mb-0 dropdown-user-name">Jhon Deo</h6>
-                            <small class="mb-0 dropdown-user-designation text-secondary">Lab Technician</small>
+                            <h6 class="mb-0 dropdown-user-name" v-if="user">{{user.name.split(" ")[0]}}</h6>
+                            <small class="mb-0 dropdown-user-designation text-secondary" v-if="lab">{{lab}}</small>
                           </div>
                         </div>
                       </a>
@@ -407,16 +407,16 @@
                       <hr class="dropdown-divider">
                     </li>
                     <li>
-                      <a class="dropdown-item" href="javascript:;">
+                      <NuxtLink v-if="user" class="dropdown-item" :to="'/accounts/'+user.id">
                         <div class="d-flex align-items-center">
                           <div class="">
                             <ion-icon name="person-outline"></ion-icon>
                           </div>
                           <div class="ms-3"><span>Profile</span></div>
                         </div>
-                      </a>
+                      </NuxtLink>
                     </li>
-                     <li>
+                    <!--  <li>
                       <a class="dropdown-item" href="javascript:;">
                         <div class="d-flex align-items-center">
                           <div class="">
@@ -426,7 +426,7 @@
                         </div>
                       </a>
                     </li>
-                 <!-- <li>
+                 <li>
                     <a class="dropdown-item" href="javascript:;">
                       <div class="d-flex align-items-center">
                         <div class="">
@@ -460,7 +460,7 @@
                       <hr class="dropdown-divider">
                     </li>
                     <li>
-                      <a class="dropdown-item" href="javascript:;">
+                      <a class="dropdown-item" href="javascript:;" @click="logOut">
                         <div class="d-flex align-items-center">
                           <div class="">
                             <ion-icon name="log-out-outline"></ion-icon>
@@ -530,6 +530,12 @@
       }
     })
   },
+  data(){
+    return {
+      user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
+      lab:window?window.localStorage.getItem("lab_ref"):null
+    }
+  },
     mounted() {
       this.loadScript();
 
@@ -538,6 +544,11 @@
       }
     },
     methods: {
+      logOut(){
+          window.localStorage.removeItem("user");
+          window.localStorage.removeItem("lab_ref");
+          this.$router.push("/login");
+      },
       loadScript() {
         console.log("Load script");
 

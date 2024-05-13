@@ -169,7 +169,11 @@ function theme8() {
 
 
 
+try{
   new PerfectScrollbar(".header-notifications-list")
+}catch(e){
+  
+}
 
 
     // Tooltops

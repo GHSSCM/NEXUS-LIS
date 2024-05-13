@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">New Specimen Type</li>
+                      <li class="breadcrumb-item active" aria-current="page">{{id=='create'?"New Specimen Type":"Edit Specimen Type"}}</li>
                     </ol>
                   </nav>
                 </div>
@@ -35,7 +35,7 @@
  
               <div>
                
-                <h6 class="mb-0 text-uppercase">Create a new specimen</h6>
+                <h6 class="mb-0 text-uppercase">{{id=='create'?"Create A New Specimen Type":"Edit Specimen Type"}}</h6>
                 <hr/>
                 <form @submit.prevent="save">    
                 <div class="row">

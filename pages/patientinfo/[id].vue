@@ -47,8 +47,8 @@
                   <div class="col-sm-12 col-md-6">
 
                       <div class="mb-4">
-                          <label class="form-label">Patient ID</label>
-                          <input required class="form-control" type="text" placeholder="Patient ID"  v-model="reference">
+                          <label class="form-label">Patient Number</label>
+                          <input required class="form-control" type="text" placeholder="Patient Number"  v-model="reference">
                         </div>
               
                       
@@ -237,8 +237,10 @@
   import {getRequest_} from "@/utils/helper";
 export default{
   data(){
+    const route=useRoute();
+
     return {
-      
+        pageId:route.params.id,
         // uniqid:"",
         reference:"",
         name:"",
@@ -258,12 +260,12 @@ export default{
   },
   methods:{
     save(){
-      var data =JSON.parse(JSON.stringify(this));
+      var data =this.$data;
       delete data.fields;
       const context=this;
       // console.log(data);
       // return;
-      postRequestLoad_('/patient',data,(user)=>{
+      postRequestLoad_(this.pageId=='create'?'/patient':'/patient/'+this.pageId,data,(user)=>{
         context.$router.push("/profile/"+user.id);
       })
     }
@@ -275,6 +277,25 @@ export default{
       },(fields)=>{
         context.fields= fields;
       })
+
+      if(this.pageId!="create"){
+        getRequestLoad_('/patient/'+this.pageId,{ 
+        },(fields)=>{
+          context.reference=fields.reference;
+          context.name=fields.name;
+          context.dob=fields.dob;
+          context.gender=fields.gender;
+          context.region=fields.region;
+          context.address=fields.address;
+          context.profession=fields.profession;
+          context.email=fields.email;
+          context.phone=fields.phone;
+          if(!fields.meta.fields){
+            fields.meta.fields={};
+          }
+          context.meta=fields.meta;
+        })
+      }
   }
 }
 </script>

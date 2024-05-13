@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Add specimen</li>
+                      <li class="breadcrumb-item active" aria-current="page">Patient Profile</li>
                     </ol>
                   </nav>
                 </div>
@@ -22,11 +22,14 @@
                       class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
                       data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                        href="javascript:;">Action</a>
-                      <a class="dropdown-item" href="javascript:;">Another action</a>
-                      <a class="dropdown-item" href="javascript:;">Something else here</a>
-                      <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <NuxtLink v-if="user" class="dropdown-item"
+                      :to="'/addspecimen/'+user.id">Add patient specimen</NuxtLink>
+
+                      <NuxtLink v-if="user" class="dropdown-item"
+                      :to="'/patientinfo/'+user.id">Edit patient Info</NuxtLink>
+                      <!-- <a class="dropdown-item" href="javascript:;">Another action</a> -->
+                      <!-- <a class="dropdown-item" href="javascript:;">Something else here</a> -->
+                      <!-- <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a> -->
                     </div>
                   </div>
                 </div>
@@ -144,7 +147,7 @@
                                                <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
                                                
                                                <td>
-                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/editspecimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
+                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/addspcimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
                                                    <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
                                                </td>
                                                

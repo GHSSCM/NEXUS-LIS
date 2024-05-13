@@ -11,7 +11,7 @@ class Patient extends Model
     use HasFactory;
  
     protected $table="patients";
-    protected $fillable=['reference','lab_ref','name','gender','dob','region','address','profession','meta','uniqid','patient_id'];
+    protected $fillable=['reference','lab_ref','name','gender','dob','region','address','profession','meta','uniqid','patient_id','phone','email'];
   
   
     use SoftDeletes;

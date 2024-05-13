@@ -119,6 +119,9 @@
       const context=this;
       getRequestLoad_('/specimentypes/',{},(specimentypes)=>{
         context.specimentypes= specimentypes;
+        setTimeout(() => {
+          loadDataTables();
+        }, 500);
       })
     },
     data(){

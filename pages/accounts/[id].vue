@@ -167,12 +167,12 @@ export default{
             }
             const context=this;
             if(this.pageId=="create"){
-                    postRequestLoad_('/account',JSON.parse(JSON.stringify(this)),(fields)=>{
+                    postRequestLoad_('/account',this.$data,(fields)=>{
                         context.$router.push('/accounts');
                         successToast("Account created successfully");
                     });
             }else{
-                postRequestLoad_('/account/'+this.pageId,JSON.parse(JSON.stringify(this)),(fields)=>{
+                postRequestLoad_('/account/'+this.pageId,this.$data,(fields)=>{
                     // context.$router.push('/accounts');
                     context.ogname=context.name.split(" ")[0];
                     successToast("Account updated successfully");

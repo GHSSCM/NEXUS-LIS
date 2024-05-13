@@ -8,16 +8,22 @@ export default {
     })
   },
   mounted() {
-      this.loadScript();
+    if(window && window.localStorage.getItem("user")){
+          this.$router.push("/patients");
+        }
+      if(typeof window !="undefined"){
+        this.loadScript();
+       
+      }
     },
     methods: {
       login(){
         const context=this;
-        postRequestLoad_('/login',JSON.parse(JSON.stringify(this)),(user)=>{
+        postRequestLoad_('/login',{username:this.username,password:this.password},(user)=>{
               successToast("Login successful!");
               window.localStorage.setItem("user",JSON.stringify(user));
               window.localStorage.setItem("lab_ref",user.lab_ref);
-              context.$router.push('/home');   
+              context.$router.push('/patients');   
         });
       },
       loadScript() {

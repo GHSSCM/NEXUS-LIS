@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Add specimen</li>
+                      <li class="breadcrumb-item active" aria-current="page">Edit specimen</li>
                     </ol>
                   </nav>
                 </div>

@@ -1,7 +1,7 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Authorization, Content-Type');
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
 
 use App\Models\CustomField;
@@ -29,7 +29,7 @@ Route::get("/patient/{id}",function($id){
     return Patient::findOrFail($id);
 });
 
-Route::put("/patient/{id}",function($id){
+Route::post("/patient/{id}",function($id){
     $patient =  Patient::findOrFail($id);
     $patient->update(request()->all());
     return $patient;
