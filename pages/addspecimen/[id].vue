@@ -131,11 +131,17 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
-                            <label  class="form-check-label ms-2" for="referredout">Reffered Out?</label>
+                            <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" :id="i+'referredout'" >
+                            <label  class="form-check-label ms-2" :for="i+'referredout'">Reffered Out?</label>
                      
                           </div>
-                
+                          <div class="mb-4" v-if="inputdata[i].referredout">
+
+                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered To?</label>
+                            <input required v-model="inputdata[i].referredto" class="form-control" type="text"  :id="i+'referredto'" >
+                            
+                     
+                          </div>
             
                     </div>
 
@@ -152,13 +158,17 @@
                     </div>
 
                   </div>
+                  <div class="d-flex flex-row justify-content-end">
+                    <button v-if="inputdata.length>1" type="button" class="btn btn-outline-danger btn-sm " style="border:0" @click="deleteSpecimen(i)">- Remove Specimen</button>
+                  </div>
+
                   <hr/>
                 </div>
 
                   
 
                 <div class="d-flex flex-row justify-content-end">
-                    <button class="btn btn-outline-primary btn-sm " style="border:0" @click="newspecimen">+ Add Specimens</button>
+                    <button  type="button" class="btn btn-outline-primary " style="border:0" @click="newspecimen">+ Add Specimens</button>
                 </div>
 
                 <div class="mt-5">
@@ -185,6 +195,9 @@
       calculateAge(dob){
         return calculateAge(dob);
       },
+      deleteSpecimen(i){
+          this.inputdata.splice(i,1);
+      },
       newspecimen(){
         this.inputdata.push({
                 specimen:null,
@@ -197,7 +210,8 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
-                conformity:false
+                conformity:false,
+                referredto:null
               })
       },
       addNewPhysicianOption(i,newOption){
@@ -272,7 +286,8 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
-                conformity:false
+                conformity:false,
+                referredto:null
               }
             ]
         }

@@ -114,7 +114,7 @@
             </li>
     
     
-            <li class="menu-label">Configuration </li>
+            <li class="menu-label">LAB Configuration </li>
         
 
             <li>
@@ -140,6 +140,23 @@
                   <ion-icon name="ellipse-outline"></ion-icon>Patient CF
                 </NuxtLink>
               </li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  
+                  <ion-icon name="ellipse-outline"></ion-icon>
+
+                </div>
+                <div class="menu-title">App Config</div>
+              </a>
+              <ul>
+                <li> <NuxtLink to="/app-config/data">
+                    <ion-icon name="ellipse-outline"></ion-icon>Parameters
+                  </NuxtLink>
+                </li>
               </ul>
             </li>
 

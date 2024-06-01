@@ -6,21 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TestType extends Model
+class Laboratory extends Model
 {
     use HasFactory;
 
-
-
-     
     use SoftDeletes;
 
 
-    protected $fillable=['uniqid','name','lab_ref','description','hidename','meta','threshold','tat','cost','type','tatunit'];
-
+    protected $fillable=['uniqid','name','ref','meta'];
+    
 
     protected $casts = [
-        'meta' => 'json',
+        'meta' => 'json'
     ];
     protected static function boot()
     {
@@ -30,4 +27,5 @@ class TestType extends Model
             $type->uniqid = gen_uniqid();
         });
     }
+
 }

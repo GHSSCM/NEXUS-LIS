@@ -135,6 +135,14 @@
                             <label  class="form-check-label ms-2" for="referredout">Reffered Out?</label>
                      
                           </div>
+
+                          <div class="mb-4" v-if="inputdata[i].referredout">
+
+                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered To?</label>
+                            <input required v-model="inputdata[i].referredto" class="form-control" type="text"  :id="i+'referredto'" >
+                            
+                     
+                          </div>
                 
             
                     </div>
@@ -193,7 +201,8 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
-                conformity:false
+                conformity:false,
+                referredto:null,
               })
       },
       addNewPhysicianOption(i,newOption){
@@ -280,7 +289,7 @@
       getRequestLoad_('/editspecimen-data/'+this.id,{},(data)=>{  
         context.patient = data.patient;
         context.patientId = data.patientId;
-
+            
         context.patient.id = data.patient.id;
         context.physicians = data.physicians;
         context.preleveurs = data.preleveurs;

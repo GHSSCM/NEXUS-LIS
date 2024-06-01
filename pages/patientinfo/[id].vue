@@ -54,7 +54,15 @@
                       
                   </div>
 
+                  <div class="col-sm-12 col-md-6">
 
+                    <div class="mb-4">
+                        <label class="form-label">Extra ID</label>
+                        <input class="form-control" type="text" placeholder="Extra ID"  v-model="extraid">
+                      </div>
+            
+                    
+                </div>
 
                   <div class="col-sm-12 col-md-6">
                       <label class="form-label">Patient Name</label>
@@ -76,11 +84,20 @@
 
 
               <div class="col-sm-12 col-md-6">
-
-                  <div class="mb-4">
+                <p>Age/Date Of Birth</p>
+                <div class="mb-4" >
+                  <input v-model="hasage" id="ageordob"  class="form-check-input" type="checkbox" role="switch">
+                  <label class="form-check-label ms-2" for="ageordob">Use Age Instead</label>
+                </div>
+                  <div class="mb-4" v-if="!hasage">
                       <label class="form-label">Date of birth</label>
                       <input  v-model="dob" required class=" form-control" type="date" placeholder="Date of birth">
-                    </div>
+                  </div>
+                  <div class="mb-4" v-else>
+                    <label class="form-label">Age</label>
+                    <input  v-model="age" required class=" form-control" type="number" placeholder="Age">
+                </div>
+
           
                     
               </div>
@@ -186,6 +203,11 @@
                         <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
                       </div>
 
+                      <div class="mb-4" v-else-if="f.type=='limitedmultiplevalues'">
+                        <label class="form-label">{{f.name}}</label>
+                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]" multiple="true"></multiselect>
+                      </div>
+                      
                       <div class="mb-4" v-else-if="f.type=='datetime'">
                         <label class="form-label">{{f.name}}</label>
                         <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="datetime-local" :placeholder="f.name">
@@ -243,6 +265,7 @@ export default{
         pageId:route.params.id,
         // uniqid:"",
         reference:"",
+        extraid:"",
         name:"",
         dob:"",
         gender:"",
@@ -255,16 +278,35 @@ export default{
           fields:{}
         },
         fields:[],
+        hasage:false,
+        age:null
         
     }
   },
   methods:{
+    getDateXYearsBefore( x) {
+      const date = new Date();
+      date.setFullYear(date.getFullYear() - x);
+      return date.toISOString().split("T")[0];
+    },
     save(){
       var data =this.$data;
       delete data.fields;
       const context=this;
       // console.log(data);
       // return;
+      if(data.hasage){
+        if(!data.age){
+          return alert("Age is required");
+        }
+        data.dob = this.getDateXYearsBefore(data.age);
+      }else{
+        if(!data.dob){
+
+          return alert("Date of birth is required");
+        }
+      }
+    
       postRequestLoad_(this.pageId=='create'?'/patient':'/patient/'+this.pageId,data,(user)=>{
         context.$router.push("/profile/"+user.id);
       })
@@ -283,6 +325,7 @@ export default{
         },(fields)=>{
           context.reference=fields.reference;
           context.name=fields.name;
+          context.extraid=fields.extraid;
           context.dob=fields.dob;
           context.gender=fields.gender;
           context.region=fields.region;

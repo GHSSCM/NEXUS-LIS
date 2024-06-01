@@ -5,6 +5,7 @@
 
 
 use App\Models\CustomField;
+use App\Models\Laboratory;
 use App\Models\Patient;
 use App\Models\RegisteredSpecimen;
 use App\Models\SpecimenTest;
@@ -120,12 +121,82 @@ Route::post("/login",function(){
         return error_response(400,"Incorrect password. Verify and try again!");
     }
 
-    return  $account;
+    $lab =  Laboratory::query()->where('ref',$account->lab_ref)->first();
+    if(empty($lab)){
+
+        return  error_response(400,"Incorrect lab data [2]");
+    }
+
+    $data = $account->toArray();
+    $data['config'] = $lab->meta;
+    return  $data;
 });
 
 Route::get("/search-patient",function(){
-    return  Patient::where('name', 'like', '%' . request()->get("query") . '%')->get();
+    $q = request()->get("query");
+    return  Patient::whereRaw('name like ? or extraid like ? or reference like ? or id like ?',["%$q%","%$q%","%$q%","%$q%"])->get();
 });
+
+Route::get('/duplicate-test/{id}',function($id){
+    $data = TestType::where('id',$id)->first();
+    if(empty($data)){
+        return error_response(400,"Duplication error [1]");
+    }
+    $data =  $data->toArray();
+    unset($data['uniqid']);
+    unset($data['id']);
+    $data['name'] = '[DUPLICATA] '.$data['name'];
+    return TestType::create($data);
+});
+
+
+Route::get('/duplicate-specimen/{id}',function($id){
+    $data = SpecimenType::where('id',$id)->first();
+    if(empty($data)){
+        return error_response(400,"Duplication error [1]");
+    }
+    $data =  $data->toArray();
+    unset($data['uniqid']);
+    unset($data['id']);
+    $data['name'] = '[DUPLICATA] '.$data['name'];
+    return SpecimenType::create($data);
+});
+
+
+Route::get("/config",function(){
+    $labref = request()->get("lab_ref");
+    if(empty($labref)){
+        return  error_response(400,"Incorrect lab data");
+    }
+    $lab =  Laboratory::query()->where('ref',$labref)->first();
+    if(empty($lab)){
+
+        return  error_response(400,"Incorrect lab data [2]");
+    }
+    return $lab->meta;
+});
+
+Route::post("/config",function(){
+    
+    $labref = request()->get("lab_ref");
+    if(empty($labref)){
+        return  error_response(400,"Incorrect lab data");
+    }
+    $lab =  Laboratory::query()->where('ref',$labref)->first();
+    if(empty($lab)){
+
+        return  error_response(400,"Incorrect lab data [2]");
+    }
+
+    $data = request()->all();
+    unset($data['lab_ref']);
+
+    $lab->meta = $data;
+    $lab->save();
+    return $lab->meta;
+
+});
+
 
 
 Route::get("/testtypes",function(){

@@ -77,6 +77,8 @@
                                              
                                              <td>
                                                  <NuxtLink class="btn btn-primary btn-sm" :to="u.type=='SINGLE'?('/testtype/'+u.id):('/grouptesttype/'+u.id)">View/Edit</NuxtLink>
+
+                                                 <button class="btn btn-primary btn-sm ms-2" @click="duplicateData(u)" >Duplicate</button>
                                              </td>
                                              
                                        </tr>
@@ -120,17 +122,39 @@
 <script>
 export default{
   mounted(){
-    const context=this;
-    getRequestLoad_('/testtypes/',{},(testtypes)=>{
-      context.testtypes= testtypes;
-      setTimeout(() => {
-          loadDataTables();
-        }, 500);
-    })
+      this.loadData();
   },
   data(){
     return {
       testtypes:[]
+    }
+  },
+  methods:{
+    loadData(){
+      const context=this;
+      getRequestLoad_('/testtypes/',{},(testtypes)=>{
+        context.testtypes= testtypes;
+        setTimeout(() => {
+            loadDataTables();
+          }, 500);
+      })
+    },  
+    duplicateData(d){
+      const context=this;
+      if(window.confirm("Are you sure you want to duplicate this test: "+d.name+" ?")){
+        getRequestLoad_(
+          "/duplicate-test/"+d.id,
+          {},
+          (r)=>{
+              successToast("Duplicated successfully");
+              if(d.type=='SINGLE'){
+                context.$router.push("/testtype/"+r.id);
+              }else{
+                context.$router.push("/grouptesttype/"+r.id);
+              }
+          }
+        )
+      }
     }
   }
 }

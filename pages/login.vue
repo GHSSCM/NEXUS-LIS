@@ -22,6 +22,7 @@ export default {
         postRequestLoad_('/login',{username:this.username,password:this.password},(user)=>{
               successToast("Login successful!");
               window.localStorage.setItem("user",JSON.stringify(user));
+              window.localStorage.setItem("lis_config",JSON.stringify(user.config));
               window.localStorage.setItem("lab_ref",user.lab_ref);
               context.$router.push('/patients');   
         });

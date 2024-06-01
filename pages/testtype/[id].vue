@@ -145,9 +145,20 @@
 
                     <div class="col-sm-12 col-md-6">
 
-                        <div class="mb-4">
-                            <label class="form-label">Target TAT </label>
-                            <input required v-model="tat" class="result form-control" type="text" placeholder="Target TAT"/>
+                            
+                        <div class="mb-4">    <label class="form-label">Target TAT </label>
+                            <div class="row">
+                              <div class="col-sm-9">
+                            <input required v-model="tat" class="result form-control" type="number" placeholder="Target TAT"/>
+                            
+                              </div>
+                              <div class="col-sm-3">
+                                <select required v-model="tatunit" class="form-control">
+                                  <option value="hours">Hours</option>
+                                  <option value="minutes">Minutes</option>
+                                </select>
+                              </div>
+                            </div>
                           </div>
                 
 
@@ -158,7 +169,7 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <label class="form-label">Cost to patient in FCFA</label>
+                            <label class="form-label">Cost to patient in {{ curr }}</label>
                             <input required v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
                           </div>
                 
@@ -190,6 +201,11 @@
                       <div class="mb-4" v-else-if="f.type=='limitedvalues'">
                         <label class="form-label">{{f.name}}</label>
                         <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
+                      </div>
+
+                      <div class="mb-4" v-else-if="f.type=='limitedmultiplevalues'">
+                        <label class="form-label">{{f.name}}</label>
+                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]" multiple="true"></multiselect>
                       </div>
 
                       <div class="mb-4" v-else-if="f.type=='datetime'">
@@ -250,6 +266,7 @@
             description:"",
             specimens:[],
             tat:"",
+            tatunit:"hours",
             cost:1000,
             hidename:false,
             threshold:"",
@@ -260,7 +277,9 @@
 
                 ]
               }
-            }
+            },
+            
+            curr:getAppConfig("currency")
         }
     },
     mounted(){
@@ -279,6 +298,7 @@
               context.description=testtype.description;
               context.specimens=testtype.specimens;
               context.tat=testtype.tat;
+              context.tatunit=testtype.tatunit;
               context.cost=testtype.cost;
               context.hidename=testtype.hidename;
               context.threshold=testtype.threshold;
@@ -301,6 +321,7 @@
           name:this.name,
           specimens:JSON.parse(JSON.stringify(this.specimens.map(r=>r.uniqid))),
           tat:this.tat,
+          tatunit:this.tatunit,
           hidename:this.hidename,
           threshold:this.threshold,
           cost:this.cost,

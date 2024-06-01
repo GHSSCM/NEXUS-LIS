@@ -74,6 +74,10 @@
                                                
                                                <td>
                                                    <NuxtLink class="btn btn-primary btn-sm" :to="'/specimentype/'+u.id">View/Edit</NuxtLink>
+
+                                                 <button class="btn btn-primary btn-sm ms-2" @click="duplicateData(u)" >Duplicate</button>
+
+
                                                </td>
                                                
                                          </tr>
@@ -128,6 +132,23 @@
       return {
         specimentypes:[]
       }
+    },
+    methods:{
+      duplicateData(d){
+      const context=this;
+      if(window.confirm("Are you sure you want to duplicate this specimen: "+d.name+" ?")){
+        getRequestLoad_(
+          "/duplicate-specimen/"+d.id,
+          {},
+          (r)=>{
+              successToast("Duplicated successfully");
+
+              context.$router.push("/specimentype/"+r.id);
+              
+          }
+        )
+      }
+    }
     }
   }
 </script>

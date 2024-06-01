@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// const BASE_URL="http://localhost:8000/api";
+const BASE_URL="http://localhost:8000/api";
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
-const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
+// const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc";
     axios.get(BASE_URL+endpoint,{params}).then((d)=>{
@@ -137,6 +137,18 @@ export const loadDataTables=()=>{
      
         table.buttons().container()
             .appendTo( '.dttable_wrapper .col-md-6:eq(0)' );
+    }
+}
+export const getAppConfig=(param)=>{
+    const d=  window.localStorage.getItem("lis_config");
+    if(!d){
+        return null;
+    }
+    try{
+        const e = JSON.parse(d);
+        return e[param];
+    }catch(e){
+        return null;
     }
 }
 

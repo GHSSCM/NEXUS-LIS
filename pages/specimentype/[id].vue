@@ -86,6 +86,12 @@
                             <label class="form-label">{{f.name}}</label>
                             <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
                           </div>
+
+                          <div class="mb-4" v-else-if="f.type=='limitedmultiplevalues'">
+                            <label class="form-label">{{f.name}}</label>
+                            <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]" multiple="true"></multiselect>
+                          </div>
+
     
                           <div class="mb-4" v-else-if="f.type=='datetime'">
                             <label class="form-label">{{f.name}}</label>

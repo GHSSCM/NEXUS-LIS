@@ -55,6 +55,7 @@
                               <option value="number">Number</option>
                               <option value="yesno">Yes/No</option>
                               <option value="limitedvalues">Limited values</option>
+                              <option value="limitedmultiplevalues">Limited Multiple values</option>
                               <option value="datetime">Date/Time</option>
                               <option value="dateonly">Date Only</option>
                               <option value="timeonly">Time Only</option>
@@ -70,6 +71,16 @@
 
                     
                   </div>
+
+                  <div class="col-sm-3" v-if="fields[i].type=='limitedmultiplevalues'">
+                    <label class="mb-2">Possible values</label> 
+                    <!-- multiple-select-field -->
+                    <multiselect v-model="fields[i].meta.enum" :options="[]" :taggable="true"
+                    @tag="addNewOption(i,$event)" :multiple="true" ></multiselect>
+
+                    
+                  </div>
+
                    <div class="col-sm-1 d-flex align-items-center">
                       <center><i  class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red;cursor:pointer" @click="deleteField(i)"></i></center>
                    </div>

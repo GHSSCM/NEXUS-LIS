@@ -102,7 +102,7 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <label class="form-label">Cost to patient in FCFA</label>
+                            <label class="form-label">Cost to patient in {{curr}}</label>
                             <input required v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
                           </div>
                 
@@ -147,7 +147,8 @@
             threshold:"",
             loadedtests:[],
             subtests:[],
-            loadedspecimens:[]
+            loadedspecimens:[],
+            curr:getAppConfig("currency")
         }
     },
     mounted(){
