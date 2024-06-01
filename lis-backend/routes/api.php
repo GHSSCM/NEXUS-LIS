@@ -3,7 +3,7 @@
 // header('Access-Control-Allow-Origin: *');
 // header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
-
+use App\Http\Controllers\MigrationController;
 use App\Models\CustomField;
 use App\Models\Laboratory;
 use App\Models\Patient;
@@ -14,6 +14,11 @@ use App\Models\TestType;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
+
 
 
 // patients
