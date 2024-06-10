@@ -1,0 +1,5 @@
+- They are all in the same folder 
+- [YOU DO NOT NEED TO, THERE IS ALREADY A modified INDEX.PHP IN THE ROOT] Put the backend /public content to the root
+-  [YOU DO NOT NEED TO, THERE IS ALREADY A modified INDEX.PHP IN THE ROOT]  Make sure to change the file path of the "require"s in the index.php 
+- the content of the generated content 
+- Rename productionenv to .env

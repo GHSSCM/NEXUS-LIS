@@ -72,48 +72,267 @@
 
                 <hr/>
                 <p><strong>Measures</strong></p>
-                <div v-for="f in meta.fields.measures">
+                <div v-for="(f,i) in meta.fields.measures">
                     <hr/>
                     <div class="row">
                         <div class="col-sm-2">
                             <label >Name</label>
-                          <input class="form-control mb-3 mt-2" type="text" placeholder="Enter name">
+                          <input v-model="meta.fields.measures[i].name" class="form-control mb-3 mt-2" type="text" placeholder="Enter name">
+                          <div class="d-flex flex-row justify-content-end">
+                            <button style="transform:scale(0.7); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].subs.push({type:'numericrange',subs:[],values:[],id:(new Date()).getTime()})">+ Add Submeasure</button>
+                          </div>
                        </div>
                        <div class="col-sm-2">
                             <label class="mb-2">Data type</label>
-                            <select class="form-control single-select-field " id="idk1" data-placeholder="Data type">
-                                <option></option>
-                                <option>Alpha numeric</option>
-                                <option>Number</option>
-                                <option>Yes/No</option>
-                                <option>Limited values</option>
-                                <option>Date/Time</option>
-                                <option>Date Only</option>
-                                <option>Time Only</option>
+                            <select v-model="meta.fields.measures[i].type" class="form-control single-select-field " data-placeholder="Data type">
+                
+                                <option value="numericrange">Numeric Range</option>
+                                <option value="autocomplete">Autocomplete</option>
+                                <option value="alphanumeric">Alpha numeric</option>
+                                
                             </select>
                      </div>
 
                      <div class="col-sm-4">
-                        <label >Values</label>
-                      <!-- <input class="form-control mb-3 mt-2" type="text" placeholder="Enter name"> -->
+                        <label ><strong>Values</strong></label>
+
+                        <div v-if="meta.fields.measures[i].type=='numericrange'">
+                            <div  class="d-flex flex-row mb-2" v-for="(v,j) in meta.fields.measures[i].values">
+                              <div>
+                                <div class="d-flex flex-row justify-content-space-between w-100">
+                                    <lablel>Range</lablel>
+                                </div>
+                                <input v-model="meta.fields.measures[i].values[j].start" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <lablel>to</lablel>
+                                <input v-model="meta.fields.measures[i].values[j].end" class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
+                              </div>
+                              <div class="ms-3">
+                                <lablel>&nbsp;</lablel>
+                                <input v-model="meta.fields.measures[i].values[j].v1"  class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+                              <div class="ms-3">
+                                <lablel>&nbsp;</lablel>
+                                <select  v-model="meta.fields.measures[i].values[j].v2" class="form-control form-control-sm mt-2"  style="max-width: 60px;" >
+                                  <option value="M">Male</option>
+                                  <option value="M">Female</option>
+                                  <!-- <option value="B">Baby</option> -->
+                                </select>
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+                              <div class="ms-3">
+
+                                <strong style="cursor: pointer;" class="ms text-danger " @click="meta.fields.measures[i].values.splice(j,1)"><small><u > &times; Remove Value</u></small></strong>
+                                <!-- <lablel>&nbsp;</lablel> -->
+                                <input   v-model="meta.fields.measures[i].values[j].v3"  class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+  
+                            </div>
+                            <div class="d-flex flex-row justify-content-end">
+                              <button style="transform:scale(0.7); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].values.push({v2:'M'})">+ Add Values</button>
+                            </div>
+
+                        </div>
+                        <multiselect v-else-if="meta.fields.measures[i].type=='autocomplete'" v-model="meta.fields.measures[i].values" :options="[]" :taggable="true"
+                            @tag="addNewOption(i,$event)" :multiple="true" ></multiselect>
+
+                        <!-- <input v-else v-model="meta.fields.measures[i].value" class="form-control mb-3 mt-2" type="text" placeholder="Value"> -->
+
                    </div>
 
                    <div class="col-sm-3">
                     <label >Unit</label>
-                  <!-- <input class="form-control mb-3 mt-2" type="text" placeholder="Enter name"> -->
+                  <input v-model="meta.fields.measures[i].unit" class="form-control mb-3 mt-2" type="text" placeholder="Enter Unit">
+
+               
+                  <div class="d-flex flex-row justify-content-end">
+                    <button  v-if="meta.fields.measures.length>1 && meta.fields.measures[i].condition" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].condition=null">- Remove Condition</button>
+                    <button  v-else-if="meta.fields.measures.length>1" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition=[{logic:'and',subfield:'age',values:[]}]">+ Add Condition</button>
+                  </div>
                </div>
 
                 
-                     <div class="col-sm-1 d-flex align-items-center">
-                        <center><i class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red"></i></center>
+                     <div class="col-sm-1 d-flex">
+                        <center><i @click="meta.fields.measures.splice(i,1);" class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red; cursor:pointer"></i></center>
                      </div>
+                    </div>
+
+
+
+
+
+
+
+
+                    <!--  SUB MEASURES START -->
+                    <div style="transform:scale(0.95);border:1px solid rgba(0,0,0,0.2)" class="p-4" v-if="meta.fields.measures[i].subs.length>0">
+                      <strong>Sub measures</strong>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <div class="row mb-3 pb-3" v-for="(sub,s) in meta.fields.measures[i].subs" style="border-bottom:1px solid rgba(0,0,0,0.1)">
+                        <div class="col-sm-2">
+                            <label >Name</label>
+                          <input v-model="meta.fields.measures[i].subs[s].name" class="form-control mb-3 mt-2" type="text" placeholder="Enter name">
+                       </div>
+                       <div class="col-sm-2">
+                            <label class="mb-2">Data type</label>
+                            <select v-model="meta.fields.measures[i].subs[s].type" class="form-control single-select-field " data-placeholder="Data type">
+                
+                                <option value="numericrange">Numeric Range</option>
+                                <option value="autocomplete">Autocomplete</option>
+                                <option value="alphanumeric">Alpha numeric</option>
+                                
+                            </select>
+                     </div>
+
+                     <div class="col-sm-4">
+                        <label ><strong>Values</strong></label>
+
+                        <div v-if="meta.fields.measures[i].subs[s].type=='numericrange'">
+                            <div  class="d-flex flex-row mb-2" v-for="(v,j) in meta.fields.measures[i].subs[s].values">
+                              <div>
+                                <div class="d-flex flex-row justify-content-space-between w-100">
+                                    <lablel>Range</lablel>
+                                </div>
+                                <input v-model="meta.fields.measures[i].subs[s].values[j].start" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <lablel>to</lablel>
+                                <input v-model="meta.fields.measures[i].subs[s].values[j].end" class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
+                              </div>
+                              <div class="ms-3">
+                                <lablel>&nbsp;</lablel>
+                                <input v-model="meta.fields.measures[i].subs[s].values[j].v1"  class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+                              <div class="ms-3">
+                                <lablel>&nbsp;</lablel>
+                                <select  v-model="meta.fields.measures[i].subs[s].values[j].v2" class="form-control form-control-sm mt-2"  style="max-width: 60px;" >
+                                  <option value="M">Male</option>
+                                  <option value="M">Female</option>
+                                  <!-- <option value="B">Baby</option> -->
+                                </select>
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+                              <div class="ms-3">
+
+                                <strong style="cursor: pointer;" class="ms text-danger " @click="meta.fields.measures[i].subs[s].values.splice(j,1)"><small><u > &times; Remove Value</u></small></strong>
+                                <!-- <lablel>&nbsp;</lablel> -->
+                                <input   v-model="meta.fields.measures[i].subs[s].values[j].v3"  class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+  
+                                <!-- <lablel>to</lablel> -->
+                                <!-- <input class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;"> -->
+                              </div>
+  
+                            </div>
+                            <div class="d-flex flex-row justify-content-end">
+                              <button style="transform:scale(0.7); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].subs[s].values.push({v2:'M'})">+ Add Values</button>
+                            </div>
+
+                        </div>
+                        <multiselect v-else-if="meta.fields.measures[i].subs[s].type=='autocomplete'" v-model="meta.fields.measures[i].subs[s].values" :options="[]" :taggable="true"
+                            @tag="addNewOption3(i,s,$event)" :multiple="true" ></multiselect>
+
+                        <!-- <input v-else v-model="meta.fields.measures[i].subs[s].value" class="form-control mb-3 mt-2" type="text" placeholder="Value"> -->
+
+                   </div>
+
+                   <div class="col-sm-3">
+                    <label >Unit</label>
+                  <input v-model="meta.fields.measures[i].subs[s].unit" class="form-control mb-3 mt-2" type="text" placeholder="Enter Unit">
+
+               
+                  <div class="d-flex flex-row justify-content-end">
+                    <button  v-if="meta.fields.measures.length>1 && meta.fields.measures[i].subs[s].condition" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].subs[s].condition=null">- Remove Condition</button>
+                    <button  v-else-if="meta.fields.measures.length>1" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].subs[s].condition=[{logic:'and',subfield:'age',values:[]}]">+ Add Condition</button>
+                  </div>
+               </div>
+
+                
+                     <div class="col-sm-1 d-flex">
+                        <center><i @click="meta.fields.measures[i].subs.splice(s,1);" class="fadeIn animated bx bx-trash fs-5 mt-4 ms-2" style="color:red; cursor:pointer"></i></center>
+                     </div>
+                    </div>
+
+                    </div>
+
+
+
+
+                    <!--  SUB MEASURES END-->
+
+
+
+
+                    <div style="border : 1px solid rgba(0,0,0,0.5); background:#f2f2f2; border-radius:5px; " class="p-3" v-if="meta.fields.measures[i].condition">
+                      <label>Conditions, IF:</label>  <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition.push({logic:'and',subfield:'age',values:[]})">+ Add</button>
+                      
+                      <div v-for=" (con,pos) in meta.fields.measures[i].condition" class=" d-flex flex-row">
+                        <select v-if="pos!=0"  v-model="meta.fields.measures[i].condition[pos].logic" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
+                          <option value="and">And</option>
+                          <option value="or">Or</option>
+                        </select>
+    
+                        <select v-if="meta.fields.measures[i].condition[pos].logic"  v-model="meta.fields.measures[i].condition[pos].field" class="me-2 form-control form-control-sm mt-2"  style="max-width: 100px;" >
+                          <option v-for="(field,k) in meta.fields.measures.filter((f,position)=>position!=i)" :value="field">{{field.name}}</option>
+                        </select>
+  
+                        <select v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange'"  v-model="meta.fields.measures[i].condition[pos].subfield" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
+                          <option value="age">Age</option>
+                          <option value="gender">Gender</option>
+                          <option value="value">Value</option>
+                        </select>
+
+                        <select   v-if="meta.fields.measures[i].condition[pos].field" v-model="meta.fields.measures[i].condition[pos].operator" class="me-2 form-control form-control-sm mt-2"  style="max-width: 100px;" >
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="<" > < </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="<=" > <= </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="=" > = </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="!=" > != </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value=">=" > >= </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value=">" > > </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')" value="equals" > Equals </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')" value="notequals" > Not Equals </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='alphanumeric'" value="isanyof" > Is Any Of </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='alphanumeric'" value="isnotanyof" > Is Not Any Of </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'" value="contains" > Contains (Or) </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'" value="notcontains" > Not Contains (Or) </option>
+                        </select>
+
+                        <input v-model="meta.fields.measures[i].condition[pos].value" type="number" class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                        <select  v-model="meta.fields.measures[i].condition[pos].value"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                          <option value="M">Male</option>
+                          <option value="F">Female</option>
+                        </select>
+
+                        <input v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].operator=='equals'||meta.fields.measures[i].condition[pos].operator=='notequals')" type="number" class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+
+                        <multiselect v-else-if="meta.fields.measures[i].condition[pos].field " v-model="meta.fields.measures[i].condition[pos].values" :options="[]" :taggable="true"
+                        @tag="addNewOption2(i,pos,$event)" :multiple="true" style="max-width:200px;" class="mt-2" ></multiselect>
+
+                          <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].condition.splice(pos,1)">- Remove</button>
+                        
+
+                      </div>
+  
                     </div>
                     <hr/>
                 </div>
 
 
                 <div class="d-flex flex-row justify-content-end">
-                  <button type="button" class="btn btn-outline-primary btn-sm " style="border:0" @click="meta.fields.measures.push({})">+ Add Measures</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm " style="border:0" @click="meta.fields.measures.push({type:'numericrange',subs:[],values:[],id:(new Date()).getTime()})">+ Add Measures</button>
               </div>
 
 
@@ -314,6 +533,21 @@
       })
     },
     methods:{
+      addNewOption(i,newOption){
+        console.log(i, newOption);
+        this.meta.fields.measures[i].values.push(newOption);
+ 
+        },
+
+        addNewOption2(i,pos,newOption){
+        console.log(i, pos,newOption);
+          this.meta.fields.measures[i].condition[pos].values.push(newOption)
+        },
+
+      addNewOption3(i,s,newOption){
+      console.log(i, s,newOption);
+        this.meta.fields.measures[i].subs[s].values.push(newOption)
+      },
       save(){
         const context=this;
         postRequestLoad_(context.id=='create'?'/testtype':'/testtype/'+context.id,{
