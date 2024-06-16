@@ -93,6 +93,45 @@
                         
                   </div>
 
+
+
+
+                  <div class="col-sm-12 col-md-6">
+
+                    <div class="mb-4">
+                        <label class="form-label">Place of Collection</label>
+                        <input v-model="inputdata[i].placeofcollection"  class="result form-control " type="text" placeholder="Place of Collection">
+                      </div>
+            
+                      
+                </div>
+
+
+
+
+                  <div class="col-sm-12 col-md-6">
+
+                    <div class="mb-4">
+                        <label class="form-label">Date of testing</label>
+                        <input v-model="inputdata[i].testingdate"  class="result form-control " type="date" placeholder="Date of testing">
+                      </div>
+            
+                      
+                </div>
+
+
+                <div class="col-sm-12 col-md-6">
+
+                  <div class="mb-4">
+                      <label class="form-label">Time of testing </label>
+                      <input v-model="inputdata[i].testingtime"  class="result form-control " type="time" placeholder="Time of testing">
+                    </div>
+          
+                    
+              </div>
+
+
+
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">

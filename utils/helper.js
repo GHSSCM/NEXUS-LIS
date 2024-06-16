@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL="http://localhost:8000/api";
+export const BASE_URL="http://localhost:8000/api";
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{

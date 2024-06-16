@@ -15,11 +15,11 @@ use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
-
-
+use App\Http\Controllers\PDFController;
 
 Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 
+Route::get('/test-report/{id}.pdf', [PDFController::class, 'generatePDF']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 
@@ -362,6 +362,7 @@ Route::post("/addspecimen",function(){
     $meta = request("meta");
     $meta['enteredby'] = request('user');
     $specimen->meta=$meta;
+    $specimen->enteredat = now();
     $specimen->save();
     return $meta;
  });
@@ -373,6 +374,8 @@ Route::post("/addspecimen",function(){
     $meta['verifiedby'] = request('user');
     $meta['validated']=true;
     $specimen->meta=$meta;
+    $specimen->validatedat = now();
+
     $specimen->save();
     return $meta;
  });
@@ -380,8 +383,7 @@ Route::post("/addspecimen",function(){
 
 //  
 
- Route::get("/specimens",function(){
-    $specimens = RegisteredSpecimen::query()->where(request()->all())->get();
+function parseListOfSpecimens($specimens){
     $data=[];
     $i=0;
     $patientsLoaded=[];//hashmap
@@ -414,9 +416,21 @@ Route::post("/addspecimen",function(){
 
         $data[$i]['physician']=$specimen['physician'];
         $data[$i]['preleveur']=$specimen['preleveur'];
+        $data[$i]['referredout']=$specimen['referredout'];
+        $data[$i]['referredto']=$specimen['referredto'];
         $data[$i]['meta']=$specimen['meta'];
+        $i++;
     }
     return $data;
+}
+ Route::get("/specimens",function(){
+    return parseListOfSpecimens(RegisteredSpecimen::query()->where(request()->all())->get());
+ });
+
+ Route::get("/tests",function(){
+    return parseListOfSpecimens(RegisteredSpecimen::query()->where(request()->all())->get()->filter(function($val){
+        return isset($val->meta['enteredby']) && $val->meta['enteredby'];
+    }));
  });
 
 

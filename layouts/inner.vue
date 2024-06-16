@@ -65,10 +65,12 @@
                 <div class="menu-title">Tests</div>
               </a>
               <ul>
-                <!-- <li> <NuxtLink to="/tests">
-                    <ion-icon name="ellipse-outline"></ion-icon>Registered tests
-                  </NuxtLink>
-                </li> -->
+                
+                <li> <NuxtLink to="/tests">
+                  <ion-icon name="ellipse-outline"></ion-icon>
+                    Registered tests
+                </NuxtLink>
+              </li>
                 <li> <NuxtLink to="/testtypes">
                     <ion-icon name="ellipse-outline"></ion-icon>All test types
                   </NuxtLink>

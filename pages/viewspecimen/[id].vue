@@ -247,7 +247,11 @@
                         // to help me show which is not a recognized value
                         context.meta.results[i].minValue=range.start;
                         context.meta.results[i].maxValue=range.end;
+                        context.meta.results[i].unit=measure.unit;
                     })
+                }else{
+
+                    context.meta.results[i].unit=measure.unit;
                 }
                 if(measure.subs){
                     for(var j=0;j<measure.subs.length;j++){
@@ -277,7 +281,11 @@
                                 // to help me show which is not a recognized value
                                 context.meta.results[i].subs[j].minValue=range.start;
                                 context.meta.results[i].subs[j].maxValue=range.end;
+                                context.meta.results[i].subs[j].unit=submeasure.unit;
                             })
+                        }else{
+
+                            context.meta.results[i].subs[j].unit=submeasure.unit;
                         }
 
                     }
