@@ -54,10 +54,10 @@ $(function() {
                 label: 'Electronics',
                 data: [12, 19, 13, 15, 20, 10],
                 backgroundColor: [
-                    '#007bff'
+                    '#19257b'
                 ],
                 borderColor: [
-                    '#007bff'
+                    '#19257b'
                 ],
                 borderWidth: 1
             },
@@ -95,7 +95,7 @@ $(function() {
              datasets: [{
                  data: [12, 19, 3, 5, 2, 3],
                  backgroundColor: [
-                     '#007bff',
+                     '#19257b',
                      '#f73757',
                      '#18bb6b',
                      '#32bfff',
@@ -122,7 +122,7 @@ $(function() {
               datasets: [{
                   data: [12, 19, 3, 5, 2, 3],
                   backgroundColor: [
-                      '#007bff',
+                      '#19257b',
                       '#f73757',
                       '#18bb6b',
                       '#32bfff',

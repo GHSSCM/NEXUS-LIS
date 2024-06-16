@@ -152,6 +152,15 @@ export const getAppConfig=(param)=>{
     }
 }
 
+export const setAppConfig=(data)=>{
+   if(typeof data =='string'){
+    window.localStorage.setItem("lis_config",data);
+   }else{
+        window.localStorage.setItem("lis_config",JSON.stringify(data));
+   }
+}
+
+
 // // Function to break circular reference in production. had an error
 // export const  getComponent = (this)=>{
 //     // Get an array of property names

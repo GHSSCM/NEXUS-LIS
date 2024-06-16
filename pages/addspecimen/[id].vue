@@ -137,7 +137,7 @@
                           </div>
                           <div class="mb-4" v-if="inputdata[i].referredout">
 
-                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered To?</label>
+                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered From?</label>
                             <input required v-model="inputdata[i].referredto" class="form-control" type="text"  :id="i+'referredto'" >
                             
                      

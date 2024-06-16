@@ -67,7 +67,8 @@ export default{
     methods:{
         save(){
             const context=this;
-            postRequestLoad_('/config',this.meta,()=>{
+            postRequestLoad_('/config',this.meta,(configdata)=>{
+                setAppConfig(configdata)
                 successToast("Saved successfully");
             })
         }

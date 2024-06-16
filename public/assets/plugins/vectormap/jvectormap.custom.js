@@ -10,7 +10,7 @@ $(function () {
 		color: '#009efb',
 		regionStyle: {
 			initial: {
-				fill: '#007bff'
+				fill: '#19257b'
 			}
 		},
 		markerStyle: {

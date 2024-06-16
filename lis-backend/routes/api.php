@@ -14,11 +14,14 @@ use App\Models\TestType;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DatabaseController;
 
 
 
 Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 
+
+Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 
 
 // patients
@@ -342,6 +345,41 @@ Route::post("/addspecimen",function(){
     return "ok";
  });
 
+ Route::get("/specimen/{id}",function($id){
+
+    $specimen=RegisteredSpecimen::query()->find($id)->toArray();
+    $specimen['patient']=Patient::query()->where("uniqid",$specimen['patient'])->first();
+    $specimen['specimen']=SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
+    $specimen['test']=TestType::query()->where("uniqid",$specimen['test'])->first();
+
+    return $specimen;
+
+ });
+
+
+ Route::post("/specimenupdate/{id}",function($id){
+    $specimen=RegisteredSpecimen::query()->find($id);
+    $meta = request("meta");
+    $meta['enteredby'] = request('user');
+    $specimen->meta=$meta;
+    $specimen->save();
+    return $meta;
+ });
+
+
+ Route::post("/specimenvalidate/{id}",function($id){
+    $specimen=RegisteredSpecimen::query()->find($id);
+    $meta = request("meta");
+    $meta['verifiedby'] = request('user');
+    $meta['validated']=true;
+    $specimen->meta=$meta;
+    $specimen->save();
+    return $meta;
+ });
+
+
+//  
+
  Route::get("/specimens",function(){
     $specimens = RegisteredSpecimen::query()->where(request()->all())->get();
     $data=[];
@@ -376,6 +414,7 @@ Route::post("/addspecimen",function(){
 
         $data[$i]['physician']=$specimen['physician'];
         $data[$i]['preleveur']=$specimen['preleveur'];
+        $data[$i]['meta']=$specimen['meta'];
     }
     return $data;
  });

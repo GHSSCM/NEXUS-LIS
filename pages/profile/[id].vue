@@ -46,7 +46,7 @@
 
                 <!-- start -->
                 <div class="row">
-                    <div class="col-12 col-lg-8 col-xl-9">
+                    <div class="col-12">
                       <div class="card overflow-hidden radius-10">
                         <div class="profile-cover bg-dark position-relative mb-4">
                           <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x" style="width: 80px;
@@ -79,190 +79,117 @@
                       </div>
                      
 
-
-                      <div class="card">
-                        <div class="card-body">
-                          <h4 class="mb-2">Laboratory Activity</h4>
-                          <br/>
-                          
-                          <!-- tab starts here -->
-                          <ul class="nav nav-pills mb-3" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#primary-pills-home" role="tab" aria-selected="false" tabindex="-1">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon">
-                                            
-                                          
-
-                                            <i class="fadeIn animated bx bx-vial me-1 md "></i>
-                                        </div>
-                                        <div class="tab-title">Test Results</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link " data-bs-toggle="pill" href="#primary-pills-profile" role="tab" aria-selected="true">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon">
-                                            
-
-                                            <i class="fadeIn animated bx bx-donate-blood me-1 md "></i>
-                                        </div>
-                                        <div class="tab-title">Specimens</div>
-                                    </div>
-                                </a>
-                            </li>
-                           
-                        </ul>
-
-
-
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade active show" id="primary-pills-home" role="tabpanel">
-                              <div class="table-responsive">
-
-                                <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
-                                     
-                               <div class="row">
-                                 <div class="col-sm-12">
-                                     <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
-                                       <thead>
-                                           <tr role="row">
-                                            <th rowspan="1" colspan="1">Patient</th>
-                                            <th rowspan="1" colspan="1">Specimen</th>
-                                            <th rowspan="1" colspan="1">Test</th>
-                                            <th rowspan="1" colspan="1">Physician</th>
-                                            <th rowspan="1" colspan="1">Received On</th>
-                                            <th rowspan="1" colspan="1"></th>
-                                             </tr>
-                                       </thead>
-                                       <tbody>
-            
-                                           
-                                       <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                               <td class="">{{ u.patient.name }}</td>
-                                               <td class="">{{u.specimen.name}}</td>
-                                               <td class="">{{u.test.name}}</td>
-                                               <td class="">{{u.physician}}</td>
-                                               <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
-                                               
-                                               <td>
-                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/addspcimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
-                                                   <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
-                                               </td>
-                                               
-                                         </tr>
-                                       </tbody>
-                                       <tfoot>
-                                           <tr>
-                                            <th rowspan="1" colspan="1">Patient</th>
-                                            <th rowspan="1" colspan="1">Specimen</th>
-                                            <th rowspan="1" colspan="1">Test</th>
-                                            <th rowspan="1" colspan="1">Physician</th>
-                                            <th rowspan="1" colspan="1">Received On</th>
-                                            <th rowspan="1" colspan="1"></th>
-                                           </tr>
-                                       </tfoot>
-                                   </table>
-                                 </div>
-                               </div>
-                   
-                                 </div>
-                             </div>
-                            </div>
-                            <div class="tab-pane fade " id="primary-pills-profile" role="tabpanel">
-                                
-                              <div class="table-responsive">
-
-                                <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
-                                     
-                               <div class="row">
-                                 <div class="col-sm-12">
-                                     <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
-                                       <thead>
-                                           <tr role="row">
-                                            <th rowspan="1" colspan="1">Patient</th>
-                                            <th rowspan="1" colspan="1">Specimen</th>
-                                            <th rowspan="1" colspan="1">Test</th>
-                                            <th rowspan="1" colspan="1">Physician</th>
-                                            <th rowspan="1" colspan="1">Received On</th>
-                                            <th rowspan="1" colspan="1"></th>
-                                             </tr>
-                                       </thead>
-                                       <tbody>
-           
-                                           
-                                       <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                               <td class="">{{ u.patient.name }}</td>
-                                               <td class="">{{u.specimen.name}}</td>
-                                               <td class="">{{u.test.name}}</td>
-                                               <td class="">{{u.physician}}</td>
-                                               <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
-                                               
-                                               <td>
-                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/editspecimen/'+u.id">Details</NuxtLink>&nbsp;&nbsp;<NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink><br/><br/>
-                                                   <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
-                                               </td>
-                                               
-                                         </tr>
-                                       </tbody>
-                                       <tfoot>
-                                           <tr>
-                                            <th rowspan="1" colspan="1">Patient</th>
-                                            <th rowspan="1" colspan="1">Specimen</th>
-                                            <th rowspan="1" colspan="1">Test</th>
-                                            <th rowspan="1" colspan="1">Physician</th>
-                                            <th rowspan="1" colspan="1">Received On</th>
-                                            <th rowspan="1" colspan="1"></th>
-                                           </tr>
-                                       </tfoot>
-                                   </table>
-                                 </div>
-                               </div>
-                   
-                                 </div>
-                             </div>
-                            </div>
-                        
-                        </div>
-
-                        <!-- tab ends here -->
-                        </div>
-                      </div>
+                     
                     </div>
-                    <div class="col-12 col-lg-4 col-xl-3">
-                      <!-- <div class="card radius-10">
-                        <div class="card-body">
-                          <h5 class="mb-3">Address</h5>
-                           <p class="mb-0"><ion-icon name="compass-sharp" class="me-2"></ion-icon>{{user.address}}</p> 
+                  
+                    <div class="col-sm-4">
+                 
+        
+                        <div class="card radius-10">
+                          <div class="card-body">
+                            <h5 class="mb-3">Contacts</h5>
+                             <p class=""><ion-icon name="globe-sharp" class="me-2"></ion-icon>{{user.email??"No Email"}}</p>
+                             <p class=""><i class="lni lni-phone me-2"></i>{{user.phone??"No phone number"}}</p>
+                          </div>
                         </div>
-                      </div> -->
-      
-                      <div class="card radius-10">
-                        <div class="card-body">
-                          <h5 class="mb-3">Contacts</h5>
-                           <p class=""><ion-icon name="globe-sharp" class="me-2"></ion-icon>{{user.email??"No Email"}}</p>
-                           <p class=""><i class="lni lni-phone me-2"></i>{{user.phone??"No phone number"}}</p>
-                        </div>
-                      </div>
-
+  
+                       
+            
+  
+                    </div>
+                    <div class="col-sm-8">
                       <div class="card radius-10">
                         <div class="card-body">
                           <h5 class="mb-3">More Info</h5>
-                          <p>Profession: {{user.profession??"Unset"}}</p>
-                          <p>Gender: {{user.gender=='M'?"Male":"Female"}}</p>
-                          <p>Region of origin: {{user.region??"Unset"}}</p>
-    
-                          <p v-for="(o,i) in Object.keys(user.meta.fields)" :key="'cf-value-'+i">{{o}}: {{user.meta.fields[o]??"Unset"}}</p>
+                          
+                          <div class="row">
+                            <div class="col-4">
+                              <p>Profession: {{user.profession??"Unset"}}</p>
+                            </div>
+                            <div class="col-4">
+                              <p>Gender: {{user.gender=='M'?"Male":"Female"}}</p>
+                            </div>
+                            <div class="col-4">
+                              <p>Region of origin: {{user.region??"Unset"}}</p>
+                            </div>
+                            <div class="col-4" v-for="(o,i) in Object.keys(user.meta.fields)" :key="'cf-value-'+i">
+                              <p >{{o}}: {{user.meta.fields[o]? (user.meta.fields[o] ===true||user.meta.fields[o] ===false)?(user.meta.fields[o]?"Yes":"No"):user.meta.fields[o] :"Unset"}}</p>
+                            </div>
+                          </div>
+                      
     
                         </div>
                       </div>
                      
-                     
                     </div>
-
                     <div class="col-sm-12">
-                      
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="mb-2">Specimens & Tests</h4>
+                          <br/>
+                                <!-- SPECIMENS TABLE -->
+
+                        <div class="table-responsive">
+
+                          <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
+                               
+                         <div class="row">
+                           <div class="col-sm-12">
+                               <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
+                                 <thead>
+                                     <tr role="row">
+                                      <th rowspan="1" colspan="1">Patient</th>
+                                      <th rowspan="1" colspan="1">Specimen</th>
+                                      <th rowspan="1" colspan="1">Test</th>
+                                      <th rowspan="1" colspan="1">Physician</th>
+                                      <th rowspan="1" colspan="1">Received On</th>
+                                      <th rowspan="1" colspan="1"></th>
+                                       </tr>
+                                 </thead>
+                                 <tbody>
+     
+                                     
+                                 <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                         <td class="">{{ u.patient.name }}</td>
+                                         <td class="">{{u.specimen.name}}</td>
+                                         <td class="">{{u.test.name}}</td>
+                                         <td class="">{{u.physician}}</td>
+                                         <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
+                                         
+                                         <td>
+                                             <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Verify</NuxtLink>
+                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Enter Results</NuxtLink>
+                                             <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/viewspecimen/'+u.id">View </NuxtLink>
+                                             <NuxtLink class="btn btn-primary btn-sm"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
+                                             
+                                             <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
+                                         </td>
+                                         
+                                   </tr>
+                                 </tbody>
+                                 <tfoot>
+                                     <tr>
+                                      <th rowspan="1" colspan="1">Patient</th>
+                                      <th rowspan="1" colspan="1">Specimen</th>
+                                      <th rowspan="1" colspan="1">Test</th>
+                                      <th rowspan="1" colspan="1">Physician</th>
+                                      <th rowspan="1" colspan="1">Received On</th>
+                                      <th rowspan="1" colspan="1"></th>
+                                     </tr>
+                                 </tfoot>
+                             </table>
+                           </div>
+                         </div>
+             
+                           </div>
+                       </div>
+                       <!--  SPECIMENS TABLES ENDS -->
+
+                        </div>
+                      </div>
+
+
+                
                     </div>
                   </div>
                   <!-- end -->
@@ -279,12 +206,18 @@
   export default{
     mounted(){
       const context=this;
-      getRequestLoad_('/patient/'+this.id,{},(user)=>{
+      setTimeout(function(){
+        getRequestLoad_('/patient/'+context.id,{},(user)=>{
         context.user= user;
           getRequestLoad_('/specimens/',{patient:user.uniqid},(specimens)=>{
             context.specimens= specimens;
+            console.log(specimens)
+            setTimeout(function(){
+              loadDataTables();
+            },500)
           });
       })
+      },500)
     },  
     methods:{
       calculateAge(dob){
@@ -306,10 +239,10 @@
           profession:"",
           meta:{
             fields:{}
+          }
           },
           specimens:[], 
           tests:[]
-          }
       }
     }
   }
