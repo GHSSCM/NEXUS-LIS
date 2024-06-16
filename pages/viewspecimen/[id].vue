@@ -28,6 +28,15 @@
                 <div class="row" v-if="specimen">
 
 
+
+                   <div class="col-sm-8">
+
+                   </div>
+                   <div class="col-sm-4">
+                    <NuxtLink class="btn btn-primary btn-sm my-3 mb-5" target="_blank" v-if="meta.validated" :to="baseUrl+'/test-report/'+specimen.id+'.pdf'">Export PDF</NuxtLink>
+                   </div>
+
+
                     <div class="col-sm-12 col-md-4">
                         <p><b>Received:</b> {{specimen.receptiondate}}  {{specimen.receptiontime}}</p>
                     </div>
@@ -324,6 +333,7 @@
       const route=useRoute();
 
       return {
+        baseUrl:BASE_URL,
          user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
           id:route.params.id,
           specimen:null,

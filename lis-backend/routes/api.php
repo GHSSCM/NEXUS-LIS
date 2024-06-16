@@ -22,6 +22,7 @@ Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 Route::get('/test-report/{id}.pdf', [PDFController::class, 'generatePDF']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
+Route::get('/import-database', [DatabaseController::class, 'importDatabase']);
 
 
 // patients

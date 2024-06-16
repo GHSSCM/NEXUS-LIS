@@ -190,6 +190,29 @@
               </ul>
             </li>
 
+
+            <li class="menu-label">Advanced </li>
+        
+
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  
+                  <ion-icon name="ellipse-outline"></ion-icon>
+
+                </div>
+                <div class="menu-title">Database operations</div>
+              </a>
+              <ul>
+                <li> <NuxtLink :to="baseUrl+'/export-database'">
+                    <ion-icon name="ellipse-outline"></ion-icon>Export database
+                  </NuxtLink>
+                </li>
+            
+              </ul>
+            </li>
+
+
           </ul>
           <!--end navigation-->
         </aside>
@@ -552,7 +575,8 @@
   data(){
     return {
       user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
-      lab:window?window.localStorage.getItem("lab_ref"):null
+      lab:window?window.localStorage.getItem("lab_ref"):null,
+      baseUrl:BASE_URL
     }
   },
     mounted() {
