@@ -72,8 +72,10 @@
                                                 <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Verify</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Enter Results</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/viewspecimen/'+u.id">View </NuxtLink>
-                                                <NuxtLink class="btn btn-primary btn-sm"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
-                                                <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">Patient profile</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/profile/'+u.patient.id">Patient profile</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.billing" :to="'/initbilling/specimen/'+u.id">Generate Bill</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3" v-else target="_blank"  :to="baseUrl+'/bill-report/'+u.billing.id+'.pdf'">View Bill</NuxtLink>
                                                 
                                                 
                                                </td>
@@ -122,7 +124,8 @@
   export default{
     data(){
         return {
-          specimens:[]
+          specimens:[],
+          baseUrl:BASE_URL
         };
     },
     mounted(){

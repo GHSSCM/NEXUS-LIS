@@ -501,7 +501,9 @@ function parseListOfSpecimens($specimens){
         $billData=$bill->toArray();
         $billData['tests']=[];
         if(isset($bill->meta['specimens'])){
-            foreach($bill->meta['speciments'] as $specimentUniqid){
+            foreach($bill->meta['specimens'] as $specimentData){
+                $billData['created_at']=formatDate($bill['created_at']??"");
+                $specimentUniqid= $specimentData['uniqid'];
                 if(!isset($specimentsLoaded[$specimentUniqid])){
                     $specimentsLoaded[$specimentUniqid]=RegisteredSpecimen::query()->where('uniqid',$specimentUniqid)->get()->first();
                 }
@@ -539,7 +541,8 @@ function parseListOfSpecimens($specimens){
             "specimen"=>$sp->name,
             "patient"=>$patient->name,
             "patientId"=>$patient->uniqid,
-            "receptiondate"=>$sp->receptiondate,
+            "receptiondate"=>$specimen->receptiondate,
+            "uniqid"=>$specimen->uniqid,
             "label"=>"$test->name, $sp->name, received on: $specimen->receptiondate"
         ];
     }
@@ -568,7 +571,7 @@ function parseListOfSpecimens($specimens){
         "label"=>"$test->name, $sp->name, received on: $registeredSpecimen->receptiondate"
     ];
 
-    $specimens= RegisteredSpecimen::query()->whereIn("patient",$patient->uniqid)->whereNot("id",$registeredspecimentid)->get();
+    $specimens= RegisteredSpecimen::query()->where("patient",$patient->uniqid)->whereNot("id",$registeredspecimentid)->get();
     foreach($specimens as $specimen){
         $test = TestType::query()->where('uniqid',$specimen->test)->get()->first();
         $sp = SpecimenType::query()->where('uniqid',$specimen->specimen)->get()->first();
@@ -584,6 +587,7 @@ function parseListOfSpecimens($specimens){
             "label"=>"$test->name, $sp->name, received on: $specimen->receptiondate"
         ];
     }
+    return $data;
  });
 
  Route::post("/makebill",function(){
@@ -593,7 +597,7 @@ function parseListOfSpecimens($specimens){
     if(count( $requestData['meta']['specimens'])==0){
         return error_response(400,"Incorrect data");
     }else if(count( $requestData['meta']['specimens'])==1){
-        $requestData['specimen_id']= $requestData['meta']['specimens'][0];
+        $requestData['specimen_id']= $requestData['meta']['specimens'][0]['uniqid'];
     }else{
         $requestData['specimen_id']=null;
     }

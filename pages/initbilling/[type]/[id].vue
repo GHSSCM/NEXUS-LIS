@@ -11,11 +11,11 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Empty page</li>
+                      <li class="breadcrumb-item active" aria-current="page">Generate billing</li>
                     </ol>
                   </nav>
                 </div>
-                <div class="ms-auto">
+                <!-- <div class="ms-auto">
                   <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary">Options</button>
                     <button type="button"
@@ -29,17 +29,17 @@
                       <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <!--end breadcrumb-->
   
               <div>
                        
-                <h6 class="mb-0 text-uppercase">Configure the bill</h6>
+                <h6 class="mb-0 text-uppercase" v-if="possiblespecimens.length>0">PATIENT:&nbsp; {{possiblespecimens[0].patient}}</h6>
                 <hr/>
                 <br/>  <br/> 
                 <p><strong>Choose the different test(s) from below: </strong></p>
-                <multiselect label="label" v-model="selectedspecimens" :options="possiblespecimens" :multiple="true"  ></multiselect>
+                <multiselect label="label" v-model="selectedspecimens" track-by="uniqid" :options="possiblespecimens" :multiple="true" @remove="onRemove" ></multiselect>
                 <br/>
                 <br/>
 
@@ -65,7 +65,7 @@
                             <td>{{selectedspecimens[j].amount}} {{curr}}</td>
                             <td>
                                 <select v-model="selectedspecimens[j].discounttype">
-                                    <option value="NONE">None</option>
+                                    <option  value="NONE">None</option>
                                     <option value="PERC">Percentage</option>
                                     <option value="FLAT">Flat</option>
                                 </select>
@@ -84,12 +84,14 @@
 
                     <tfoot>
                         <tr role="row">
-                            <th rowspan="1" colspan="4">Total Amount</th>
-                            <th rowspan="1" colspan="1">500 {{curr}}</th>
+                            <th rowspan="1" colspan="5">Total Amount</th>
+                            <th rowspan="1" colspan="1">{{total}} {{curr}}</th>
                         </tr>
                     </tfoot>
 
                 </table>
+
+                <button v-if="selectedspecimens.length>0" class="btn btn-primary w-100 mt-5" @click="save">&check; Create bill</button>
             </div>
   
       
@@ -99,37 +101,74 @@
   </template>
   <script>
     export default {
-        // watch: {
-        //     selectedspecimens(newValue) {
-        //     // Replace every space with an underscore
-        //     this.username = newValue.replace(/ /g, '_');
-        // },
+        watch: {
+            selectedspecimens:{
+                handler(newValue,oldValue) {
+                 var total  =0;
+                 for(var i=0;i<newValue.length;i++){
+                    if(newValue[i].discounttype=="PERC"){
+                        total+= newValue[i].amount - ((newValue[i].amount*(newValue[i].discountamount??0))/100)
+                    }else if(newValue[i].discounttype=="FLAT"){
+                        total+=newValue[i].amount - (newValue[i].discountamount??0)
+                    }else{
+                        total+=newValue[i].amount;
+                    }
+                 }
+                 this.total=total;
+        },deep:true}},
         methods:{
+            onRemove(removedOption) {
+                // // Handle the removal of the option here
+                // console.log('Removed option:', this.selectedspecimens.indexOf(removedOption));
+                // // You can perform any additional logic needed when an option is removed
+                // this.selectedspecimens.splice(this.selectedspecimens.indexOf(removedOption),1);
 
+            },
+            save(){
+                if(this.selectedspecimens.length==0){
+                    return errorToast("You must choose a specimen");
+                }
+                const context=this;
+                this.bill.meta={
+                    specimens: this.selectedspecimens,
+                    currency:this.curr
+                }
+                postRequestLoad_("/makebill",this.bill,(d)=>{
+                    window.location.href=(context.baseUrl + "/bill-report/"+d.id+".pdf");
+                });
+            }
         },mounted(){
             const context=this;
-            getRequestLoad_("/initbilling-patient/"+this.id,{},(d)=>{
+           setTimeout(function(){
+            getRequestLoad_((context.type=="patient"?"/initbilling-patient/"+context.id:"/initbilling-speciment/"+context.id),{},(d)=>{
                     context.possiblespecimens=d;
                     if(d.length>0){
                         context.bill.patient =d[0].patientId;
                         context.bill.generatedby =context.user.name;
-                        context.bill.meta=[];
+                        context.bill.meta={};
                         context.bill.total=0;
                     }
+                    if(context.type!="patient"){
+                        context.selectedspecimens=[context.possiblespecimens[0]];
+                    }
             })
+           },500)
         },
         data(){
             const route = useRoute();
             return {
                 user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
                 curr:getAppConfig("currency"),
+                baseUrl:BASE_URL,
                 id:route.params.id,
                 selectedspecimens:[],
                 possiblespecimens:[],
+                type:route.params.type,
                 bill:{
                     // "uniqid","meta","generatedby","specimen_id","total","patient","lab_ref"
 
-                }
+                },
+                total:0
             }
         }
     }

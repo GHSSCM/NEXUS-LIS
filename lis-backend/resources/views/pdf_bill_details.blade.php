@@ -90,207 +90,72 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
     <table style="width: 100%; border-collapse: collapse;" >
         <tr style="margin:0;padding:0">
-        @if($specimen['test']['hidename'])
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">PATIENT NUMBER: {{$specimen['patient']['patient_id']}}</p></td>
-        @else
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{$specimen['patient']['name']}}</p></td>
-        @endif
+      
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{$bill['patient']['name']}}</p></td>
+ 
 
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen collection: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date: {{formatDate($bill['created_at']??"")}}</p></td>
         </tr>
 
-        <tr style="margin:0;padding:0">
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Sex: {{$specimen['patient']['gender']=='M'?"Male":"Female"}}</p></td>
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of result delivery: {{formatDate($specimen['enteredat']??now()->toDateTimeString())}}</p></td>
-        </tr>
-
-        <tr style="margin:0;padding:0">
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Age: {{calculateAge($specimen['patient']['dob'])}}</p></td>
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td>
-        </tr>
 
     </table>
 
 
     <hr/>
     <br/>
-    <center><h2><u>LABORATORY TESTS REPORT</u></h2></center>
+    <center><h2><u>BILL REPORT</u></h2></center>
     <br/>
+    <?php $total=0;?>
     <table class="table">
-            <tr>
-                <th colspan="4" style="text-align:start">GENERAL INFORMATION</th>
-            </tr>
-            <tr>
-                <td>Specimen type</td>
-                <td colspan="3" class="field"> {{ $specimen['specimen']['name']}}</td>
-            </tr>
-            <tr>
-                <td>Place of collection</td>
-                <td colspan="3" class="field">{{ $specimen['placeofcollection']??""}}</td>
-            </tr>
-            <tr>
-                <td>Time of collection</td>
-                <td colspan="3" class="field">{{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</td>
-            </tr>
-            <tr>
-                <td>Time of testing</td>
-                <td  colspan="3" class="field">{{formatDate(($specimen['testingdate']??"")." ".($specimen['testingtime']??""))}}</td>
-            </tr>
-            <tr>
-                <?php
-                
-                try{
-                    $keys = ['Laboratory Section','lab section','labsection','laboratory section','laboratorysection','Laboratory section','Lab section','Lab Section','lab_section'];
-                    $labsection ="";
-                    foreach ($keys as $key){
-                        $labsection =$specimen['test']['meta']['fields'][$key];
-                        if(!empty($labsection)){
-                            break;
-                        }
-                    }
-                    if(is_array($labsection)){
-                        $labsection = $labsection[0];
-                    }
-
-                    
-                }catch(Exception $e){
-                    
-                }
-                ?>
-                <th colspan="4" class="highlight">{{strtoupper($labsection)}}</th>
-            </tr>
+            
+        <tr>
+            <th colspan="1" style="text-align:start">TEST</th>
+            <th colspan="1" style="text-align:start">SPECIMEN</th>
+            <th colspan="1" style="text-align:start">BASE AMOUNT</th>
+            <th colspan="1" style="text-align:start">DISCOUNT</th>
+            <th colspan="1" style="text-align:start">TOTAL</th>
+        </tr>
+            
+        @foreach ($bill['meta']['specimens'] as $specimenBillingData )
+        <tr>
+            <td>
+                {{$specimenBillingData['test']}}
+            </td>
+            <td>
+                {{$specimenBillingData['specimen']}}
+            </td>
+            <td>
+                {{$specimenBillingData['amount']}}
+            </td>
             <?php
-
-                    $setOfResults = [$specimen];
-                    $tableData =[];
-                    $total_rows=0;
-                    foreach($setOfResults as $resultSet){
-                        $rsData=[];
-                        
-                        $rs_total_rows=0;
-                        foreach( $resultSet['meta']['results'] as $result){
-                            $subRows=0;
-                             if(isset($result['subs']) && count($result['subs'])>0){
-                                $rs_total_rows+=count($result['subs'])+2;
-                                $total_rows+=count($result['subs'])+2;
-
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>2,
-                                            "text"=>"<center><b>".strtoupper($result['name'])."</b></center>"
-                                        ],
-                                    ]
-                                ];
-
-                                foreach($result['subs'] as $subresult){
-                                    $rsData[]=[
-                                        "contents"=>[
-                                            [
-                                                "rowspan"=>1,
-                                                "colspan"=>1,
-                                                "text"=>"<b>".$subresult['name']."</b> ".$subresult['value'].''
-                                            ],
-                                            [
-                                                "rowspan"=>1,
-                                                "colspan"=>1,
-                                                "text"=>isset($subresult['maxValue'])&&isset($subresult['minValue'])? ($subresult['minValue']. " - ".$subresult['maxValue']." ".$subresult['unit']):$subresult['unit']
-                                            ],
-                                        ]
-                                    ];
-                                }
-
-
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>2,
-                                            "text"=>"<center><b>&nbsp;</b></center>"
-                                        ],
-                                    ]
-                                ];
-
-                            }else{
-                                $rs_total_rows+=1;
-                                $total_rows+=1;
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>1,
-                                            "text"=>"<b>".$result['name']."</b> ".$result['value'],  
-                                        ],
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>1,
-                                            "text"=> isset($result['maxValue'])&&isset($result['minValue'])? ($result['minValue']. " - ".$result['maxValue']." ".$result['unit']):$result['unit']
-                                        ],
-                                    ]
-                                ];
-                            }                     
-                        }
-                  
-                        $firstRowContent = $rsData[0]["contents"];
-                        $rsData[0]["contents"]=array_merge([[
-                            "text"=>$resultSet['test']['name'],
-                            "rowspan"=>$rs_total_rows,
-                            "colspan"=>1,
-                        ]],$firstRowContent); 
-
-
-                        $currentTableDataIndex=count($tableData);
-
-
-                        $tableData = array_merge($tableData,$rsData); 
-
-               
-                        $firstRowContent = $tableData[$currentTableDataIndex]["contents"];
-                        $tableData[$currentTableDataIndex]["contents"]=array_merge([[
-                            "toplevel"=>true,
-                            "rowspan"=>$total_rows,
-                            "colspan"=>1,
-                            "text"=>'Technique; immunofluorescence']],$firstRowContent); 
-                        $tableData[$currentTableDataIndex]["toplevel"]=true;
-                    }
-
-               
-
-                    // dd($tableData);
+                $discounttype = $specimenBillingData['discounttype']??"NONE";
+                $finalAmount=$specimenBillingData['amount'];
+                switch($discounttype){
+                    case "NONE":$finalAmount=$specimenBillingData['amount'];break;
+                    case "PERC":$finalAmount=$specimenBillingData['amount']-($specimenBillingData['amount']*(($specimenBillingData['discountamount']??0)/100));break;
+                    case "FLAT":$finalAmount=$specimenBillingData['amount'] - ($specimenBillingData['discountamount']??0) ;break;
+                }
+                $total+=$finalAmount;
             ?>
-            <tr>
-                <td></td>
-                <td>TESTS</td>
-                <td>RESULTS</td>
-                <td>REFERENCE RANGE</td>
-            </tr>
-            @foreach($tableData as $d)
-                <tr>
-
-                    @foreach ($d['contents'] as $content)
-
-                            <td   
-                            
-                            @if($content['toplevel']??false)
-                                style="font-style: italic;" class="highlight"
-                            @endif 
-
-
-                            rowspan="{{$content['rowspan']??1}}"
-                            colspan="{{$content['colspan']??1}}"
-
-                             
-                             
-                             
-                             > {!! $content['text'] !!} </td>
-                    
-                    @endforeach
+            <td>
+                @if($discounttype=='NONE')
+                    NONE
+                @elseif($discounttype=='PERC')
+                    {{$specimenBillingData['discountamount']??0}}%
+                @else
+                    {{$specimenBillingData['discountamount']??0}} {{$bill['meta']['currency']}}
+                @endif
+            </td>
                  
-                
-                </tr>
-            @endforeach
-           
+            <td>
+            {{$finalAmount}} {{$bill['meta']['currency']}}
+            </td>
+        </tr>
+        @endforeach
+            <tr>
+                <td colspan="4"> <strong>TOTAL</strong></td>
+                <td><strong>{{$total}} {{$bill['meta']['currency']}}</strong></td>
+            </tr>
            
         </table>
 
@@ -303,7 +168,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
     
             <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>TESTER:</b></p></td>
         
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>VALIDATOR:</b></p></td>
+            <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>VALIDATOR:</b></p></td> -->
         </tr>
 
     

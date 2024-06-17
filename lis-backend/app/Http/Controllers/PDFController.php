@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,8 @@ class PDFController extends Controller
     {
 
 
-    $bill=\App\Models\Bill::query()->find($id)->toArray();
+    $bill=\App\Models\Bill::query()->find($id);
+    $bill['patient']=Patient::query()->where('uniqid',$bill->patient)->get()->first();
 
         // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
         $footerContent = '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';

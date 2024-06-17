@@ -167,6 +167,8 @@
                                              <NuxtLink class="btn btn-primary btn-sm"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
                                              <NuxtLink class="btn btn-primary btn-sm me-3" target="_blank" v-if="u.meta && u.meta.validated" :to="baseUrl+'/test-report/'+u.id+'.pdf'">Export PDF</NuxtLink>
                                              
+                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.billing" :to="'/initbilling/specimen/'+u.id">Generate Bill</NuxtLink>
+                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-else target="_blank"  :to="baseUrl+'/bill-report/'+u.billing.id+'.pdf'">View Bill</NuxtLink>
                                              <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
                                          </td>
                                          

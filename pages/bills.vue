@@ -66,7 +66,7 @@
                                                <td>
                                                 
                                                 <NuxtLink class="btn btn-primary btn-sm" :to="baseUrl+'/bill-report/'+u.id+'.pdf'" target="_blank">View Details</NuxtLink>
-                                                <button class="btn btn-primary btn-sm" @click="deletebill(u)">Delete</button>
+                                                <button class="btn btn-danger btn-sm ms-3" @click="deletebill(u)">Delete</button>
                                                 
                                                 
                                                </td>
@@ -125,7 +125,7 @@
       },
       deletebill(data){
         const context=this;
-        if(Window.confirm("Are you sure you want to delete this bill?")){
+        if(window.confirm("Are you sure you want to delete this bill?")){
           getRequestLoad_("/bill/"+data.id+"/delete",{},()=>{
                 context.loadData();
           });
