@@ -16,10 +16,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\PDFController;
+use App\Models\Bill;
 
 Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 
 Route::get('/test-report/{id}.pdf', [PDFController::class, 'generatePDF']);
+Route::get('/bill-report/{id}.pdf', [PDFController::class, 'generatePDFBill']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::get('/import-database', [DatabaseController::class, 'importDatabase']);
@@ -352,7 +354,8 @@ Route::post("/addspecimen",function(){
     $specimen['patient']=Patient::query()->where("uniqid",$specimen['patient'])->first();
     $specimen['specimen']=SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
     $specimen['test']=TestType::query()->where("uniqid",$specimen['test'])->first();
-
+   
+    $specimen['billing']= Bill::query()->where("specimen_id",$specimen['uniqid'])->first();
     return $specimen;
 
  });
@@ -395,6 +398,8 @@ function parseListOfSpecimens($specimens){
         $specimensLoaded[$specimen['specimen']] = isset($specimensLoaded[$specimen['specimen']])?$specimensLoaded[$specimen['specimen']]:SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
         $testsLoaded[$specimen['test']] = isset($testsLoaded[$specimen['test']])?$testsLoaded[$specimen['test']]:TestType::query()->where("uniqid",$specimen['test'])->first();
    
+        $data[$i]['billing']= Bill::query()->where("specimen_id",$specimen['uniqid'])->first();
+
         $data[$i]['id']=$specimen['id'];
 
         $data[$i]['patient']=[
@@ -464,7 +469,7 @@ function parseListOfSpecimens($specimens){
             'reference'=>$patient->reference,
             'dob'=>$patient->dob,
             'uniqid'=>$patient->uniqid,
-            'id'=>$patient->id
+            'id'=>$patient->id,
         ],
         'physicians'=>$uniquePhysicians,
         'preleveurs'=>$uniquePreleveurs,
@@ -476,4 +481,122 @@ function parseListOfSpecimens($specimens){
 
  Route::post("/editspecimen/{id}",function($id){
     return RegisteredSpecimen::findOrFail($id)->update(request()->all());
+ });
+
+ Route::get("/bill/{id}/delete",function($id){
+    return Bill::findOrFail($id)->delete();
+ });
+
+
+ Route::get("/bills",function(){
+    $bills =  Bill::query()->where(request()->all())->get();
+
+    $specimentsLoaded=[];//hashmap
+    $testsLoaded=[];//hashmap
+    $patientsLoaded=[];//hashmap
+    
+    $finalData=[];
+
+    foreach($bills as $bill){
+        $billData=$bill->toArray();
+        $billData['tests']=[];
+        if(isset($bill->meta['specimens'])){
+            foreach($bill->meta['speciments'] as $specimentUniqid){
+                if(!isset($specimentsLoaded[$specimentUniqid])){
+                    $specimentsLoaded[$specimentUniqid]=RegisteredSpecimen::query()->where('uniqid',$specimentUniqid)->get()->first();
+                }
+                if(!isset($testsLoaded[$specimentsLoaded[$specimentUniqid]['test']])){
+                    $testsLoaded[$specimentsLoaded[$specimentUniqid]['test']]=TestType::query()->where('uniqid',$specimentsLoaded[$specimentUniqid]['test'])->get()->first();
+                }
+                $billData['tests'][]=$testsLoaded[$specimentsLoaded[$specimentUniqid]['test']]['name'];
+            }
+
+          
+        }
+
+        if(!isset($patientsLoaded[$specimentsLoaded[$specimentUniqid]['patient']])){
+            $patientsLoaded[$specimentsLoaded[$specimentUniqid]['patient']]=Patient::query()->where('uniqid',$specimentsLoaded[$specimentUniqid]['patient'])->get()->first();
+        }
+
+        $billData['patientname']=$patientsLoaded[$specimentsLoaded[$specimentUniqid]['patient']]['name'];
+        $finalData[]=$billData;
+            
+    }
+    return $finalData;
+ });
+
+ Route::get('/initbilling-patient/{patientId}',function($patientId){
+    $patient= Patient::query()->find($patientId);
+    $data=[];
+    $specimens= RegisteredSpecimen::query()->where("patient",$patient->uniqid)->get();
+    foreach($specimens as $specimen){
+        $test = TestType::query()->where('uniqid',$specimen->test)->get()->first();
+        $sp = SpecimenType::query()->where('uniqid',$specimen->specimen)->get()->first();
+     
+        $data[]=[
+            "amount"=>$test->cost,
+            "test"=>$test->name,
+            "specimen"=>$sp->name,
+            "patient"=>$patient->name,
+            "patientId"=>$patient->uniqid,
+            "receptiondate"=>$sp->receptiondate,
+            "label"=>"$test->name, $sp->name, received on: $specimen->receptiondate"
+        ];
+    }
+    return $data;
+ });
+
+
+ Route::get('/initbilling-speciment/{registeredspecimentid}',function($registeredspecimentid){
+
+    $registeredSpecimen = RegisteredSpecimen::query()->find($registeredspecimentid);
+    $patient= Patient::query()->where("uniqid",$registeredSpecimen->patient)->first();
+    $data=[];
+
+
+    $test = TestType::query()->where('uniqid',$registeredSpecimen->test)->get()->first();
+    $sp = SpecimenType::query()->where('uniqid',$registeredSpecimen->specimen)->get()->first();
+ 
+    $data[]=[
+        "amount"=>$test->cost,
+        "test"=>$test->name,
+        "specimen"=>$sp->name,
+        "patient"=>$patient->name,
+        "patientId"=>$patient->uniqid,
+        "receptiondate"=>$registeredSpecimen->receptiondate,
+        "uniqid"=>$registeredSpecimen->uniqid,
+        "label"=>"$test->name, $sp->name, received on: $registeredSpecimen->receptiondate"
+    ];
+
+    $specimens= RegisteredSpecimen::query()->whereIn("patient",$patient->uniqid)->whereNot("id",$registeredspecimentid)->get();
+    foreach($specimens as $specimen){
+        $test = TestType::query()->where('uniqid',$specimen->test)->get()->first();
+        $sp = SpecimenType::query()->where('uniqid',$specimen->specimen)->get()->first();
+     
+        $data[]=[
+            "amount"=>$test->cost,
+            "test"=>$test->name,
+            "specimen"=>$sp->name,
+            "patient"=>$patient->name,
+            "patientId"=>$patient->uniqid,
+            "receptiondate"=>$specimen->receptiondate,
+            "uniqid"=>$specimen->uniqid,
+            "label"=>"$test->name, $sp->name, received on: $specimen->receptiondate"
+        ];
+    }
+ });
+
+ Route::post("/makebill",function(){
+    // "meta","generatedby","specimen_id","total","patient"
+
+    $requestData = request()->all();
+    if(count( $requestData['meta']['specimens'])==0){
+        return error_response(400,"Incorrect data");
+    }else if(count( $requestData['meta']['specimens'])==1){
+        $requestData['specimen_id']= $requestData['meta']['specimens'][0];
+    }else{
+        $requestData['specimen_id']=null;
+    }
+    return Bill::query()->create($requestData);
+
  });

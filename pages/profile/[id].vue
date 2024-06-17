@@ -66,6 +66,7 @@
                               <div class="">
 
                                 <NuxtLink class="btn btn-primary me-2" :to="'/addspecimen/'+user.id" >Register Specimen</NuxtLink>
+                                <NuxtLink class="btn btn-primary me-2" :to="'/initbilling/patient/'+user.id" >Create a bill</NuxtLink>
                                 <!-- <span class="badge rounded-pill bg-primary">UX Research</span>
                                 <span class="badge rounded-pill bg-primary">CX Strategy</span>
                                 <span class="badge rounded-pill bg-primary">Project Management</span>

@@ -115,6 +115,23 @@
               </ul>
             </li>
     
+
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  <ion-icon name="ellipse-outline"></ion-icon>
+                </div>
+                <div class="menu-title">Billing</div>
+              </a>
+              <ul>
+                <li> <NuxtLink to="/bills">
+                  <ion-icon name="ellipse-outline"></ion-icon>
+                   Generated Bills
+                </NuxtLink>
+              </li>
+              </ul>
+            </li>
+
     
             <li class="menu-label">LAB Configuration </li>
         

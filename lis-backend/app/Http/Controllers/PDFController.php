@@ -27,4 +27,21 @@ class PDFController extends Controller
         return $pdf->stream('document.pdf');
     }
     //
+
+
+    public function generatePDFBill($id)
+    {
+
+
+    $bill=\App\Models\Bill::query()->find($id)->toArray();
+
+        // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
+        $footerContent = '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';
+    
+        $pdf = Pdf::loadView('pdf_bill_details', compact( 'bill','footerContent'))->setPaper('a4')
+        ->setWarnings(false);
+        $pdf->set_option('isPhpEnabled', true);
+        return $pdf->stream('document.pdf');
+    }
+
 }
