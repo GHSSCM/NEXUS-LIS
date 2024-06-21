@@ -22,13 +22,13 @@ return new class extends Migration
             $table->json('meta')->nullable();
         });
 
-        Laboratory::create([
-            'name'=>'First Lab',
-            'ref'=>'lab_abc',
-            'meta'=>[
-                'currency'=>'CAD'
-            ]
-        ]);
+        // Laboratory::create([
+        //     'name'=>'First Lab',
+        //     'ref'=>'lab_abc',
+        //     'meta'=>[
+        //         'currency'=>'CAD'
+        //     ]
+        // ]);
     }
 
     /**

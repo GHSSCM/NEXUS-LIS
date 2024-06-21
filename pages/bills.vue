@@ -135,7 +135,7 @@
     data(){
         return {
           bills:[],
-          baseUrl:BASE_URL
+          baseUrl:getBaseUrl()
         };
     },
     mounted(){

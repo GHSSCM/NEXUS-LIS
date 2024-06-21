@@ -127,7 +127,7 @@
     data(){
         return {
           specimens:[],
-          baseUrl:BASE_URL
+          baseUrl:getBaseUrl()
         };
     },
     mounted(){

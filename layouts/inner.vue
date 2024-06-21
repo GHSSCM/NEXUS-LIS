@@ -593,7 +593,7 @@
     return {
       user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
       lab:window?window.localStorage.getItem("lab_ref"):null,
-      baseUrl:BASE_URL
+      baseUrl:getBaseUrl()
     }
   },
     mounted() {

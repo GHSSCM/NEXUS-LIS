@@ -250,7 +250,7 @@
           },
           specimens:[], 
           tests:[],
-          baseUrl:BASE_URL
+          baseUrl:getBaseUrl()
       }
     }
   }

@@ -159,7 +159,7 @@
             return {
                 user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
                 curr:getAppConfig("currency"),
-                baseUrl:BASE_URL,
+                baseUrl:getBaseUrl(),
                 id:route.params.id,
                 selectedspecimens:[],
                 possiblespecimens:[],

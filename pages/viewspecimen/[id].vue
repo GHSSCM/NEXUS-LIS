@@ -336,7 +336,7 @@
       const route=useRoute();
 
       return {
-        baseUrl:BASE_URL,
+        baseUrl:getBaseUrl(),
          user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
           id:route.params.id,
           specimen:null,

@@ -5,13 +5,13 @@ REM Get the current directory
 set "current_dir=%cd%"
 
 REM Define the relative paths to the PHP and MySQL directories
-set "php_dir=%current_dir%\..\php"
-set "mysql_dir=%current_dir%\..\mysql"
+set "php_dir=%current_dir%\components\php"
+set "mysql_dir=%current_dir%\components\mysql"
 
 
 
 REM Define the custom MySQL data directory
-set "mysql_data_dir=C:\lisdata"
+set "mysql_data_dir=C:\lis.data.do.not.delete"
 
 
 REM Check if the PHP executable exists
@@ -46,8 +46,34 @@ start "" "%mysql_dir%\bin\mysqld.exe" --datadir="%mysql_data_dir%"
 REM Give MySQL a few seconds to start up
 timeout /t 5 /nobreak > nul
 
+echo ================================================
+echo USE THE FOLLOWING LINKS ON ANY BROWSER:
+
+setlocal enabledelayedexpansion
+
+REM Get the IP addresses
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /i "IPv4"') do (
+    set "ip=%%a"
+    set "ip=!ip:~1!"
+    echo http://!ip!
+)
+
+endlocal
+
+
+echo =================================================
+
 REM Launch the PHP built-in server
+cd core
+
+
+REM set "env_raw=%current_dir%\core\localenv"
+REM set "env_true=%current_dir%\core\.env"
+
+copy  localenv  .env
+
 php -S 0.0.0.0:80
 
 REM End local settings
+
 endlocal

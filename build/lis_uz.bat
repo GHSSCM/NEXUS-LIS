@@ -1,6 +1,6 @@
 @echo off
 setlocal
-
+echo Unzipping...
 REM Check if a file path is provided
 if "%~1"=="" (
     echo Usage: %0 ^<zipfile.zip^> [^<destination_folder^>]
@@ -26,5 +26,5 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo Unzipping completed successfully.
+
 exit /b 0
