@@ -156,7 +156,7 @@
                         <input :disabled="meta.validated" placeholder="Enter optional remark here" type="text" class="form-control" v-model="meta.results[j].remark" />
                     </div>
 
-                    <div v-else>
+                    <div v-else-if='meta.results'>
 <!-- SUB START -->
                             <div class="row p-4" v-if="specimen && m.subs.length>0" v-for="(s,h) in m.subs">
                                 <div class="col-sm-2">
@@ -230,6 +230,9 @@
             if(specimen.meta){
                 context.meta=specimen.meta;
             }
+            if(!specimen.meta.results){
+                context.meta.results=[]
+            }
             for(var i=0;i<context.specimen.test.meta.fields.measures.length;i++){
                 const measure = context.specimen.test.meta.fields.measures[i];
                 if(!context.meta.results[i]){
@@ -300,7 +303,7 @@
                     }
                 }
             }
-            console.log(JSON.parse(JSON.stringify(context.meta.results)))
+            // console.log(JSON.parse(JSON.stringify(context.meta.results)))
           });
 
       },500)

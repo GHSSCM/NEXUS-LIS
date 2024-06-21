@@ -22,3 +22,13 @@ logs
 .env
 .env.*
 !.env.example
+
+
+build/www
+build/www/
+www.zip
+
+www/
+www
+./www/
+./www

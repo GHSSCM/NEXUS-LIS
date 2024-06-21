@@ -1,11 +1,12 @@
 import axios from 'axios';
 
+export const isLocal=true;
 export const BASE_URL="http://localhost:8000/api";
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc";
-    axios.get(BASE_URL+endpoint,{params}).then((d)=>{
+    axios.get((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,{params}).then((d)=>{
         successFunction(d.data);
         window.reloadComps();
     }).catch(e=>{
@@ -52,7 +53,7 @@ export const postRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFu
 // 
 export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc";
-    axios.post(BASE_URL+endpoint,params).then((d)=>{
+    axios.post((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,params).then((d)=>{
         successFunction(d.data);
         window.reloadComps();
     }).catch(e=>{
