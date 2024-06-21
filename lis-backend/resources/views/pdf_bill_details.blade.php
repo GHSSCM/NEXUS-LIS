@@ -166,7 +166,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
         <table style="width: 100%; border-collapse: collapse;" >
         <tr style="margin:0;padding:0">
     
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>TESTER:</b></p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>FINANCE:</b></p></td>
         
             <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>VALIDATOR:</b></p></td> -->
         </tr>
