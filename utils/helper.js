@@ -4,7 +4,12 @@ import axios from 'axios';
 export const BASE_URL="http://localhost:8000/api";
 
 export const getBaseUrl=()=>{
-    return (isLocal?(window.location.origin+"/api"):BASE_URL);
+    if(window){
+        return (isLocal?(window.location.origin+"/api"):BASE_URL);
+    }else{
+        return BASE_URL;
+    }
+    
 }
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";

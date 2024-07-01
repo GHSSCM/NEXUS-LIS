@@ -31,12 +31,28 @@ trap cleanup SIGINT
 mv utils/environment.js utils/environment.js.main
 mv utils/environment.js.local utils/environment.js
 
-#build
+# #build
 npm run generate
+
+
+# Check if the npm generate command was successful
+if [ $? -ne 0 ]; then
+    echo "npm generate command failed. Exiting script."
+    #revert envs
+    mv utils/environment.js utils/environment.js.local
+    mv utils/environment.js.main utils/environment.js
+    exit 1
+else
+    echo "npm generate command succeeded."
+fi
 
 #revert envs
 mv utils/environment.js utils/environment.js.local
 mv utils/environment.js.main utils/environment.js
+
+
+
+
 
 
 

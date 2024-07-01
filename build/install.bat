@@ -10,6 +10,10 @@ set "lis_dir_two=C:\lis\core"
 
 set "lis_dir_three=C:\lis\components"
 
+
+set "lis_dir_four=C:\xampp"
+
+
 REM Create the custom data directory if it does not exist
 if not exist "%lis_dir%" (
     mkdir "%lis_dir%"
@@ -41,4 +45,20 @@ if not exist "%lis_dir_three%" (
 )
 
 
-lis_uz.bat ".\www.zip" "C:\lis\core" && lis_uz.bat ".\components.zip" "C:\lis\components" && copy .\lis_st.bat "C:\lis\LIS.bat"  && echo "Installation Completed Successfully...."  && pause
+
+if not exist "%lis_dir_four%" (
+    mkdir "%lis_dir_four%"
+    call lis_uz.bat ".\components.zip" "C:\xampp" 
+    if errorlevel 1 (
+        echo Failed to create directory "%lis_dir_four%
+        exit /b 1
+    )
+)
+
+call lis_uz.bat ".\www.zip" "C:\lis\core" 
+
+copy .\lis_st.bat "C:\lis\LIS.bat"  
+
+echo Installation Completed Successfully....
+
+pause

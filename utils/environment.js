@@ -1,1 +1,1 @@
-export const isLocal=false; 
+export const isLocal=false; // when building to send somewhere
