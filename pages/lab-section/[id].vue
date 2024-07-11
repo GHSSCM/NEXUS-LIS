@@ -185,14 +185,16 @@
 
 
       const context=this;
-      getRequestLoad_('/lab-section/'+context.id,{
+      if(context.id!='create'){
+        getRequestLoad_('/lab-section/'+context.id,{
       
-      },(data)=>{
-        context.name=data.name;
-        context.description=data.description;
-        context.techniques=data.techniques;
-        context.meta=data.meta;
-      })
+        },(data)=>{
+          context.name=data.name;
+          context.description=data.description;
+          context.techniques=data.techniques;
+          context.meta=data.meta;
+        })
+      }
 
       getRequestLoad_('/customfields',{
         category:"labsection"
