@@ -65,7 +65,7 @@
                                                <td class="">{{u.tests.join(", ")}}</td>
                                                <td>
                                                 
-                                                <NuxtLink class="btn btn-primary btn-sm" :to="baseUrl+'/bill-report/'+u.id+'.pdf'" target="_blank">View Details</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm" :to="baseUrl+'/bill-report?id='+u.id" target="_blank">View Details</NuxtLink>
                                                 <button class="btn btn-danger btn-sm ms-3" @click="deletebill(u)">Delete</button>
                                                 
                                                 

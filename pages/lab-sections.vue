@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">Specimen types</li>
+                      <li class="breadcrumb-item active" aria-current="page">Lab Sections</li>
                     </ol>
                   </nav>
                 </div>
@@ -24,7 +24,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> 
                       <NuxtLink class="dropdown-item"
-                        to="/specimentype/create">New Specimen</NuxtLink>
+                        to="/lab-section/create">New Section</NuxtLink>
                   
                     </div>
                   </div>
@@ -46,7 +46,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                              <h4 class="mb-2">Specimen Types</h4>
+                              <h4 class="mb-2">Lab Sections</h4>
                               <br/>
                               
                               <div class="table-responsive">
@@ -61,6 +61,7 @@
                                             <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1">Name</th>
                                             <th rowspan="1" colspan="1">Description</th>
+                                            <th rowspan="1" colspan="1">Techniques</th>
                                             <th rowspan="1" colspan="1">Creation date</th>
                                             <th></th>
                                              </tr>
@@ -68,16 +69,17 @@
                                        <tbody>
            
                                            
-                                       <tr role="row" v-for="(u,i) in specimentypes" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                       <tr role="row" v-for="(u,i) in labsections" :class="i%2==0?'even':'odd'" :key="'account-'+i">
                                         <td class="">{{ i+1 }}</td> 
                                               <td class="">{{ u.name }}</td>
                                                <td class="">{{u.description}}</td>
+                                               <td>{{(u.techniques??[]).join(",")}}</td>
                                                <td class="sorting_1">{{u.created_at.split(".")[0].split('T').join(" ")}}</td>
-                                               
-                                               <td>
-                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/specimentype/'+u.id">View/Edit</NuxtLink>
 
-                                                 <button class="btn btn-primary btn-sm ms-2" @click="duplicateData(u)" >Duplicate</button>
+                                               <td>
+                                                   <NuxtLink class="btn btn-primary btn-sm" :to="'/lab-section/'+u.id">View/Edit</NuxtLink>
+
+                                                 <!-- <button class="btn btn-primary btn-sm ms-2" @click="duplicateData(u)" >Duplicate</button> -->
 
 
                                                </td>
@@ -89,6 +91,7 @@
                                             <th rowspan="1" colspan="1"></th>
                                              <th rowspan="1" colspan="1">Name</th>
                                              <th rowspan="1" colspan="1">Description</th>
+                                             <th rowspan="1" colspan="1">Techniques</th>
                                              <th rowspan="1" colspan="1">Creation date</th>
                                              <th></th>
                                            </tr>
@@ -124,8 +127,8 @@
   export default{
     mounted(){
       const context=this;
-      getRequestLoad_('/specimentypes/',{},(specimentypes)=>{
-        context.specimentypes= specimentypes;
+      getRequestLoad_('/lab-sections/',{},(labsections)=>{
+        context.labsections= labsections;
         setTimeout(() => {
           loadDataTables();
         }, 500);
@@ -133,24 +136,24 @@
     },
     data(){
       return {
-        specimentypes:[]
+        labsections:[]
       }
     },
     methods:{
       duplicateData(d){
-      const context=this;
-      if(window.confirm("Are you sure you want to duplicate this specimen: "+d.name+" ?")){
-        getRequestLoad_(
-          "/duplicate-specimen/"+d.id,
-          {},
-          (r)=>{
-              successToast("Duplicated successfully");
+      // const context=this;
+      // if(window.confirm("Are you sure you want to duplicate this sec: "+d.name+" ?")){
+      //   getRequestLoad_(
+      //     "/duplicate-specimen/"+d.id,
+      //     {},
+      //     (r)=>{
+      //         successToast("Duplicated successfully");
 
-              context.$router.push("/specimentype/"+r.id);
+      //         context.$router.push("/specimentype/"+r.id);
               
-          }
-        )
-      }
+      //     }
+      //   )
+      // }
     }
     }
   }

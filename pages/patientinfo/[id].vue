@@ -48,7 +48,7 @@
 
                       <div class="mb-4">
                           <label class="form-label">Patient Number</label>
-                          <input required class="form-control" type="text" placeholder="Patient Number"  v-model="reference">
+                          <input class="form-control" type="text" placeholder="Patient Number"  v-model="reference">
                         </div>
               
                       
@@ -72,7 +72,7 @@
 
                   <div class="mb-4">
                       <label class="form-label">Gender</label>
-                      <select required class="form-select " id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
+                      <select  class="form-select " id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
                        
                         <option value="M" selected>Male</option>
                         <option value="F">Female</option>
@@ -108,7 +108,7 @@
 
                   <div class="mb-4">
                       <label class="form-label">Region of origin</label>
-                      <select required v-model="region" class="form-select " id="single-select-field2" data-placeholder="Region of origin">
+                      <select  v-model="region" class="form-select " id="single-select-field2" data-placeholder="Region of origin">
                        
                         <option value="Far North">Far north</option>
                         <option value="North">North</option>
@@ -284,6 +284,17 @@ export default{
     }
   },
   methods:{
+
+    getQueryParameter(name) {
+        // Create a regular expression to match the query parameter
+        const regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i');
+        // Get the URL query string
+        const queryString = window.location.search;
+        // Match the query parameter in the URL query string
+        const match = regex.exec(queryString);
+        // If a match is found, decode and return the parameter value, otherwise return null
+        return match ? decodeURIComponent(match[1]) : null;
+    },
     getDateXYearsBefore( x) {
       const date = new Date();
       date.setFullYear(date.getFullYear() - x);
@@ -319,6 +330,17 @@ export default{
       },(fields)=>{
         context.fields= fields;
       })
+
+      setTimeout(function(){
+
+        const name = context.getQueryParameter('name');
+        // alert(name);
+        console.log("This is it "+name);
+        if(name){
+          context.name=name;
+        }
+
+      },500);
 
       if(this.pageId!="create"){
         getRequestLoad_('/patient/'+this.pageId,{ 

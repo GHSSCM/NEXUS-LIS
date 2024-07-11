@@ -59,6 +59,7 @@
                                    <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
                                      <thead>
                                          <tr role="row">
+                                          <th rowspan="1" colspan="1"></th>
                                           <th rowspan="1" colspan="1">Name</th>
                                           <th rowspan="1" colspan="1">Description</th>
                                           <th rowspan="1" colspan="1">Type</th>
@@ -70,7 +71,9 @@
          
                                          
                                      <tr role="row" v-for="(u,i) in testtypes" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                             <td class="">{{ u.name }}</td>
+                                             
+                                            <td class="">{{ i+1 }}</td>
+                                            <td class="">{{ u.name }}</td>
                                              <td class="">{{u.description}}</td>
                                              <td class="">{{u.type}}</td>
                                              <td class="sorting_1">{{u.created_at.split(".")[0].split('T').join(" ")}}</td>
@@ -85,6 +88,7 @@
                                      </tbody>
                                      <tfoot>
                                          <tr>
+                                          <th rowspan="1" colspan="1"></th>
                                            <th rowspan="1" colspan="1">Name</th>
                                            <th rowspan="1" colspan="1">Description</th>
                                            <th rowspan="1" colspan="1">Type</th>

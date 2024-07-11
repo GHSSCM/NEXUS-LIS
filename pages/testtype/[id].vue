@@ -123,7 +123,7 @@
 
                               <div  class="ms-3">
                                 <div class="d-flex flex-row justify-content-space-between w-100">
-                                    <lablel>Range</lablel>
+                                    <lablel>Age</lablel>
                                 </div>
                                 <input required v-model="meta.fields.measures[i].numericrangevalues[j].v1" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
   
@@ -245,7 +245,7 @@
 
                               <div  class="ms-3">
                                 <div class="d-flex flex-row justify-content-space-between w-100">
-                                    <lablel>Range</lablel>
+                                    <lablel>Age</lablel>
                                 </div>
                                 <input required v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].v1" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
   
@@ -398,7 +398,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Prevalence Threshold </label>
-                            <input required v-model="threshold" class="form-control" type="number" placeholder="Prevalence Threshold"/>
+                            <input  v-model="threshold" class="form-control" type="number" placeholder="Prevalence Threshold"/>
                           </div>
                 
 
@@ -413,11 +413,11 @@
                         <div class="mb-4">    <label class="form-label">Target TAT </label>
                             <div class="row">
                               <div class="col-sm-9">
-                            <input required v-model="tat" class="result form-control" type="number" placeholder="Target TAT"/>
+                            <input  v-model="tat" class="result form-control" type="number" placeholder="Target TAT"/>
                             
                               </div>
                               <div class="col-sm-3">
-                                <select required v-model="tatunit" class="form-control">
+                                <select  v-model="tatunit" class="form-control">
                                   <option value="hours">Hours</option>
                                   <option value="minutes">Minutes</option>
                                 </select>
@@ -441,6 +441,21 @@
                           
 
                     </div>
+
+
+                    <div class="col-sm-12 col-md-6 mt-3">
+
+                      <div class="mb-4">
+                          <label class="form-label">Laboratory Section</label>
+                        <multiselect v-model="lab_section" :required="true" :options="lab_sections" track-by="uniqid" label="name" ></multiselect>
+
+
+                        </div>
+              
+
+                        
+
+                  </div>
 
 
 
@@ -535,6 +550,8 @@
             hidename:false,
             threshold:"",
             loadedspecimens:[],
+            lab_sections:[],
+            lab_section:null,
             meta:{
               fields:{
                 measures:[
@@ -554,6 +571,14 @@
         context.fields= fields;
       })
 
+
+
+      getRequestLoad_('/lab-sections',{
+       
+      },(lab_sections)=>{
+        context.lab_sections= lab_sections;
+      })
+
       getRequestLoad_('/specimentypes',{},(loadedspecimens)=>{
         context.loadedspecimens= loadedspecimens;
         if(context.id!='create'){
@@ -567,6 +592,7 @@
               context.hidename=testtype.hidename;
               context.threshold=testtype.threshold;
               context.meta=testtype.meta;
+              context.lab_section=testtype.lab_section;
               if(!context.meta.fields){
                 context.meta.fields={
                 measures:[
@@ -608,7 +634,8 @@
           hidename:this.hidename,
           threshold:this.threshold,
           cost:this.cost,
-          meta:this.meta
+          meta:this.meta,
+          lab_section:(this.lab_section??{}).uniqid,
         },(specimen)=>{
           if(context.id=='create'){
             successToast("Created successfully");

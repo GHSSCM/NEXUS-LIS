@@ -46,6 +46,7 @@
                                      <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
                                        <thead>
                                            <tr role="row">
+                                            <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1">Patient</th>
                                             <th rowspan="1" colspan="1">Specimen</th>
                                             <th rowspan="1" colspan="1">Test</th>
@@ -60,6 +61,7 @@
            
                                            
                                        <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
+                                               <td class="">{{ i+1 }}</td>
                                                <td class="">{{ u.patient.name }}</td>
                                                <td class="">{{u.specimen.name}}</td>
                                                <td class="">{{u.test.name}}</td>
@@ -72,10 +74,11 @@
                                                 <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Verify</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Enter Results</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/viewspecimen/'+u.id">View </NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.meta.validated" :to="'/editspecimen/'+u.id">Edit </NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/profile/'+u.patient.id">Patient profile</NuxtLink>
                                                 <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.billing" :to="'/initbilling/specimen/'+u.id">Generate Bill</NuxtLink>
-                                                <NuxtLink class="btn btn-primary btn-sm me-3" v-else target="_blank"  :to="baseUrl+'/bill-report/'+u.billing.id+'.pdf'">View Bill</NuxtLink>
+                                                <NuxtLink class="btn btn-primary btn-sm me-3" v-else target="_blank"  :to="baseUrl+'/bill-report?id='+u.billing.id">View Bill</NuxtLink>
                                                 
                                                 
                                                </td>
@@ -84,6 +87,7 @@
                                        </tbody>
                                        <tfoot>
                                            <tr>
+                                            <th rowspan="1" colspan="1"></th>
                                             <th rowspan="1" colspan="1">Patient</th>
                                             <th rowspan="1" colspan="1">Specimen</th>
                                             <th rowspan="1" colspan="1">Test</th>

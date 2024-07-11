@@ -9,7 +9,7 @@
           </div>
         </div> -->
         <!--start sidebar -->
-        <aside class="sidebar-wrapper" data-simplebar="true" style="background-color:#19257B">
+        <aside class="sidebar-wrapper" data-simplebar="true" style="background-color:#19257B;    overflow-y: auto;">
           <div class="sidebar-header" style="background-color:#19257B">
             <div>
               <img src="assets/logo.png" class="logo-icon" alt="logo icon" style="filter:unset;width:50px;margin-top:20px;margin-bottom:20px;">
@@ -20,14 +20,14 @@
           </div>
           <!--navigation-->
           <ul class="metismenu" id="menu">
-            <!-- <li>
+            <li>
               <NuxtLink to="/home">
                 <div class="parent-icon">
                   <ion-icon name="home-outline"></ion-icon>
                 </div>
-                <div class="menu-title">Home</div>
+                <div class="menu-title">Dashboard</div>
               </NuxtLink>
-            </li> -->
+            </li>
             <li>
               <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon">
@@ -179,6 +179,26 @@
               </ul>
             </li>
 
+            <li>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon">
+                  
+                  <ion-icon name="ellipse-outline"></ion-icon>
+
+                </div>
+                <div class="menu-title">Lab Section</div>
+              </a>
+              <ul>
+                <li> <NuxtLink to="/lab-sections">
+                    <ion-icon name="ellipse-outline"></ion-icon>Lab Sections
+                  </NuxtLink>
+                </li>
+                <li> <NuxtLink to="/lab-section/create">
+                    <ion-icon name="ellipse-outline"></ion-icon>New Lab Section
+                  </NuxtLink>
+                </li>
+              </ul>
+            </li>
 
 
             <li class="menu-label">Access </li>

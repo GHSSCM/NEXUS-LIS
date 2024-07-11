@@ -91,7 +91,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Target TAT </label>
-                            <input required v-model="tat" class="result form-control" type="text" placeholder="Target TAT"/>
+                            <input v-model="tat" class="result form-control" type="text" placeholder="Target TAT"/>
                           </div>
                 
 
@@ -103,7 +103,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Cost to patient in {{curr}}</label>
-                            <input required v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
+                            <input  v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
                           </div>
                 
 
@@ -142,7 +142,7 @@
             description:"",
             specimens:[],
             tat:"",
-            cost:1000,
+            cost:0,
             hidename:false,
             threshold:"",
             loadedtests:[],
@@ -163,7 +163,7 @@
             context.description=testtype.description;
             context.specimens=testtype.specimens;
             context.tat=testtype.tat;
-            context.cost=testtype.cost;
+            context.cost=testtype.cost??0;
             context.hidename=testtype.hidename;
             context.threshold=testtype.threshold;
             context.subtests=testtype.subtests;
@@ -179,7 +179,7 @@
           description:this.description,
           name:this.name,
           tat:this.tat,
-          cost:this.cost,
+          cost:this.cost??0,
           type:"GROUP",
           specimens:JSON.parse(JSON.stringify(this.specimens.map(r=>r.uniqid))),
           hidename:false,

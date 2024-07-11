@@ -9,7 +9,7 @@ export default {
   },
   mounted() {
     if(window && window.localStorage.getItem("user")){
-          this.$router.push("/patients");
+          this.$router.push("/home");
         }
       if(typeof window !="undefined"){
         this.loadScript();
@@ -24,7 +24,7 @@ export default {
               window.localStorage.setItem("user",JSON.stringify(user));
               window.localStorage.setItem("lis_config",JSON.stringify(user.config));
               window.localStorage.setItem("lab_ref",user.lab_ref);
-              context.$router.push('/patients');   
+              context.$router.push('/home');   
         });
       },
       loadScript() {

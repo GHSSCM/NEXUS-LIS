@@ -18,14 +18,17 @@ class DatabaseController extends Controller
         $filename = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
         $filepath = storage_path('app/' . $filename);
 
-        $command = "mysqldump --user={$username} --password={$password} --host={$host} {$databaseName} > {$filepath}";
-        $process = Process::fromShellCommandline($command);
+        $command = "C:\\xampp\\mysql\\bin\\mysqldump --user={$username} --password={$password} --host={$host} {$databaseName} > {$filepath}";
+       
+        shell_exec($command);
+        ///
+        // // $process = Process::fromShellCommandline($command);
 
-        try {
-            $process->mustRun();
-        } catch (ProcessFailedException $exception) {
-            return response()->json(['error' => 'Database export failed: ' . $exception->getMessage()], 500);
-        }
+        // try {
+        //     $process->mustRun();
+        // } catch (ProcessFailedException $exception) {
+        //     return response()->json(['error' => 'Database export failed: ' . $exception->getMessage()], 500);
+        // }
 
         return response()->download($filepath)->deleteFileAfterSend(true);
     }
@@ -44,7 +47,8 @@ class DatabaseController extends Controller
         $file = $request->file('sql_file');
         $filepath = $file->storeAs('imports', $file->getClientOriginalName());
 
-        $command = "mysql --user={$username} --password={$password} --host={$host} {$databaseName} < " . storage_path('app/' . $filepath);
+        // if(request()->url())
+        $command = "C:\\xampp\\mysql\\bin\\mysql --user={$username} --password={$password} --host={$host} {$databaseName} < " . storage_path('app/' . $filepath);
         $process = Process::fromShellCommandline($command);
 
         try {

@@ -17,16 +17,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\PDFController;
 use App\Models\Bill;
+use App\Models\LabSection;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 
-Route::get('/test-report/{id}.pdf', [PDFController::class, 'generatePDF']);
-Route::get('/bill-report/{id}.pdf', [PDFController::class, 'generatePDFBill']);
+Route::get('/test-report', [PDFController::class, 'generatePDF']);
+Route::get('/bill-report', [PDFController::class, 'generatePDFBill']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::get('/import-database', [DatabaseController::class, 'importDatabase']);
 
-
+// Route::get("/tt",function(){
+//     Schema::table('test_types', function (Blueprint $table) {
+//         $table->string("type")->default("SINGLE")->change();
+//     });
+// });
 // patients
 
 Route::get("/patients",function(){
@@ -250,6 +258,9 @@ Route::get("/testtype/{id}",function($id){
     $sp = SpecimenTest::where('test',$test['uniqid'])->get()->pluck('specimen')->toArray();
  
     $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('lab_ref',request('lab_ref'))->get();
+    if(!empty($test['lab_section'])){
+        $test['lab_section']=LabSection::query()->where('uniqid',$test['lab_section'])->first();
+    }
     return $test;
 });
 
@@ -313,14 +324,30 @@ Route::post("/specimentype/{id}",function($id){
 Route::get("/addspecimen-data/{id}",function($id){
    $patient = Patient::findOrFail($id);
    $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
+
+   $techniques=[];
    for($i=0;$i<count($sp);$i++){
     $specimen=$sp[$i];
         $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
-        $sp[$i]['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+        $tests=TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get()->toArray();
+       
+
+  
+        foreach($tests as $attachedtesttype ){
+            $lab_section= LabSection::query()->where('uniqid',$attachedtesttype['lab_section'])->first();
+            if(!empty($lab_section)){
+                $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+            }
+        }
+     
+        $sp[$i]['tests'] =  $tests;
    }
 
    $uniquePhysicians= RegisteredSpecimen::pluck('physician')->unique()->values()->all();
    $uniquePreleveurs= RegisteredSpecimen::pluck('preleveur')->unique()->values()->all();
+
+ 
+
    return [
     'patient'=>[
         'name'=>$patient->name,
@@ -330,7 +357,8 @@ Route::get("/addspecimen-data/{id}",function($id){
     ],
     'physicians'=>$uniquePhysicians,
     'preleveurs'=>$uniquePreleveurs,
-    'specimens'=>$sp
+    'specimens'=>$sp,
+    'techniques'=>$techniques
     ];
 });
 
@@ -365,6 +393,8 @@ Route::post("/addspecimen",function(){
     $specimen=RegisteredSpecimen::query()->find($id);
     $meta = request("meta");
     $meta['enteredby'] = request('user');
+    $specimen->testingdate=request('testingdate');
+    $specimen->testingtime=request('testingtime');
     $specimen->meta=$meta;
     $specimen->enteredat = now();
     $specimen->save();
@@ -430,8 +460,46 @@ function parseListOfSpecimens($specimens){
     return $data;
 }
  Route::get("/specimens",function(){
-    return parseListOfSpecimens(RegisteredSpecimen::query()->where(request()->all())->get());
+    if(request('count')){
+        $count = request('count');
+        $all=request()->all();
+        unset($all['count']);
+        $sps=  RegisteredSpecimen::query()->where($all)->orderByDesc('updated_at')->get()->take($count);
+    }else{
+        $sps=  RegisteredSpecimen::query()->where(request()->all())->orderByDesc('updated_at')->get();
+    }
+    return parseListOfSpecimens($sps);
  });
+
+
+ Route::get("/lab-sections",function(){
+    if(request('count')){
+        $count = request('count');
+        $all=request()->all();
+        unset($all['count']);
+        $ls=  LabSection::query()->where($all)->orderByDesc('updated_at')->get()->take($count);
+    }else{
+        $ls=  LabSection::query()->where(request()->all())->orderByDesc('updated_at')->get();
+    }
+    return $ls;
+ });
+
+ Route::post("/lab-section",function(){
+    return LabSection::create(request()->all());
+ });
+
+
+ Route::post("/lab-section/{id}",function($id){
+    return LabSection::findOrFail($id)->update(request()->all());
+ });
+
+
+ Route::get("/lab-section/{id}",function($id){
+    return LabSection::findOrFail($id);
+ });
+
+
+
 
  Route::get("/tests",function(){
     return parseListOfSpecimens(RegisteredSpecimen::query()->where(request()->all())->get()->filter(function($val){
@@ -451,6 +519,8 @@ function parseListOfSpecimens($specimens){
     $patient = Patient::query()->where('uniqid',$registeredSpecimen["patient"])->firstOrFail();
     $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
 
+    $techniques=[];
+
     for($i=0;$i<count($sp);$i++){
      $specimen=$sp[$i];
          $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
@@ -459,6 +529,14 @@ function parseListOfSpecimens($specimens){
          if($sp[$i]['uniqid']== $registeredSpecimen['specimen']['uniqid']){
             $registeredSpecimen['specimen']['tests']=$sp[$i]['tests'];
          }
+
+         foreach($sp[$i]['tests'] as $attachedtesttype ){
+            $lab_section= LabSection::query()->where('uniqid',$attachedtesttype['lab_section'])->first();
+            if(!empty($lab_section)){
+                $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+            }
+        }
+
     }
  
     $uniquePhysicians= RegisteredSpecimen::pluck('physician')->unique()->values()->all();
@@ -474,10 +552,53 @@ function parseListOfSpecimens($specimens){
         'physicians'=>$uniquePhysicians,
         'preleveurs'=>$uniquePreleveurs,
         'specimens'=>$sp,
-        'inputdata'=>$registeredSpecimen
+        'inputdata'=>$registeredSpecimen,
+        'techniques'=>$techniques
     ];
  });
  
+
+
+ Route::get("/statistica",function(){
+
+    $today = Carbon::today();
+
+    $patientsTodayCount = Patient::whereDate('created_at', $today)->where(request()->all())->count();
+    $patientsCount = Patient::where(request()->all())->count();
+
+    $specimensTodayCount = RegisteredSpecimen::whereDate('created_at', $today)->where(request()->all())->count();
+    $specimensCount = RegisteredSpecimen::where(request()->all())->count();
+
+    $specimensTodayCount = RegisteredSpecimen::whereDate('created_at', $today)->where(request()->all())->count();
+    $specimensCount = RegisteredSpecimen::where(request()->all())->count();
+
+    $resultsEnterredTodayCount =  $specimensCount==0?0:RegisteredSpecimen::whereDate('testingdate', $today)->where(request()->all())->whereJsonContains('meta', ['results' => []])
+    // ->whereRaw('JSON_LENGTH(meta->"$.results") > 0')
+    ->get()->filter(function($element){
+        if(!isset($element['meta']) || !isset($element['meta']['results'])){
+            return false;
+        }
+       return count($element['meta']['results']) >0;
+    })->count();
+
+    $resultsEnterredCount =  $specimensCount==0?0: RegisteredSpecimen::where(request()->all())->whereJsonContains('meta', ['results' => []])
+    ->get()->filter(function($element){
+        if(!isset($element['meta']) || !isset($element['meta']['results'])){
+            return false;
+        }
+       return count($element['meta']['results']) >0;
+    })->count();
+
+    return [
+        "patientsToday"=>$patientsTodayCount,
+        "totalPatients"=>$patientsCount,
+        "specimensToday"=>$specimensTodayCount,
+        "totalSpecimens"=>$specimensCount,
+        "resultsToday"=>$resultsEnterredTodayCount,
+        "totalResults"=>$resultsEnterredCount
+    ];
+ });
+
 
  Route::post("/editspecimen/{id}",function($id){
     return RegisteredSpecimen::findOrFail($id)->update(request()->all());

@@ -1,6 +1,21 @@
 @echo off
 setlocal
 
+
+echo Initial testing...
+
+REM Check if port 80 is in use
+netstat -an | find ":80 " | find "LISTENING" >nul
+
+REM Check the error level to determine if port 80 is in use
+if %errorlevel% equ 0 (
+    echo Port 80 is in use. Exiting with error.
+    pause
+    exit /b 1
+) else (
+    echo Port 80 is not in use. Continuing...
+)
+
 echo ==============WELCOME TO THE LIS INSTALLATION ================
 echo Please wait for the installation to complete....
 REM Define the lis directory
@@ -46,13 +61,19 @@ if not exist "%lis_dir_three%" (
 
 
 
+
 if not exist "%lis_dir_four%" (
     mkdir "%lis_dir_four%"
     call lis_uz.bat ".\components.zip" "C:\xampp" 
     if errorlevel 1 (
-        echo Failed to create directory "%lis_dir_four%
+        echo Failed to create directory "%lis_dir_four%"
         exit /b 1
     )
+) else (
+    @REM Update the ini
+    @REM rd /s /q "%lis_dir_four%"
+    @REM call lis_uz.bat ".\components.zip" "C:\xampp" 
+    copy .\php.ini "C:\xampp\php\php.ini" 
 )
 
 call lis_uz.bat ".\www.zip" "C:\lis\core" 

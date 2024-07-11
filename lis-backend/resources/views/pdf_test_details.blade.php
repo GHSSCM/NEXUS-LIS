@@ -6,15 +6,20 @@
     <title>PDF Document</title>
     <style>
         @page {
-            margin: 100px 50px;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top:00px;  
+            margin-bottom:100px; 
             font-size: 10pt;
         }
         header {
             position: fixed;
-            top: -60px;
+            top: 0px;
             left: 0px;
             right: 0px;
-            height: 50px;
+            /* background:blue; */
+            /* height: 50px; */
+            /* height:1000px; */
             /* text-align: center; */
         }
         footer {
@@ -28,6 +33,9 @@
         }
         .content {
             margin: 20px 0;
+            margin-top: 0px; 
+            
+            /* background:red; */
         }
         .table {
             width: 100%;
@@ -62,14 +70,62 @@
             font-weight: bold;
         }
 
+        body {
+            /* change margin top if the header is more */
+            margin-top: 230px; /* This is the value that finally helped me */
+        }
     </style>
 </head>
 <body>
     <header>
         <!-- Header content here -->
-        <center><h3>LOGO HERE</h3></center>
-        <center><i>Authorization No: 0667MINSANTE/SG/DPML/SDLTS/SL/BNLALAM<br/>
+        <center>
+            <?php
+            
+                //remote files disturb to load . let me load the base64 server side and send 
+                $path = public_path('/toplogo.png');
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            ?>
+
+        <img src="{{$base64}}" height="70"/>
+        <br/>
+        <br/>
+        </center>
+        <center><i>Authorization No: 0667 MINSANTE/SG/DPML/SDLTS/SL/BNLALAM<br/>
 E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center>
+
+<br/>    
+    <hr/>
+
+    <table style="width: 100%; border-collapse: collapse;" >
+        <tr style="margin:0;padding:0">
+        @if(empty($specimen['test']['hidename']))
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{$specimen['patient']['name']}}</p></td>
+        @endif
+
+        <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">PATIENT NUMBER/CODE: {{$specimen['patient']['reference']??""}}</p></td>
+
+        </tr>
+
+        <tr style="margin:0;padding:0">
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Sex: {{$specimen['patient']['gender']=='M'?"Male":"Female"}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of result delivery: {{formatDate($specimen['enteredat']??now()->toDateTimeString())}}</p></td>
+        </tr>
+
+        <tr style="margin:0;padding:0">
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Age: {{calculateAge($specimen['patient']['dob'])}}</p></td>
+            <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td> -->
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen collection: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
+
+        </tr>
+
+    </table>
+
+
+    <hr/>
+    <br/>
     </header>
     <footer>
          <hr/><div class="footer-left">
@@ -85,35 +141,13 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
         
 
 
-    <br/>    <br/>
-    <hr/>
+   
 
-    <table style="width: 100%; border-collapse: collapse;" >
-        <tr style="margin:0;padding:0">
-        @if($specimen['test']['hidename'])
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">PATIENT NUMBER: {{$specimen['patient']['patient_id']}}</p></td>
-        @else
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{$specimen['patient']['name']}}</p></td>
-        @endif
+    
 
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen collection: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
-        </tr>
+    <!-- <div style="height: 450px;">
 
-        <tr style="margin:0;padding:0">
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Sex: {{$specimen['patient']['gender']=='M'?"Male":"Female"}}</p></td>
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of result delivery: {{formatDate($specimen['enteredat']??now()->toDateTimeString())}}</p></td>
-        </tr>
-
-        <tr style="margin:0;padding:0">
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Age: {{calculateAge($specimen['patient']['dob'])}}</p></td>
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td>
-        </tr>
-
-    </table>
-
-
-    <hr/>
-    <br/>
+    </div> -->
     <center><h2><u>LABORATORY TESTS REPORT</u></h2></center>
     <br/>
     <table class="table">
@@ -195,7 +229,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                             [
                                                 "rowspan"=>1,
                                                 "colspan"=>1,
-                                                "text"=>isset($subresult['maxValue'])&&isset($subresult['minValue'])? ($subresult['minValue']. " - ".$subresult['maxValue']." ".$subresult['unit']):$subresult['unit']
+                                                "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')):($subresult['unit']??'')
                                             ],
                                         ]
                                     ];
@@ -225,7 +259,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=> isset($result['maxValue'])&&isset($result['minValue'])? ($result['minValue']. " - ".$result['maxValue']." ".$result['unit']):$result['unit']
+                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ($result['minValue']. " - ".$result['maxValue']." ".($result['unit']??'')):($result['unit']??'')
                                         ],
                                     ]
                                 ];
@@ -251,7 +285,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             "toplevel"=>true,
                             "rowspan"=>$total_rows,
                             "colspan"=>1,
-                            "text"=>'Technique; immunofluorescence']],$firstRowContent); 
+                            "text"=>$resultSet['technique']??""]],$firstRowContent); 
                         $tableData[$currentTableDataIndex]["toplevel"]=true;
                     }
 

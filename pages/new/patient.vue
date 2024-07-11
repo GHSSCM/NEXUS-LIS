@@ -102,7 +102,7 @@
                 <br/>
 
                 <div class="d-flex flex-row justify-content-end" v-if="searchname">
-                  <NuxtLink class="btn btn-primary w-100" to="/patientinfo/create">+ Create New</NuxtLink>
+                  <NuxtLink class="btn btn-primary w-100" :to="'/patientinfo/create?name='+searchname">+ Create New</NuxtLink>
               </div>
               
                 </div>

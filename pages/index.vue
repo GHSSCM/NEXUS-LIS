@@ -11,7 +11,7 @@
             if(window.localStorage.getItem("user")==null){
                 return this.$router.push("/login");
             }else{
-                return this.$router.push("/patients");
+                return this.$router.push("/home");
             }
         },
     }

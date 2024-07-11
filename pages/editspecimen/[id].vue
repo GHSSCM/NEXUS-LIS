@@ -110,28 +110,6 @@
 
 
 
-                  <div class="col-sm-12 col-md-6">
-
-                    <div class="mb-4">
-                        <label class="form-label">Date of testing</label>
-                        <input v-model="inputdata[i].testingdate"  class="result form-control " type="date" placeholder="Date of testing">
-                      </div>
-            
-                      
-                </div>
-
-
-                <div class="col-sm-12 col-md-6">
-
-                  <div class="mb-4">
-                      <label class="form-label">Time of testing </label>
-                      <input v-model="inputdata[i].testingtime"  class="result form-control " type="time" placeholder="Time of testing">
-                    </div>
-          
-                    
-              </div>
-              
-
 
 
                     <div class="col-sm-12 col-md-6">
@@ -188,6 +166,16 @@
             
                     </div>
 
+
+                    <div class="col-sm-12 col-md-6">
+
+                      <div class="mb-4">
+                          <label for="single-select-field4" class="form-label">Technique</label>
+                          <multiselect required v-model="inputdata[i].technique" :options="techniques" searchable></multiselect>
+                        </div>
+              
+          
+                  </div>
 
                     <div class="col-sm-12 col-md-6">
 
@@ -307,7 +295,7 @@
             physicians:[],
             preleveurs:[],
             specimens:[],
-
+            techniques:[],
             inputdata:[
               {
                 specimen:null,
@@ -320,7 +308,8 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
-                conformity:false
+                conformity:false,
+                technique:null
               }
             ]
         }
@@ -335,6 +324,7 @@
         context.physicians = data.physicians;
         context.preleveurs = data.preleveurs;
         context.specimens = data.specimens;
+        context.techniques = data.techniques;
 
         // console.log(data.inputdata.specimen);
         // context.inputdata[0].specimen = data.inputdata.specimen;

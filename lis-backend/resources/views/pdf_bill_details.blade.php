@@ -67,9 +67,26 @@
 <body>
     <header>
         <!-- Header content here -->
-        <center><h3>LOGO HERE</h3></center>
+        <center>
+            <?php
+            
+                //remote files disturb to load . let me load the base64 server side and send 
+                $path = public_path('/toplogo.png');
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            ?>
+
+        <img src="{{$base64}}" height="70"/>
+        <br/>
+        <br/>
+        </center>
         <center><i>Authorization No: 0667MINSANTE/SG/DPML/SDLTS/SL/BNLALAM<br/>
 E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center>
+<br/>
+<br/>
+
+
     </header>
     <footer>
          <hr/><div class="footer-left">

@@ -11,7 +11,7 @@
                           <ion-icon name="home-outline"></ion-icon>
                         </a>
                       </li>
-                      <li class="breadcrumb-item active" aria-current="page">{{id=='create'?"New Specimen Type":"Edit Specimen Type"}}</li>
+                      <li class="breadcrumb-item active" aria-current="page">{{id=='create'?"New Lab Section":"Edit Lab Section"}}</li>
                     </ol>
                   </nav>
                 </div>
@@ -35,7 +35,7 @@
  
               <div>
                
-                <h6 class="mb-0 text-uppercase">{{id=='create'?"Create A New Specimen Type":"Edit Specimen Type"}}</h6>
+                <h6 class="mb-0 text-uppercase">{{id=='create'?"Create A New Lab Section":"Edit Lab Section"}}</h6>
                 <hr/>
                 <form @submit.prevent="save">    
                 <div class="row">
@@ -60,9 +60,28 @@
                     <div class="col-sm-6 col-md-12">
 
                     <div class="mb-4">
-                        <label class="form-label">Compatible test(s)</label>
-                       
-                          <multiselect v-model="tests" :options="loadedtests" label="name" value="uniqid" multiple></multiselect>
+                        <label class="form-label">Lab Techniques</label>
+                        <br/>
+                        <div >
+
+                          <div class="d-flex align-items-center mt-3" v-for="(u,i) in techniques">
+
+
+                              <input v-model="techniques[i]" required placeholder="Enter a technique here" class="form-control" style="max-width: 300px;"/>
+
+                              <div class="d-flex" style="margin-left: 10px;">
+
+                                <svg @click="techniques.splice(i,1)" style="color:red; cursor:pointer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41L9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12L7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"/></svg>
+
+                              </div>
+                          </div>
+
+                          <br/>
+
+                          <div class="d-flex justify-content-end">
+                              <button type="button" class="btn-sm btn-primary btn" @click="techniques.push('')">+ Add technique</button>
+                          </div>
+                        </div>
                       
                       </div>
                     </div>
@@ -152,9 +171,10 @@
         return {
           id:route.params.id,
             loadedtests:[],
-            tests:[],
+            techniques:[],
             name:"",
             description:"",fields:[],
+            
             meta:{
             "fields":{}
           }
@@ -165,39 +185,35 @@
 
 
       const context=this;
+      getRequestLoad_('/lab-section/'+context.id,{
+      
+      },(data)=>{
+        context.name=data.name;
+        context.description=data.description;
+        context.techniques=data.techniques;
+        context.meta=data.meta;
+      })
+
       getRequestLoad_('/customfields',{
-        category:"specimen"
+        category:"labsection"
       },(fields)=>{
         context.fields= fields;
       })
 
-      getRequestLoad_('/testtypes',{},(loadedtests)=>{
-        context.loadedtests= loadedtests;
-        if(context.id!='create'){
-          getRequestLoad_('/specimentype/'+context.id,{},(specimentype)=>{
-              context.name=specimentype.name;
-              context.description=specimentype.description;
-              context.tests=specimentype.tests;
-              context.meta= specimentype.meta;
-              if(!context.meta.fields){
-                context.meta.fields={};
-              }
-          })
-        }
-      })
+     
     },
     methods:{
       save(){
         console.log(this.meta);
         const context=this;
-        postRequestLoad_(context.id=='create'?'/specimentype':'/specimentype/'+context.id,{
+        postRequestLoad_(context.id=='create'?'/lab-section':'/lab-section/'+context.id,{
           description:this.description,
           name:this.name,
-          tests:JSON.parse(JSON.stringify(this.tests.map(r=>r.uniqid))),
+          techniques:this.techniques,
           meta:this.meta
         },(specimen)=>{
           successToast("Created successfully");
-        context.$router.push("/specimentypes");
+        context.$router.push("/lab-sections");
       })
       }
     }

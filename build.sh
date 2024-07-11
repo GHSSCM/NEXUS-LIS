@@ -112,7 +112,7 @@ else
     #!/bin/bash
 
     # Files to include in the archive
-    files_to_zip="./build/www.zip ./build/components.zip ./build/install.bat ./build/lis_st.bat ./build/lis_cpt.bat  ./build/addresses.bat ./build/lis_uz.bat"
+    files_to_zip="./build/www.zip ./build/components.zip ./build/install.bat ./build/lis_st.bat ./build/lis_cpt.bat  ./build/addresses.bat ./build/lis_uz.bat ./build/php.ini"
 
     # Archive name
     archive_name="./build/build.zip"

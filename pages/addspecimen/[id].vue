@@ -109,27 +109,6 @@
 
 
 
-                  <div class="col-sm-12 col-md-6">
-
-                    <div class="mb-4">
-                        <label class="form-label">Date of testing</label>
-                        <input v-model="inputdata[i].testingdate"  class="result form-control " type="date" placeholder="Date of testing">
-                      </div>
-            
-                      
-                </div>
-
-
-                <div class="col-sm-12 col-md-6">
-
-                  <div class="mb-4">
-                      <label class="form-label">Time of testing </label>
-                      <input v-model="inputdata[i].testingtime"  class="result form-control " type="time" placeholder="Time of testing">
-                    </div>
-          
-                    
-              </div>
-
 
 
                     <div class="col-sm-12 col-md-6">
@@ -167,6 +146,18 @@
             
                     </div>
 
+
+                    <div class="col-sm-12 col-md-6">
+
+                      <div class="mb-4">
+                          <label for="single-select-field4" class="form-label">Technique</label>
+                          <multiselect required v-model="inputdata[i].technique" :options="techniques" searchable></multiselect>
+                        </div>
+              
+          
+                  </div>
+
+
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
@@ -185,21 +176,18 @@
                     </div>
 
 
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <input v-model="inputdata[i].conformity"  class="form-check-input" type="checkbox" role="switch" id="conformitycheck" checked>
-                            <label class="form-check-label ms-2" for="conformitycheck">Conformity?</label>
-                     
-                          </div>
-                
-            
-                    </div>
+               
 
                   </div>
                   <div class="d-flex flex-row justify-content-end">
-                    <button v-if="inputdata.length>1" type="button" class="btn btn-outline-danger btn-sm " style="border:0" @click="deleteSpecimen(i)">- Remove Specimen</button>
+                    <button v-if="inputdata.length>1" type="button" class="btn btn-danger btn-sm mb-2" style="border:0" @click="deleteSpecimen(i)">- Remove Specimen</button>
                   </div>
+
+
+                  <div class="d-flex flex-row justify-content-end">
+                    <button  type="button" class="btn btn-secondary btn-sm" style="border:0" @click="duplicateSpecimen(inputdata[i],i)"><i class="fadeIn animated bx bx-layer-plus"></i> Duplicate Specimen</button>
+                </div>
+
 
                   <hr/>
                 </div>
@@ -231,6 +219,9 @@
 <script>
   export default{
     methods:{
+      duplicateSpecimen(o,i){
+        this.inputdata.splice(i,0,JSON.parse(JSON.stringify(o)));
+      },
       calculateAge(dob){
         return calculateAge(dob);
       },
@@ -238,19 +229,20 @@
           this.inputdata.splice(i,1);
       },
       newspecimen(){
+        const date=new Date();
         this.inputdata.push({
                 specimen:null,
                 meta:{"a":"b"},
                 tests:[],
                 patient:this.inputdata[0].patient,
-                receptiondate:null,
                 receptiontime:null,
                 state:"N/A",
                 physician:null,
                 preleveur:null,
                 referredout:false,
                 conformity:false,
-                referredto:null
+                referredto:null,
+                receptiondate:date.toISOString().split("T")[0]
               })
       },
       addNewPhysicianOption(i,newOption){
@@ -312,6 +304,7 @@
             physicians:[],
             preleveurs:[],
             specimens:[],
+            techniques:[],
 
             inputdata:[
               {
@@ -319,14 +312,14 @@
                 meta:{"a":"b"},
                 tests:[],
                 patient:null,
-                receptiondate:null,
                 receptiontime:null,
                 state:"N/A",
                 physician:null,
                 preleveur:null,
                 referredout:false,
                 conformity:false,
-                referredto:null
+                referredto:null,
+                receptiondate:(new Date()).toISOString().split("T")[0]
               }
             ]
         }
@@ -338,6 +331,7 @@
         context.physicians = data.physicians;
         context.preleveurs = data.preleveurs;
         context.specimens = data.specimens;
+        context.techniques=data.techniques;
         for(var i=0;i<context.inputdata.length;i++){
           context.inputdata[i].patient = data.patient.uniqid;
         }

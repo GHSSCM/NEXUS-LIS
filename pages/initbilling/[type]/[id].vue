@@ -134,7 +134,7 @@
                     currency:this.curr
                 }
                 postRequestLoad_("/makebill",this.bill,(d)=>{
-                    window.location.href=(context.baseUrl + "/bill-report/"+d.id+".pdf");
+                    window.location.href=(context.baseUrl + "/bill-report?id="+d.id);
                 });
             }
         },mounted(){

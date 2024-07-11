@@ -33,7 +33,8 @@
 
                    </div>
                    <div class="col-sm-4">
-                    <NuxtLink class="btn btn-primary btn-sm my-3 mb-5" target="_blank" v-if="meta.validated" :to="baseUrl+'/test-report/'+specimen.id+'.pdf'">Export PDF</NuxtLink>
+                    <NuxtLink class="btn btn-primary btn-sm my-3 mb-5" target="_blank" v-if="meta.validated" :to="baseUrl+'/test-report?id='+specimen.id">View PDF</NuxtLink>
+                    <a class="btn btn-primary btn-sm my-3 mb-5 ms-4" target="_blank" v-if="meta.validated"  :download="'test-report-'+specimen.patient.name.trim().split(' ').join('-')+'-'+specimen.test.name.trim().split(' ').join('-')+'.pdf'" :href="baseUrl+'/test-report?id='+specimen.id+'&dl=true'">Download PDF</a>
                    </div>
 
 
@@ -186,11 +187,42 @@
                 </div>
                 
                 </div>
-                <div class="d-flex align-items-end justify-content-end" v-if="!meta.validated">
-                    <button  type="submit" class="btn btn-primary btn-sm  ">+ Save Results</button>
+          
+        
+
+
+                <hr/>
+                <div class="row">
+
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="mb-4">
+                                <label class="form-label">Date of testing</label>
+                                <input required  :disabled="meta.validated" v-model="specimen.testingdate"  class="result form-control " type="date" placeholder="Date of testing">
+                            </div>
+                    
+                            
+                        </div>
+
+
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="mb-4">
+                                <label class="form-label">Time of testing </label>
+                                <input  :disabled="meta.validated" v-model="specimen.testingtime"  class="result form-control " type="time" placeholder="Time of testing">
+                                </div>
+                    
+                                
+                        </div>
 
                 </div>
-        
+
+
+              <div class="d-flex align-items-end justify-content-end" v-if="!meta.validated">
+                <button  type="submit" class="btn btn-primary btn-sm  ">+ {{canValidate?"Update Results":"Save Results"}}</button>
+
+            </div>
+            
                 <div  v-if="canValidate">
 
                     <button :disabled="meta.validated" @click="validate"  type="button" class="btn btn-success btn-sm  w-100 mt-4 ">&check; {{meta.validated?"Verified by "+meta.verifiedby:"Validate Results"}}</button>
@@ -315,10 +347,17 @@
       save(){
         if(window.confirm("Are you sure you want to confirm update of these results?")){
             const context=this;
-            postRequestLoad_("/specimenupdate/"+this.id,{meta:this.meta,user:this.user.name},(meta)=>{
-                context.canValidate=true;
+           
+            postRequestLoad_("/specimenupdate/"+this.id,{
+                meta:this.meta,
+                user:this.user.name,
+                testingdate:this.specimen.testingdate,
+                testingtime:this.specimen.testingtime
+            },(meta)=>{
+                // context.canValidate=true;
                 context.meta=meta;
                 successToast("Updated Successfully")
+                context.$router.push("/specimens")
             })
         }
       },
@@ -327,6 +366,7 @@
             const context=this;
             postRequestLoad_("/specimenvalidate/"+this.id,{meta:this.meta,user:this.user.name},(meta)=>{
                 context.meta=meta;
+                context.$router.push("/specimens")
                 successToast("Validated Successfully")
             })
         }
