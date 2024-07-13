@@ -103,10 +103,10 @@
                                 <div class="d-flex flex-row justify-content-space-between w-100">
                                     <lablel>Range</lablel>
                                 </div>
-                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].start" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].start" class="form-control form-control-sm mt-2"  step="0.000000001" type="number" style="max-width: 60px;" >
   
                                 <lablel>to</lablel>
-                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].end" class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
+                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].end" class="form-control form-control-sm mt-1"  step="0.000000001" type="number" style="max-width: 60px;">
                               </div>
                             
                               <div class="ms-3">
@@ -225,10 +225,10 @@
                                 <div class="d-flex flex-row justify-content-space-between w-100">
                                     <lablel>Range</lablel>
                                 </div>
-                                <input required v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].start" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
+                                <input required v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].start"  step="0.000000001"  class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
   
                                 <lablel>to</lablel>
-                                <input required v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].end" class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
+                                <input required v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].end"  step="0.000000001"  class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
                               </div>
                    
                               <div class="ms-3">
@@ -354,14 +354,14 @@
                           <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="notcontains" > Not Contains (Or) </option>
                         </select>
 
-                        <input required v-model="meta.fields.measures[i].condition[pos].value" type="number" class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                        <input required v-model="meta.fields.measures[i].condition[pos].value" type="number"   step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
                         <select required v-model="meta.fields.measures[i].condition[pos].value"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
                           <option value="M">Male</option>
                           <option value="F">Female</option>
                           <option value="B">Both</option>
                         </select>
 
-                        <input required v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].operator=='equals'||meta.fields.measures[i].condition[pos].operator=='notequals')" type="number" class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                        <input required v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].operator=='equals'||meta.fields.measures[i].condition[pos].operator=='notequals')" type="number"  step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
 
                         <multiselect v-else-if="meta.fields.measures[i].condition[pos].field " v-model="meta.fields.measures[i].condition[pos].values" :options="[]" :taggable="true"
                         @tag="addNewOption2(i,pos,$event)" :multiple="true" style="max-width:200px;" class="mt-2" ></multiselect>
@@ -398,7 +398,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Prevalence Threshold </label>
-                            <input  v-model="threshold" class="form-control" type="number" placeholder="Prevalence Threshold"/>
+                            <input  v-model="threshold" class="form-control" type="number"  step="0.000000001"  placeholder="Prevalence Threshold"/>
                           </div>
                 
 
@@ -413,7 +413,7 @@
                         <div class="mb-4">    <label class="form-label">Target TAT </label>
                             <div class="row">
                               <div class="col-sm-9">
-                            <input  v-model="tat" class="result form-control" type="number" placeholder="Target TAT"/>
+                            <input  v-model="tat" class="result form-control" type="number"  step="0.000000001"  placeholder="Target TAT"/>
                             
                               </div>
                               <div class="col-sm-3">
@@ -434,7 +434,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Cost to patient in {{ curr }}</label>
-                            <input required v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
+                            <input required v-model="cost" class="form-control" type="number"   step="0.000000001"  placeholder="Cost to patient"/>
                           </div>
                 
 
@@ -467,7 +467,7 @@
 
                     <div class="mb-4" v-if="f.type=='number'">
                       <label class="form-label">{{f.name}}</label>
-                      <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number" :placeholder="f.name">
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number"  step="0.000000001"  :placeholder="f.name">
                     </div>
 
 

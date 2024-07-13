@@ -149,7 +149,7 @@
                                 <option v-for="auto in m.autocompletevalues" :value="auto.text"/>
                             </datalist>
                         </div>
-                        <input placeholder="Enter value here" :disabled="meta.validated"  required v-else-if="m.type=='numericrange'"  type="number" class="form-control" v-model="meta.results[j].value" />
+                        <input placeholder="Enter value here" :disabled="meta.validated"  required v-else-if="m.type=='numericrange'"  type="number"  step="0.000000001"  class="form-control" v-model="meta.results[j].value" />
                         <textarea required :disabled="meta.validated" v-else type="text" class="form-control" v-model="meta.results[j].value" ></textarea>
                     </div>
 
@@ -173,7 +173,7 @@
                                             <option v-for="auto in s.autocompletevalues" :value="auto.text"/>
                                         </datalist>
                                     </div>
-                                    <input :disabled="meta.validated" placeholder="Enter value here" required v-else-if="s.type=='numericrange'"  type="number" class="form-control" v-model="meta.results[j].subs[h].value" />
+                                    <input :disabled="meta.validated" placeholder="Enter value here" required v-else-if="s.type=='numericrange'"  type="number"  step="0.000000001"  class="form-control" v-model="meta.results[j].subs[h].value" />
                                     <textarea :disabled="meta.validated" required v-else type="text" class="form-control" v-model="meta.results[j].subs[h].value" ></textarea>
                                 </div>
 

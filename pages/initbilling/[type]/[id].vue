@@ -71,7 +71,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input class="form-control" type="number" v-model="selectedspecimens[j].discountamount"/>
+                                <input class="form-control" type="number"  step="0.000000001"  v-model="selectedspecimens[j].discountamount"/>
                             </td>
 
                             <td>

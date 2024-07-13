@@ -103,7 +103,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">Cost to patient in {{curr}}</label>
-                            <input  v-model="cost" class="form-control" type="number" placeholder="Cost to patient"/>
+                            <input  v-model="cost" class="form-control" type="number"  step="0.000000001"  placeholder="Cost to patient"/>
                           </div>
                 
 

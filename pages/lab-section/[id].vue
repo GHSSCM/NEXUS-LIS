@@ -91,7 +91,7 @@
     
                         <div class="mb-4" v-if="f.type=='number'">
                           <label class="form-label">{{f.name}}</label>
-                          <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number" :placeholder="f.name">
+                          <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number"  step="0.000000001"  :placeholder="f.name">
                         </div>
     
     
