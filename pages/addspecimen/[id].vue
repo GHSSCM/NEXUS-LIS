@@ -128,7 +128,7 @@
 
                         <div class="mb-4">
                             <label for="single-select-field5" class="form-label">Sample state</label>
-                            <multiselect required v-model="inputdata[i].state" :options="['N/A','Rejected','Approved']"></multiselect>
+                            <multiselect required v-model="inputdata[i].state" :options="['N/A','Received','Due','To be verified','Published','Cancelled','Invalid','All']"></multiselect>
 
                           </div>
                 
@@ -242,7 +242,8 @@
                 referredout:false,
                 conformity:false,
                 referredto:null,
-                receptiondate:date.toISOString().split("T")[0]
+                receptiondate:date.toISOString().split("T")[0],
+                groupID:this.groupID
               })
       },
       addNewPhysicianOption(i,newOption){
@@ -297,7 +298,7 @@
     },
     data(){
       const route = useRoute();
-
+      const groupID = generateRandomStringWithTimestamp();
         return {
             patientId:route.params.id,
             patient:{},
@@ -305,7 +306,7 @@
             preleveurs:[],
             specimens:[],
             techniques:[],
-
+            groupID,
             inputdata:[
               {
                 specimen:null,
@@ -319,7 +320,8 @@
                 referredout:false,
                 conformity:false,
                 referredto:null,
-                receptiondate:(new Date()).toISOString().split("T")[0]
+                receptiondate:(new Date()).toISOString().split("T")[0],
+                groupID
               }
             ]
         }

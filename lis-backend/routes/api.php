@@ -370,6 +370,7 @@ Route::post("/addspecimen",function(){
             $b['test']=$t;
             unset($b['tests']);
             $b['lab_ref']=request('lab_ref');
+            $b['state']=$b['state']??"N/A";
             RegisteredSpecimen::create($b);
         }
     }
@@ -381,9 +382,30 @@ Route::post("/addspecimen",function(){
     $specimen=RegisteredSpecimen::query()->find($id)->toArray();
     $specimen['patient']=Patient::query()->where("uniqid",$specimen['patient'])->first();
     $specimen['specimen']=SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
-    $specimen['test']=TestType::query()->where("uniqid",$specimen['test'])->first();
+    $specimen['test']=TestType::query()->where("uniqid",$specimen['test'])->first()->toArray();
    
     $specimen['billing']= Bill::query()->where("specimen_id",$specimen['uniqid'])->first();
+    if($specimen['test']['type']=='GROUP'){
+        $specimen['test']['meta']['fields']=["measures"=>[]];
+        $subtests = $specimen['test']['meta']['subtests']; //am array
+        $subtests = TestType::query()->whereIn("uniqid",$subtests)->get();
+        foreach($subtests as $subtest){
+            $specimen['test']['meta']['fields']["measures"]=array_merge( $specimen['test']['meta']['fields']["measures"],$subtest['meta']['fields']["measures"]); 
+        }
+    }
+    if($specimen['groupID']){
+        $others= RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get();
+        $specimen['others']=[$specimen];
+        foreach($others as $other){
+            $other['patient']=$specimen['patient'];
+            $other['specimen']=SpecimenType::query()->where("uniqid",$other['specimen'])->first();
+            $other['test']=TestType::query()->where("uniqid",$other['test'])->first();
+            $other['billing']= Bill::query()->where("specimen_id",$other['uniqid'])->first();
+            $specimen['others'][]=$other;
+        }
+    }else{
+        $specimen['others']=[$specimen];
+    }
     return $specimen;
 
  });
@@ -402,6 +424,27 @@ Route::post("/addspecimen",function(){
  });
 
 
+
+ Route::post("/specimenbulkupdate",function(){
+    $data = request('data');
+
+    $resp=[];
+    foreach($data as $donnee){
+        $specimen=RegisteredSpecimen::query()->find($donnee['id']);
+        $meta = $donnee['meta'];
+        $meta['enteredby'] =  $donnee['user'];
+        $specimen->testingdate=$donnee['testingdate'];
+        $specimen->testingtime=$donnee['testingtime'];
+        $specimen->meta=$meta;
+        $specimen->enteredat = now();
+        $specimen->save();
+        $resp[]=$specimen;
+    }
+    
+    return $resp;
+ });
+
+
  Route::post("/specimenvalidate/{id}",function($id){
     $specimen=RegisteredSpecimen::query()->find($id);
     $meta = request("meta");
@@ -414,7 +457,25 @@ Route::post("/addspecimen",function(){
     return $meta;
  });
 
+ Route::post("/specimenbulkvalidate",function(){
 
+
+    $data = request('data');
+
+    $resp=[];
+    foreach($data as $donnee){
+        $specimen=RegisteredSpecimen::query()->find($donnee['id']);
+        $meta = $donnee['meta'];
+        $meta['verifiedby'] = $donnee['user'];
+        $meta['validated'] = true;
+        $specimen->meta=$meta;
+        $specimen->validatedat = now();
+        $specimen->save();
+        $resp[]=$specimen;
+    }
+    
+    return $resp;
+ });
 //  
 
 function parseListOfSpecimens($specimens){
@@ -423,6 +484,9 @@ function parseListOfSpecimens($specimens){
     $patientsLoaded=[];//hashmap
     $specimensLoaded=[];//hashmap
     $testsLoaded=[];//hashmap
+
+    $groupIDhashmap=[];
+
     foreach($specimens as $specimen){
         $patientsLoaded[$specimen['patient']] = isset($patientsLoaded[$specimen['patient']])?$patientsLoaded[$specimen['patient']]:Patient::query()->where("uniqid",$specimen['patient'])->first();
         $specimensLoaded[$specimen['specimen']] = isset($specimensLoaded[$specimen['specimen']])?$specimensLoaded[$specimen['specimen']]:SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
@@ -431,6 +495,9 @@ function parseListOfSpecimens($specimens){
         $data[$i]['billing']= Bill::query()->where("specimen_id",$specimen['uniqid'])->first();
 
         $data[$i]['id']=$specimen['id'];
+
+        $data[$i]['groupID'] = $specimen['groupID'];
+        $data[$i]['state'] = $specimen['state'];
 
         $data[$i]['patient']=[
             "name"=>$patientsLoaded[$specimen['patient']]["name"],
@@ -455,8 +522,39 @@ function parseListOfSpecimens($specimens){
         $data[$i]['referredout']=$specimen['referredout'];
         $data[$i]['referredto']=$specimen['referredto'];
         $data[$i]['meta']=$specimen['meta'];
+
+
+        //add to groupIDhashmap
+        if($specimen['groupID']){
+            if(!isset($groupIDhashmap[$specimen['groupID']])){
+                $groupIDhashmap[$specimen['groupID']]=[];
+            }
+            $groupIDhashmap[$specimen['groupID']][]=$data[$i];
+        }else{
+            if(!isset($groupIDhashmap["NOTATTACHED"])){
+                $groupIDhashmap["NOTATTACHED"]=[];
+            }
+            $groupIDhashmap["NOTATTACHED"][]=$data[$i];
+        }
         $i++;
     }
+
+
+    //final
+
+    // $finalData=[];
+
+    // foreach($groupIDhashmap as $key=>$value){
+    //     if($key=="NOTATTACHED"){
+    //         $finalData= array_merge($finalData,$groupIDhashmap[$key]);
+    //     }else{
+    //         $allExceptFirst = array_slice($value, 1);
+    //         $value[0]["others"]=array_merge($value[0],$allExceptFirst);
+    //         $finalData[]=$value[0];
+    //     }
+    // }
+
+    // return $finalData;
     return $data;
 }
  Route::get("/specimens",function(){

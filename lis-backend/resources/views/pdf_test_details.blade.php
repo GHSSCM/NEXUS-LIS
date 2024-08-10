@@ -9,7 +9,7 @@
             margin-left: 50px;
             margin-right: 50px;
             margin-top:00px;  
-            margin-bottom:100px; 
+            margin-bottom:10px; 
             font-size: 10pt;
         }
         header {
@@ -27,7 +27,7 @@
             bottom: -60px;
             left: 0px;
             right: 0px;
-            height: 50px;
+            height: 80px;
             /* text-align: center; */
             font-size: 12px;
         }
@@ -73,7 +73,23 @@
         body {
             /* change margin top if the header is more */
             margin-top: 230px; /* This is the value that finally helped me */
+            margin-bottom: 0px; 
         }
+
+        .page-break-before{
+            /* page-break-before: always; */
+        }
+/* 
+        table{
+            page-break-inside: avoid;
+        }
+        tr{
+            page-break-inside: avoid;
+            page-break-after:auto;
+        }
+        td,th{
+            page-break-inside: avoid;
+        } */
     </style>
 </head>
 <body>
@@ -194,8 +210,8 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 <th colspan="4" class="highlight">{{strtoupper($labsection)}}</th>
             </tr>
             <?php
-
-                    $setOfResults = [$specimen];
+                   
+                    $setOfResults =$specimens;
                     $tableData =[];
                     $total_rows=0;
                     foreach($setOfResults as $resultSet){
@@ -219,17 +235,22 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                 ];
 
                                 foreach($result['subs'] as $subresult){
+
+                                 
+                                    $isRed=(isset($subresult['maxValue'])&&isset($subresult['minValue']))?($subresult['maxValue']<$subresult['value']||$subresult['minValue']>$subresult['value']):false;
+                                    
+                                
                                     $rsData[]=[
                                         "contents"=>[
                                             [
                                                 "rowspan"=>1,
                                                 "colspan"=>1,
-                                                "text"=>"<b>".$subresult['name']."</b> ".$subresult['value'].''
+                                                "text"=>"<b>".$subresult['name']."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
                                             ],
                                             [
                                                 "rowspan"=>1,
                                                 "colspan"=>1,
-                                                "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')):($subresult['unit']??'')
+                                                "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')). ($isRed?' * ':' 9')."</span>"):($subresult['unit']??'')
                                             ],
                                         ]
                                     ];
@@ -254,7 +275,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=>"<b>".$result['name']."</b> ".$result['value'],  
+                                            "text"=>"<b>".$result['name']."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
                                         ],
                                         [
                                             "rowspan"=>1,
@@ -299,8 +320,10 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 <td>RESULTS</td>
                 <td>REFERENCE RANGE</td>
             </tr>
+
+            <?php $c=0;?>
             @foreach($tableData as $d)
-                <tr>
+                <tr >
 
                     @foreach ($d['contents'] as $content)
 
@@ -323,6 +346,12 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                  
                 
                 </tr>
+                <?php 
+
+            
+                
+                
+                $c++;?>
             @endforeach
            
            

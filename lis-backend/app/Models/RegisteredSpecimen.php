@@ -17,7 +17,7 @@ class RegisteredSpecimen extends Model
 
     protected $fillable=['uniqid','specimen','test','patient','lab_ref','receptiondate','meta',
     'receptiontime','state','physician','preleveur','referredout','conformity','referredto','validatedat','enteredat','placeofcollection','testingdate','testingtime',
-'technique'];
+'technique','groupID'];
     
 
     protected $casts = [

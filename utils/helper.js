@@ -11,6 +11,19 @@ export const getBaseUrl=()=>{
     }
     
 }
+
+export const generateRandomStringWithTimestamp=(length)=> {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    
+    for (let i = 0; i < length; i++) {
+        randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    const timestamp = Date.now();
+    return `${randomString}-${timestamp}`;
+}
+
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{

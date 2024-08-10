@@ -131,7 +131,9 @@
                                 <input required v-model="meta.fields.measures[i].numericrangevalues[j].v2" class="form-control form-control-sm mt-1" type="number" style="max-width: 60px;">
                               </div>
                          
-  
+                              <div class="">
+                                <button style="transform:scale(0.7); border:0" type="button" class="btn btn-outline-danger btn-sm  mt-3"  @click="meta.fields.measures[i].numericrangevalues.splice(j,1)">- Remove</button>
+                              </div>
                             </div>
                             <div class="d-flex flex-row justify-content-end">
                               <button style="transform:scale(0.7); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].numericrangevalues.push({})">+ Add Values</button>
@@ -176,7 +178,7 @@
                
                   <div class="d-flex flex-row justify-content-end">
                     <button  v-if="meta.fields.measures.length>1 && meta.fields.measures[i].condition" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].condition=null">- Remove Condition</button>
-                    <button  v-else-if="meta.fields.measures.length>1" style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition=[{logic:'and',subfield:'age',values:[]}]">+ Add Condition</button>
+                    <button  v-else style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition=[{logic:'and',subfield:'age',values:[]}]">+ Add Condition</button>
                   </div>
                </div>
 
@@ -321,7 +323,8 @@
 
 
                     <div style="border : 1px solid rgba(0,0,0,0.5); background:#f2f2f2; border-radius:5px; " class="p-3" v-if="meta.fields.measures[i].condition">
-                      <label>Conditions, IF:</label>  <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition.push({logic:'and',subfield:'age',values:[]})">+ Add</button>
+                      <label>Conditions, IF:</label>  
+                      <!-- <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition.push({logic:'and',subfield:'age',values:[]})">+ Add</button> -->
                       
                       <div v-for=" (con,pos) in meta.fields.measures[i].condition" class=" d-flex flex-row">
                         <select required v-if="pos!=0"  v-model="meta.fields.measures[i].condition[pos].logic" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
@@ -331,42 +334,47 @@
     
                         <select required v-if="meta.fields.measures[i].condition[pos].logic"  v-model="meta.fields.measures[i].condition[pos].field" class="me-2 form-control form-control-sm mt-2"  style="max-width: 100px;" >
                           <option v-for="(field,k) in meta.fields.measures.filter((f,position)=>position!=i)" :value="field">{{field.name}}</option>
+                          <option :value="{type:'numericrange',subfield:'age',novalue:true}">Patient age</option>
+                          <option :value="{type:'numericrange',subfield:'gender',novalue:true}">Patient gender</option>
                         </select>
   
-                        <select required v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange'"  v-model="meta.fields.measures[i].condition[pos].subfield" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
-                          <option value="age">Age</option>
-                          <option value="gender">Gender</option>
+                        <select required v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !meta.fields.measures[i].condition[pos].field.novalue"  v-model="meta.fields.measures[i].condition[pos].subfield" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
+                          <!-- <option value="age">Age</option>
+                          <option value="gender">Gender</option> -->
                           <option value="value">Value</option>
                         </select>
 
                         <select required   v-if="meta.fields.measures[i].condition[pos].field" v-model="meta.fields.measures[i].condition[pos].operator" class="me-2 form-control form-control-sm mt-2"  style="max-width: 100px;" >
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="<" > < </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="<=" > <= </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="=" > = </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value="!=" > != </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value=">=" > >= </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield!='gender'" value=">" > > </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')" value="equals" > Equals </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')" value="notequals" > Not Equals </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value="<" > < </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value="<=" > <= </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value="=" > = </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value="!=" > != </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value=">=" > >= </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield!='gender'&&meta.fields.measures[i].condition[pos].field.subfield!='gender')" value=">" > > </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield=='gender'||meta.fields.measures[i].condition[pos].field.subfield=='gender'))" value="equals" > Equals </option>
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||(meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield=='gender'||meta.fields.measures[i].condition[pos].field.subfield=='gender'))" value="notequals" > Not Equals </option>
                           <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="isanyof" > Is Any Of </option>
                           <option v-if="meta.fields.measures[i].condition[pos].field.type=='alphanumeric'||meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="isnotanyof" > Is Not Any Of </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="contains" > Contains (Or) </option>
-                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='autocomplete'||meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="notcontains" > Not Contains (Or) </option>
+                  <!-- meta.fields.measures[i].condition[pos].field.type=='autocomplete'|| -->
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="contains" > Contains (Or) </option>
+                        <!-- meta.fields.measures[i].condition[pos].field.type=='autocomplete'|| -->
+                          <option v-if="meta.fields.measures[i].condition[pos].field.type=='freeinput'" value="notcontains" > Not Contains (Or) </option>
                         </select>
 
-                        <input required v-model="meta.fields.measures[i].condition[pos].value" type="number"   step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
-                        <select required v-model="meta.fields.measures[i].condition[pos].value"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                        <input required v-model="meta.fields.measures[i].condition[pos].value" type="number"   step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield=='gender'|| meta.fields.measures[i].condition[pos].field.subfield=='gender'))">
+                        <select required v-model="meta.fields.measures[i].condition[pos].value"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].field.type=='numericrange' && (meta.fields.measures[i].condition[pos].subfield=='gender' || meta.fields.measures[i].condition[pos].field.subfield=='gender'))">
                           <option value="M">Male</option>
                           <option value="F">Female</option>
-                          <option value="B">Both</option>
+                          <!-- <option value="B">Both</option> -->
                         </select>
 
-                        <input required v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].operator=='equals'||meta.fields.measures[i].condition[pos].operator=='notequals')" type="number"  step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')">
+                        <!-- <input placeholder="v1" required type="number"  step="0.000000001"  class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " v-if="meta.fields.measures[i].condition[pos].field && meta.fields.measures[i].condition[pos].field.type=='numericrange' && !(meta.fields.measures[i].condition[pos].field.type=='numericrange' && meta.fields.measures[i].condition[pos].subfield=='gender')"> -->
+                        <input placeholder="obp" v-model="meta.fields.measures[i].condition[pos].value"  required v-else-if="meta.fields.measures[i].condition[pos].field && (meta.fields.measures[i].condition[pos].operator=='equals'||meta.fields.measures[i].condition[pos].operator=='notequals')" type="text"   class="me-2 mt-2  form-control form-control-sm" style="max-width:150px; " />
 
                         <multiselect v-else-if="meta.fields.measures[i].condition[pos].field " v-model="meta.fields.measures[i].condition[pos].values" :options="[]" :taggable="true"
                         @tag="addNewOption2(i,pos,$event)" :multiple="true" style="max-width:200px;" class="mt-2" ></multiselect>
 
-                          <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].condition.splice(pos,1)">- Remove</button>
+                          <!-- <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-danger btn-sm  "  @click="meta.fields.measures[i].condition.splice(pos,1)">- Remove</button> -->
                         
 
                       </div>

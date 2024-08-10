@@ -26,7 +26,42 @@ class PDFController extends Controller
         // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
         $footerContent = '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';
     
-        $pdf = Pdf::loadView('pdf_test_details', compact( 'specimen','footerContent'))->setPaper('a4')
+        $multiple=request('multiple')?true:false;
+
+        if(!isset($specimen['meta']['results'])){
+            $specimen['meta']['results']=[];
+        }else{
+            $results=$specimen['meta']['results'];
+            $specimen['meta']['results']= array_filter($results,function($item){
+                return empty($item['ignore']);
+            });
+        }
+
+
+
+        $specimens=[];
+        if($multiple && $specimen['groupID']){
+            $others= \App\Models\RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get()->toArray();
+            $specimens=[$specimen];
+            foreach($others as $other){
+                $other['patient']=$specimen['patient'];
+                $other['specimen']=\App\Models\SpecimenType::query()->where("uniqid",$other['specimen'])->first();
+                $other['test']=\App\Models\TestType::query()->where("uniqid",$other['test'])->first();
+                if(!isset($other['meta']['results'])){
+                    $other['meta']['results']=[];
+                }else{
+                    $results=$other['meta']['results'];
+                    $other['meta']['results']= array_filter($results,function($item){
+                        return  empty($item['ignore']);
+                    });
+                }
+                $specimens[]=$other;
+            }
+        }else{
+            $specimens=[$specimen];
+        }
+
+        $pdf = Pdf::loadView('pdf_test_details', compact('specimen', 'specimens','footerContent'))->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 

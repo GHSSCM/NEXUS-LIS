@@ -129,7 +129,7 @@
 
                         <div class="mb-4">
                             <label for="single-select-field5" class="form-label">Sample state</label>
-                            <multiselect required v-model="inputdata[i].state" :options="['N/A','Rejected','Approved']"></multiselect>
+                            <multiselect required v-model="inputdata[i].state" :options="['N/A','Received','Due','To be verified','Published','Cancelled','Invalid','All']"></multiselect>
 
                           </div>
                 
