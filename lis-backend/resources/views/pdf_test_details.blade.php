@@ -39,11 +39,13 @@
         }
         .table {
             width: 100%;
-            border-collapse: collapse;
+            /* border-collapse: collapse; */
+            /* margin-right:105px; */
         }
         .table th, .table td {
             border: 1px solid black;
             padding: 8px;
+            
         }
         .table th {
             background-color: #cccccc;
@@ -127,7 +129,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
         <tr style="margin:0;padding:0">
             <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Sex: {{$specimen['patient']['gender']=='M'?"Male":"Female"}}</p></td>
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of result delivery: {{formatDate($specimen['enteredat']??now()->toDateTimeString())}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of issue: {{formatDate($specimen['enteredat']??now()->toDateTimeString())}}</p></td>
         </tr>
 
         <tr style="margin:0;padding:0">
@@ -167,24 +169,170 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
     <center><h2><u>LABORATORY TESTS REPORT</u></h2></center>
     <br/>
     <table class="table">
-            <tr>
-                <th colspan="4" style="text-align:start">GENERAL INFORMATION</th>
+            <?php
+
+                $hasColumnForReference=false;
+                   
+                    $setOfResults =$specimens;
+                    $tableData =[];
+                    $total_rows=0;
+                    foreach($setOfResults as $resultSet){
+                        $rsData=[];
+                        
+                        $rs_total_rows=0;
+                        foreach( $resultSet['meta']['results'] as $result){
+                            $subRows=0;
+                             if(isset($result['subs']) && count($result['subs'])>0){
+                                $rs_total_rows+=count($result['subs'])+2;
+                                $total_rows+=count($result['subs'])+2;
+
+                                $rsData[]=[
+                                    "contents"=>[
+                                        [
+                                            "rowspan"=>1,
+                                            "colspan"=>2,
+                                            "dependsOnLastColumn"=>true,
+                                            "text"=>"<center><b>".strtoupper($result['name'])."</b></center>"
+                                        ],
+                                    ]
+                                ];
+
+                                foreach($result['subs'] as $subresult){
+
+                                 
+                                    $isRed=(isset($subresult['maxValue'])&&isset($subresult['minValue']))?($subresult['maxValue']<$subresult['value']||$subresult['minValue']>$subresult['value']):false;
+                                    
+                            
+                                    $tempData00XY=[
+                                        [
+                                            "rowspan"=>1,
+                                            "colspan"=>1,
+                                            "text"=>"<b>".$subresult['name']."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
+                                        ]
+                                    ];
+
+
+                                    // YOU CAN BLOCK HERE
+                                    if(!empty($subresult['guide'])||!empty($subresult['unit'])){
+
+                                        $hasColumnForReference=true;
+                                        $tempData00XY[]=[
+                                            "rowspan"=>1,
+                                            "colspan"=>1,
+                                            "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')). ($isRed?' * ':' 9')."</span>"):($subresult['unit']??'')
+                                        ];
+                                    }
+
+
+                                    $rsData[]=[
+                                        "contents"=>$tempData00XY
+                                    ];
+                                }
+
+
+                                $rsData[]=[
+                                    "contents"=>[
+                                        [
+                                            "rowspan"=>1,
+                                            "colspan"=>2,
+                                            "dependsOnLastColumn"=>true,
+                                            "text"=>"<center><b>&nbsp;</b></center>"
+                                        ],
+                                    ]
+                                ];
+
+                            }else{
+                                $rs_total_rows+=1;
+                                $total_rows+=1;
+
+                                $tempData00XYZZ=[
+                                        [
+                                            "rowspan"=>1,
+                                            "colspan"=>1,
+                                            "text"=>"<b>".$result['name']."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
+                                        ]
+                                ];
+
+                                //  YOU CAN BLOCK HERE
+                                 if(!empty($result['guide'])||!empty($result['unit'])){
+
+                                    $hasColumnForReference=true;
+                                    $tempData00XYZZ[]= [
+                                            "rowspan"=>1,
+                                            "colspan"=>1,
+                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ($result['minValue']. " - ".$result['maxValue']." ".($result['unit']??'')):($result['unit']??'')
+                                        ];
+                                }
+
+                                $rsData[]=[
+                                    "contents"=>$tempData00XYZZ
+                                ];
+                            }           
+
+                        }
+                  
+                        if(!empty($resultSet['clinical'])){
+                            $rsData[]=[
+                                "contents"=>[
+                                    [
+                                        "rowspan"=>1,
+                                        "colspan"=>4,
+                                        "dependsOnLastColumn"=>true,
+                                        "text"=>$resultSet['clinical']
+                                    ],
+                                ]
+                            ]; 
+                        }
+                        
+
+                        $firstRowContent = $rsData[0]["contents"];
+                        $rsData[0]["contents"]=array_merge([[
+                            "text"=>$resultSet['test']['name'],
+                            "rowspan"=>$rs_total_rows,
+                            "colspan"=>1,
+                        ]],$firstRowContent); 
+
+
+                        $currentTableDataIndex=count($tableData);
+
+
+                        $tableData = array_merge($tableData,$rsData); 
+
+               
+                        $firstRowContent = $tableData[$currentTableDataIndex]["contents"];
+                        $tableData[$currentTableDataIndex]["contents"]=array_merge([[
+                            "toplevel"=>true,
+                            "rowspan"=>$total_rows,
+                            "colspan"=>1,
+                            "text"=>$resultSet['technique']??""]],$firstRowContent); 
+                        $tableData[$currentTableDataIndex]["toplevel"]=true;
+                    }
+
+                   
+               
+
+                    // dd($tableData);
+            ?>
+
+
+<tr>
+                <th colspan="{{!$hasColumnForReference?3:4}}" style="text-align:start">GENERAL INFORMATION</th>
             </tr>
             <tr>
                 <td>Specimen type</td>
-                <td colspan="3" class="field"> {{ $specimen['specimen']['name']}}</td>
+                <td colspan="{{!$hasColumnForReference?2:3}}" class="field"> {{ $specimen['specimen']['name']}}</td>
             </tr>
             <tr>
                 <td>Place of collection</td>
-                <td colspan="3" class="field">{{ $specimen['placeofcollection']??""}}</td>
+                <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{ $specimen['placeofcollection']??""}}</td>
             </tr>
             <tr>
                 <td>Time of collection</td>
-                <td colspan="3" class="field">{{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</td>
+                <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</td>
             </tr>
             <tr>
                 <td>Time of testing</td>
-                <td  colspan="3" class="field">{{formatDate(($specimen['testingdate']??"")." ".($specimen['testingtime']??""))}}</td>
+                <td  colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['testingdate']??"")." ".($specimen['testingtime']??""))}}</td>
             </tr>
             <tr>
                 <?php
@@ -209,116 +357,13 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 ?>
                 <th colspan="4" class="highlight">{{strtoupper($labsection)}}</th>
             </tr>
-            <?php
-                   
-                    $setOfResults =$specimens;
-                    $tableData =[];
-                    $total_rows=0;
-                    foreach($setOfResults as $resultSet){
-                        $rsData=[];
-                        
-                        $rs_total_rows=0;
-                        foreach( $resultSet['meta']['results'] as $result){
-                            $subRows=0;
-                             if(isset($result['subs']) && count($result['subs'])>0){
-                                $rs_total_rows+=count($result['subs'])+2;
-                                $total_rows+=count($result['subs'])+2;
-
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>2,
-                                            "text"=>"<center><b>".strtoupper($result['name'])."</b></center>"
-                                        ],
-                                    ]
-                                ];
-
-                                foreach($result['subs'] as $subresult){
-
-                                 
-                                    $isRed=(isset($subresult['maxValue'])&&isset($subresult['minValue']))?($subresult['maxValue']<$subresult['value']||$subresult['minValue']>$subresult['value']):false;
-                                    
-                                
-                                    $rsData[]=[
-                                        "contents"=>[
-                                            [
-                                                "rowspan"=>1,
-                                                "colspan"=>1,
-                                                "text"=>"<b>".$subresult['name']."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
-                                            ],
-                                            [
-                                                "rowspan"=>1,
-                                                "colspan"=>1,
-                                                "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')). ($isRed?' * ':' 9')."</span>"):($subresult['unit']??'')
-                                            ],
-                                        ]
-                                    ];
-                                }
-
-
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>2,
-                                            "text"=>"<center><b>&nbsp;</b></center>"
-                                        ],
-                                    ]
-                                ];
-
-                            }else{
-                                $rs_total_rows+=1;
-                                $total_rows+=1;
-                                $rsData[]=[
-                                    "contents"=>[
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>1,
-                                            "text"=>"<b>".$result['name']."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
-                                        ],
-                                        [
-                                            "rowspan"=>1,
-                                            "colspan"=>1,
-                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ($result['minValue']. " - ".$result['maxValue']." ".($result['unit']??'')):($result['unit']??'')
-                                        ],
-                                    ]
-                                ];
-                            }                     
-                        }
-                  
-                        $firstRowContent = $rsData[0]["contents"];
-                        $rsData[0]["contents"]=array_merge([[
-                            "text"=>$resultSet['test']['name'],
-                            "rowspan"=>$rs_total_rows,
-                            "colspan"=>1,
-                        ]],$firstRowContent); 
-
-
-                        $currentTableDataIndex=count($tableData);
-
-
-                        $tableData = array_merge($tableData,$rsData); 
-
-               
-                        $firstRowContent = $tableData[$currentTableDataIndex]["contents"];
-                        $tableData[$currentTableDataIndex]["contents"]=array_merge([[
-                            "toplevel"=>true,
-                            "rowspan"=>$total_rows,
-                            "colspan"=>1,
-                            "text"=>$resultSet['technique']??""]],$firstRowContent); 
-                        $tableData[$currentTableDataIndex]["toplevel"]=true;
-                    }
-
-               
-
-                    // dd($tableData);
-            ?>
             <tr>
                 <td></td>
                 <td>TESTS</td>
                 <td>RESULTS</td>
-                <td>REFERENCE RANGE</td>
+                @if($hasColumnForReference)
+                    <td>REFERENCE RANGE</td>
+                @endif
             </tr>
 
             <?php $c=0;?>
@@ -334,8 +379,19 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             @endif 
 
 
+                            {{-- This is the one that checks if the colspan should consider the last column for reference or not
+                            
+                                    The last column of reference is only to show when there is a unit (others) or a reference (numeric).
+
+                                    In case the column is there, keep the value i passed on. Else do -1.
+                            --}}
+                            @if(!empty($content['dependsOnLastColumn']))
+                                colspan="{{$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1}}"
+                            @else
+                                colspan="{{$content['colspan']??1}}"
+                            @endif
+                                 
                             rowspan="{{$content['rowspan']??1}}"
-                            colspan="{{$content['colspan']??1}}"
 
                              
                              

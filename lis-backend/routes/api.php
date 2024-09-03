@@ -385,14 +385,29 @@ Route::post("/addspecimen",function(){
     $specimen['test']=TestType::query()->where("uniqid",$specimen['test'])->first()->toArray();
    
     $specimen['billing']= Bill::query()->where("specimen_id",$specimen['uniqid'])->first();
+
+    $techniques=[];
+
     if($specimen['test']['type']=='GROUP'){
         $specimen['test']['meta']['fields']=["measures"=>[]];
         $subtests = $specimen['test']['meta']['subtests']; //am array
         $subtests = TestType::query()->whereIn("uniqid",$subtests)->get();
         foreach($subtests as $subtest){
             $specimen['test']['meta']['fields']["measures"]=array_merge( $specimen['test']['meta']['fields']["measures"],$subtest['meta']['fields']["measures"]); 
+            $lab_section= LabSection::query()->where('uniqid',$subtest['lab_section'])->first();
+            if(!empty($lab_section)){
+                $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+            }
+        }
+        
+    }else{
+        $lab_section= LabSection::query()->where('uniqid',$specimen['test']['lab_section'])->first();
+        if(!empty($lab_section)){
+            $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
         }
     }
+
+    
     if($specimen['groupID']){
         $others= RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get();
         $specimen['others']=[$specimen];
@@ -401,11 +416,18 @@ Route::post("/addspecimen",function(){
             $other['specimen']=SpecimenType::query()->where("uniqid",$other['specimen'])->first();
             $other['test']=TestType::query()->where("uniqid",$other['test'])->first();
             $other['billing']= Bill::query()->where("specimen_id",$other['uniqid'])->first();
+
+            $lab_section= LabSection::query()->where('uniqid',$other['test']['lab_section'])->first();
+            if(!empty($lab_section)){
+                $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+            }
+
             $specimen['others'][]=$other;
         }
     }else{
         $specimen['others']=[$specimen];
     }
+    $specimen['techniques']=$techniques;
     return $specimen;
 
  });
@@ -417,6 +439,8 @@ Route::post("/addspecimen",function(){
     $meta['enteredby'] = request('user');
     $specimen->testingdate=request('testingdate');
     $specimen->testingtime=request('testingtime');
+    $specimen->technique=request('technique');
+    
     $specimen->meta=$meta;
     $specimen->enteredat = now();
     $specimen->save();
@@ -435,6 +459,8 @@ Route::post("/addspecimen",function(){
         $meta['enteredby'] =  $donnee['user'];
         $specimen->testingdate=$donnee['testingdate'];
         $specimen->testingtime=$donnee['testingtime'];
+        $specimen->clinical=$donnee['clinical'];
+        $specimen->technique=$donnee['technique']??$specimen->technique;
         $specimen->meta=$meta;
         $specimen->enteredat = now();
         $specimen->save();
@@ -468,6 +494,10 @@ Route::post("/addspecimen",function(){
         $meta = $donnee['meta'];
         $meta['verifiedby'] = $donnee['user'];
         $meta['validated'] = true;
+        $specimen->testingdate=$donnee['testingdate'];
+        $specimen->testingtime=$donnee['testingtime'];
+        $specimen->clinical=$donnee['clinical'];
+        $specimen->technique=$donnee['technique']??$specimen->technique;
         $specimen->meta=$meta;
         $specimen->validatedat = now();
         $specimen->save();
