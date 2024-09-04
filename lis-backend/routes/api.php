@@ -379,6 +379,8 @@ Route::post("/addspecimen",function(){
 
  Route::get("/specimen/{id}",function($id){
 
+    // fields: measures: {"type":"freeinput","subs":[],"numericrangevalues":[],"alphanumericvalues":[],"autocompletevalues":[],"id":1718536245230,"name":"m4","unit":"u4"}
+
     $specimen=RegisteredSpecimen::query()->find($id)->toArray();
     $specimen['patient']=Patient::query()->where("uniqid",$specimen['patient'])->first();
     $specimen['specimen']=SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
@@ -399,12 +401,48 @@ Route::post("/addspecimen",function(){
                 $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
             }
         }
+        if(isset($specimen['meta']['results'])){
+            foreach($specimen['meta']['results'] as $r){
+                if(!empty($r['isNew'])){
+                    $specimen['test']['meta']['fields']["measures"][]=[
+                        "type"=>"freeinput",
+                        "subs"=>[],
+                        "numericrangevalues"=>[],
+                        "alphanumericvalues"=>[],
+                        "autocompletevalues"=>[],
+                        "id"=>$r['id'],
+                        "name"=>$r['name'],
+                        "unit"=>"",
+                        "canremove"=>true
+                    ]; 
+                }
+            }
+        }
         
     }else{
         $lab_section= LabSection::query()->where('uniqid',$specimen['test']['lab_section'])->first();
         if(!empty($lab_section)){
             $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
         }
+
+        if(isset($specimen['meta']['results'])){
+            foreach($specimen['meta']['results'] as $r){
+                if(!empty($r['isNew'])){
+                    $specimen['test']['meta']['fields']["measures"][]=[
+                        "type"=>"freeinput",
+                        "subs"=>[],
+                        "numericrangevalues"=>[],
+                        "alphanumericvalues"=>[],
+                        "autocompletevalues"=>[],
+                        "id"=>$r['id'],
+                        "name"=>$r['name'],
+                        "unit"=>"",
+                        "canremove"=>true
+                    ]; 
+                }
+            }
+        }
+
     }
 
     
@@ -421,6 +459,25 @@ Route::post("/addspecimen",function(){
             if(!empty($lab_section)){
                 $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
             }
+
+       
+        if(isset($other['meta']['results'])){
+            foreach($other['meta']['results'] as $r){
+                if(!empty($r['isNew'])){
+                    $other['test']['meta']['fields']["measures"][]=[
+                        "type"=>"freeinput",
+                        "subs"=>[],
+                        "numericrangevalues"=>[],
+                        "alphanumericvalues"=>[],
+                        "autocompletevalues"=>[],
+                        "id"=>$r['id'],
+                        "name"=>$r['name'],
+                        "unit"=>"",
+                        "canremove"=>true
+                    ]; 
+                }
+            }
+        }
 
             $specimen['others'][]=$other;
         }
