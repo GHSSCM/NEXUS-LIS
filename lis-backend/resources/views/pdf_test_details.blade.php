@@ -219,7 +219,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         $tempData00XY[]=[
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($subresult['minValue']. " - ".$subresult['maxValue']." ".($subresult['unit']??'')). ($isRed?' * ':' 9')."</span>"):($subresult['unit']??'')
+                                            "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".(!empty($subresult['comparison'])?($subresult['comparisonvalue']." ".$subresult['comparisonoperand']):($subresult['minValue']. " - ".$subresult['maxValue'])." ".($subresult['unit']??'')). ($isRed?' * ':' ')."</span>"):($subresult['unit']??'')
                                         ];
                                     }
 
@@ -253,14 +253,16 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         ]
                                 ];
 
+                                $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
+
                                 //  YOU CAN BLOCK HERE
                                  if(!empty($result['guide'])||!empty($result['unit'])){
-
+                                    
                                     $hasColumnForReference=true;
                                     $tempData00XYZZ[]= [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ($result['minValue']. " - ".$result['maxValue']." ".($result['unit']??'')):($result['unit']??'')
+                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($result['guide']??'')." ".($result['unit']??''). ($isRed?' * ':' ')."</span>"):($result['unit']??'')
                                         ];
                                 }
 

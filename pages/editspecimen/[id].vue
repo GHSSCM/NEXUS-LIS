@@ -72,7 +72,7 @@
                           
                     </div>
 
-                    <div class="col-sm-12 col-md-6">
+                    <!-- <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
                             <label class="form-label">Date of reception</label>
@@ -91,7 +91,7 @@
                         </div>
               
                         
-                  </div>
+                  </div> -->
 
 
 
@@ -138,6 +138,26 @@
 
                     <div class="col-sm-12 col-md-6">
 
+                      <div class="mb-4">
+                          <label for="single-select-field5" class="form-label">Sample quality</label>
+                          <multiselect required v-model="inputdata[i].sample_quality" :options="['PASSED','FAILED']"></multiselect>
+
+                      </div>
+              
+                  </div>
+                  <div class="col-sm-12 col-md-12" v-if="inputdata[i].sample_quality=='FAILED'">
+
+                    <div class="mb-4">
+                        <label for="single-select-field5" class="form-label">Sample quality reason</label>
+                        <textarea required v-model="inputdata[i].sample_quality_reason" class="form-control" type="text" ></textarea>
+
+
+                    </div>
+            
+                </div>
+
+                    <div class="col-sm-12 col-md-6">
+
                         <div class="mb-4">
                             <label for="single-select-field4" class="form-label">Preleveur</label>
                             <multiselect required v-model="inputdata[i].preleveur" :options="preleveurs" searchable :taggable="true"
@@ -150,14 +170,28 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" id="referredout" checked>
-                            <label  class="form-check-label ms-2" for="referredout">Reffered Out?</label>
+                          <div class="d-flex">
+
+                            <div @click="inputdata[i].referredin=false">
+                              <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" :id="i+'referredout'" >
+                              <label  class="form-check-label ms-2" :for="i+'referredout'">Reffered Out?</label>
+                     
+                            </div>
+
+                            <div @click="inputdata[i].referredout=false" class="ms-3">
+                              <input v-model="inputdata[i].referredin" class="form-check-input" type="checkbox" role="switch" :id="i+'referredin'" >
+                              <label  class="form-check-label ms-2" :for="i+'referredin'">Reffered In?</label>
+                     
+                            </div>
+
+
+                          </div>
                      
                           </div>
 
-                          <div class="mb-4" v-if="inputdata[i].referredout">
+                          <div class="mb-4" v-if="inputdata[i].referredout||inputdata[i].referredin">
 
-                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered To?</label>
+                            <label  class="form-check-label ms-2" :for="i+'referredto'">Facility</label>
                             <input required v-model="inputdata[i].referredto" class="form-control" type="text"  :id="i+'referredto'" >
                             
                      
@@ -167,7 +201,7 @@
                     </div>
 
 
-                    <div class="col-sm-12 col-md-6">
+                    <!-- <div class="col-sm-12 col-md-6">
 
                       <div class="mb-4">
                           <label for="single-select-field4" class="form-label">Technique</label>
@@ -175,7 +209,7 @@
                         </div>
               
           
-                  </div>
+                  </div> -->
 
                     <div class="col-sm-12 col-md-6">
 
@@ -230,6 +264,7 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
+                referredin:false,
                 conformity:false,
                 referredto:null,
               })
@@ -273,7 +308,7 @@
             inf.push(r);
         }
 
-        // console.log(JSON.parse(JSON.stringify(inf)));
+        // alert(JSON.stringify(inf));
         // return;
         const context=this;
       postRequestLoad_('/editspecimen/'+this.id,inf[0],()=>{
@@ -308,6 +343,7 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
+                referredin:false,
                 conformity:false,
                 technique:null
               }
@@ -317,6 +353,7 @@
     mounted(){
       const context=this;
       getRequestLoad_('/editspecimen-data/'+this.id,{},(data)=>{  
+        console.log((data.inputdata));
         context.patient = data.patient;
         context.patientId = data.patientId;
             
@@ -334,6 +371,9 @@
         // const r = data.inputdata;
         // r.po
         context.inputdata[0]=data.inputdata;
+        context.inputdata[0].referredin=context.inputdata[0].referredin==1||context.inputdata[0].referredin;
+        context.inputdata[0].referredout=context.inputdata[0].referredout==1||context.inputdata[0].referredout;
+        
         // console.log("OKAY",data.inputdata);
       });
     

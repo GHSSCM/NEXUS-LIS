@@ -53,7 +53,7 @@
                                             <th rowspan="1" colspan="1">Physician</th>
                                             <th rowspan="1" colspan="1">Received On</th>
                                             <th rowspan="1" colspan="1">Referred?</th>
-                                            <th rowspan="1" colspan="1">Referred From</th>
+                                            <th rowspan="1" colspan="1">Facility</th>
                                             <th rowspan="1" colspan="1"></th>
                                              </tr>
                                        </thead>
@@ -68,7 +68,7 @@
                                                <td class="">{{u.physician}}</td>
                                                <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
                                                
-                                               <td class="">{{u.referredout?"Yes":"No"}}</td>
+                                               <td class="">{{u.referredout?"Out":(u.referredin?"In":"")}}</td>
                                                <td class="">{{u.referredto??""}}</td>
                                                <td>
                                                 <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Verify</NuxtLink>

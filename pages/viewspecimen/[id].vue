@@ -106,11 +106,12 @@
                                             <div class="col-sm-5" v-if="m.subs.length==0" >
                                                 <multiselect v-if="m.type=='alphanumeric' " :disabled="meta[x].validated" v-model="meta[x].results[j].value" :options="m.alphanumericvalues" ></multiselect>
                                                 <div v-else-if="m.type=='autocomplete'">
-                                                    <datalist :id="m.id+'_suggestions_'">
+                                                    <!-- <datalist :id="m.id+'_suggestions_'">
                                                         <option v-for="auto in m.autocompletevalues" :value="auto.text"/>
-                                                    </datalist>
+                                                    </datalist> -->
                                                     <div v-for="(val,valCounter) in meta[x].results[j].values" class="d-flex my-2">
-                                                        <input placeholder="Enter value here" :disabled="meta[x].validated" required :list="m.id+'_suggestions_'"  type="text" class="form-control form-control-sm" v-model="meta[x].results[j].values[valCounter]" />
+                                                        <!-- <input placeholder="Enter value here" :disabled="meta[x].validated" required :list="m.id+'_suggestions_'"  type="text" class="form-control form-control-sm" v-model="meta[x].results[j].values[valCounter]" /> -->
+                                                        <multiselect  :disabled="meta[x].validated" required v-model="meta[x].results[j].values[valCounter]" :options="m.autocompletevalues.map(x=>x.text)" searchable></multiselect>
                                                 
                                                         <button   v-if="!meta[x].validated" class="btn btn-sm btn-danger mx-2 p-0 px-1" type="button" @click="meta[x].results[j].values.splice(valCounter,1)">Remove</button>
                                                     </div> 
@@ -120,8 +121,11 @@
                                                 <textarea required :disabled="meta[x].validated" v-else type="text" class="form-control" v-model="meta[x].results[j].value" ></textarea>
                                             </div>
 
-                                            <div class="col-sm-3" v-if="m.subs.length==0">
-                                                <input :disabled="meta[x].validated" placeholder="Enter optional remark here" type="text" class="form-control" v-model="meta[x].results[j].remark" />
+                                            <div class="col-sm-2 d-flex" v-if="m.subs.length==0">
+                                                <input  v-if="!m.canremove" :disabled="meta[x].validated" placeholder="Enter optional remark here" type="text" class="form-control" v-model="meta[x].results[j].remark" />
+                                                <div class="p-2" v-if="m.canremove">
+                                                    <u style="color:red;cursor:pointer;" @click="meta[x].results.splice(j,1);specimen.others[x].test.meta.fields.measures.splice(j,1); ">Remove</u>
+                                                </div>
                                             </div>
 
                                             <div v-else-if='meta[x].results'>
@@ -136,12 +140,13 @@
                                                         <div class="col-sm-5">
                                                             <multiselect :disabled="meta[x].validated" v-if="s.type=='alphanumeric'" v-model="meta[x].results[j].subs[h].value" :options="s.alphanumericvalues" ></multiselect>
                                                             <div v-else-if="s.type=='autocomplete'">
-                                                                <datalist :id="s.id+'_suggestions2_'">
+                                                                <!-- <datalist :id="s.id+'_suggestions2_'">
                                                                     <option v-for="auto in s.autocompletevalues" :value="auto.text"/>
-                                                                </datalist>
+                                                                </datalist> -->
                                                                 <div v-for="(val,valCounter) in meta[x].results[j].subs[h].values" class="d-flex my-2">
-                                                                    <input placeholder="Enter value here" :disabled="meta[x].validated" required :list="s.id+'_suggestions2_'"  type="text" class="form-control mt-2 form-control-sm" v-model="meta[x].results[j].subs[h].values[valCounter]" />
-                                                                
+                                                                    <!-- <input placeholder="Enter value here" :disabled="meta[x].validated" required :list="s.id+'_suggestions2_'"  type="text" class="form-control mt-2 form-control-sm" v-model="meta[x].results[j].subs[h].values[valCounter]" /> -->
+                                                                    
+                                                                    <multiselect  :disabled="meta[x].validated" required v-model="meta[x].results[j].subs[h].values[valCounter]" :options="s.autocompletevalues.map(x=>x.text)" searchable></multiselect>
                                                                     <button  v-if="!meta[x].validated" class="btn btn-sm btn-danger mx-2 p-0 px-1" type="button" @click="meta[x].results[j].subs[h].values.splice(valCounter,1)">Remote</button>
                                                                 </div>
                                                                 <button v-if="!meta[x].validated" class="btn btn-sm btn-primary mt-2" type="button" @click="meta[x].results[j].subs[h].values.push('')">+ Add</button>
@@ -162,13 +167,32 @@
                                         </div>
                                         
                                         </div>
-                                    </div>    
+                                    </div>   
+
+
+                                    <div class="row">
+                                        <div class="col-sm-2"></div>
+
+                                        <div class="col-sm-10" >
+                                            <!-- style="border:1px solid rgba(25, 37, 123,0.5);padding:10px; margin-top:10px;margin-bottom:20px;border-radius:5px;" -->
+                                            <!-- <strong>Other measures</strong> -->
+                                            <br/>
+                                            <br/>
+                                            <a type="button" class="btn btn-secondary btn-sm " style="float:right;width:100px;" @click="var a = promptNameMeasure('Enter the title',x); ">Add +</a>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+
+                                        </div>
+                                    </div> 
+
                                     <div class="row">
 
                                             <div class="col-sm-12 col-md-2">
                                                 <!-- {{ specimen.test.name }} -->
                                             </div>
-                                            <div class="col-sm-12 col-md-5">
+                                            <div class="col-sm-12 col-md-3">
 
                                                 <div class="mb-4">
                                                     <label class="form-label">Date of testing</label>
@@ -179,7 +203,7 @@
                                             </div>
 
 
-                                            <div class="col-sm-12 col-md-5">
+                                            <div class="col-sm-12 col-md-3">
 
                                                 <div class="mb-4">
                                                     <label class="form-label">Time of testing </label>
@@ -187,6 +211,24 @@
                                                     </div>
                                         
                                                     
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-4">
+                                                <div class="mb-4">
+                                                    <label for="single-select-field4" class="form-label">Technique {{specimen.others[x].technique}}</label>
+                                                    <multiselect required v-model="specimen.others[x].technique" :options="techniques" searchable></multiselect>
+                                                  </div>
+                                            </div>
+
+
+                                            <div class="col-sm-12 col-md-2">
+                                                <!-- {{ specimen.test.name }} -->
+                                            </div>
+                                            
+                                            <div class="col-sm-12 col-md-10">
+                                                <div class="mb-4">
+                                                    <textarea :disabled="meta[x].validated" class="form-control" style="width:100%;height:100px;" placeholder="Enter clinical data (optional)" v-model="specimen.others[x].clinical"></textarea>
+                                                  </div>
                                             </div>
 
                                     </div>
@@ -204,7 +246,8 @@
             
                 <div  v-if="canValidate">
 
-                    <button :disabled="meta[0].validated" @click="validate"  type="button" class="btn btn-success btn-sm  w-100 mt-4 ">&check; {{meta[0].validated?"Verified by "+meta[0].verifiedby:"Validate Results"}}</button>
+                    <!--   -->
+                    <button  :disabled="meta[0].validated" @click="validate"  type="button" class="btn btn-success btn-sm  w-100 mt-4 ">&check; {{meta[0].validated?"Verified by "+meta[0].verifiedby:"Validate Results"}}</button>
                 </div>
                 </form>
                 <div v-else class="my-5 p-3">
@@ -228,6 +271,7 @@
           getRequestLoad_('/specimen/'+context.id,{},(specimen)=>{
             
             
+            context.techniques=specimen.techniques;
             context.specimen= specimen;
             if(!context.specimen.test.meta.fields || !context.specimen.test.meta.fields.measures){
                 return;
@@ -287,7 +331,7 @@
                             if(!(age>=range.v1 && age <= range.v2)){
                                 return;
                             }
-                            context.meta[metaCounter].results[i].guide=`Range (${range.start} - ${range.end}) ${measure.unit??''}`;
+                            context.meta[metaCounter].results[i].guide=range.comparison?`Range (${range.comparisonvalue} ${range.comparisonoperand})`: `Range (${range.start} - ${range.end}) ${measure.unit??''}`;
                             // to help me show which is not a recognized value
                             context.meta[metaCounter].results[i].minValue=range.start;
                             context.meta[metaCounter].results[i].maxValue=range.end;
@@ -359,6 +403,13 @@
         }
     },
     methods:{
+        promptNameMeasure(t,x){
+            var a= window.prompt(t)
+             if(a){
+                this.specimen.others[x].test.meta.fields.measures.push({name:a,type:'freeinput',subs:[], canremove:true});
+                this.meta[x].results.push({value:'',name:a,isNew:true,id:"NEW_"+Math.random()})
+            }
+        },
     computeFormVisibility(){
         const META = this.meta;
 
@@ -572,12 +623,15 @@
                     }
                     return r;
                 });
+                
                 var data= {
                     meta:context.meta[b],
                     id:m.id,
                     user:context.user.name,
                     testingdate:m.testingdate,
-                    testingtime:m.testingtime
+                    testingtime:m.testingtime,
+                    technique:m.technique,
+                    clinical:m.clinical
                 }
                 finalMetas.push(data);
             }
@@ -613,6 +667,11 @@
                 var data= {
                     meta:context.meta[b],
                     id:m.id,
+                    user:context.user.name,
+                    testingdate:m.testingdate,
+                    testingtime:m.testingtime,
+                    technique:m.technique,
+                    clinical:m.clinical,
                     user:context.user.name
                 }
                 finalMetas.push(data);
@@ -632,6 +691,7 @@
 
       return {
         baseUrl:getBaseUrl(),
+        techniques:[],
         openAccord:-1,
          user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
           id:route.params.id,

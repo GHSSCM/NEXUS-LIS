@@ -1,6 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   
+  // modules: [
+  //     '@primevue/nuxt-module'
+  // ],
+  // primevue: {
+  //     /* Configuration */
+  // },
   devtools: { enabled: true },
   plugins: [
     {src:'~/plugins/vuemultiselect.js',ssr:false}

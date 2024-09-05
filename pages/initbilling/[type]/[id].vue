@@ -134,7 +134,12 @@
                     currency:this.curr
                 }
                 postRequestLoad_("/makebill",this.bill,(d)=>{
-                    window.location.href=(context.baseUrl + "/bill-report?id="+d.id);
+                    const url=(context.baseUrl + "/bill-report?id="+d.id);
+                    var w=window.open(url, '_blank');
+                    if(w){
+                        w.focus();
+                    }
+                    // window.location.href=;
                 });
             }
         },mounted(){

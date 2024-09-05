@@ -96,21 +96,30 @@
 
                      <div class="col-sm-4">
                         <label ><strong>Values</strong></label>
-
                         <div v-if="meta.fields.measures[i].type=='numericrange'">
                             <div  class="d-flex flex-row mb-2" v-for="(v,j) in meta.fields.measures[i].numericrangevalues">
                               <div>
                                 <div class="d-flex flex-row justify-content-space-between w-100">
-                                    <lablel>Range</lablel>
+                                  <label>
+                                      {{meta.fields.measures[i].numericrangevalues[j].comparison?"Comparison":"Range"}} <br/>
+                                      <small v-if="!meta.fields.measures[i].numericrangevalues[j].comparison" @click="meta.fields.measures[i].numericrangevalues[j].comparison=true">(<u style="cursor:pointer;">Use comparison</u>)</small>
+                                      <small v-else @click="meta.fields.measures[i].numericrangevalues[j].comparison=false">(<u style="cursor:pointer;">Use range</u>)</small>
+                                </label>
                                 </div>
-                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].start" class="form-control form-control-sm mt-2"  step="0.000000001" type="number" style="max-width: 60px;" >
-  
-                                <lablel>to</lablel>
-                                <input required v-model="meta.fields.measures[i].numericrangevalues[j].end" class="form-control form-control-sm mt-1"  step="0.000000001" type="number" style="max-width: 60px;">
+                                <input v-if="!meta.fields.measures[i].numericrangevalues[j].comparison" required v-model="meta.fields.measures[i].numericrangevalues[j].start" class="form-control form-control-sm mt-2"  step="0.000000001" type="number" style="max-width: 60px;" >
+                                <select class="mt-1" style="width:70px;" v-else v-model="meta.fields.measures[i].numericrangevalues[j].comparisonvalue" required> 
+                                  <option value=">" >Greater than</option>
+                                  <option value="<">Less than</option>
+                                  <option value="<=">Less than or equal to</option>
+                                  <option value=">=">Greater than or equal to</option>
+                                </select>
+                                <lablel v-if="!meta.fields.measures[i].numericrangevalues[j].comparison">to</lablel>
+                                <input  v-if="meta.fields.measures[i].numericrangevalues[j].comparison" required v-model="meta.fields.measures[i].numericrangevalues[j].comparisonoperand" class="form-control form-control-sm mt-1"  step="0.000000001" type="number" style="max-width: 60px;">
+                                <input v-else required v-model="meta.fields.measures[i].numericrangevalues[j].end" class="form-control form-control-sm mt-1"  step="0.000000001" type="number" style="max-width: 60px;">
                               </div>
-                            
+                              
                               <div class="ms-3">
-                                <lablel>&nbsp;</lablel>
+                                <lablel>&nbsp;<br/>&nbsp;</lablel>
                                 <select required  v-model="meta.fields.measures[i].numericrangevalues[j].gender" class="form-control form-control-sm mt-2"  style="max-width: 60px;" >
                                   <option value="M">Male</option>
                                   <option value="F">Female</option>
@@ -123,7 +132,7 @@
 
                               <div  class="ms-3">
                                 <div class="d-flex flex-row justify-content-space-between w-100">
-                                    <lablel>Age</lablel>
+                                    <lablel>Age<br/>&nbsp;</lablel>
                                 </div>
                                 <input required v-model="meta.fields.measures[i].numericrangevalues[j].v1" class="form-control form-control-sm mt-2" type="number" style="max-width: 60px;" >
   

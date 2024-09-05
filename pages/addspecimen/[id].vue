@@ -130,10 +130,29 @@
                             <label for="single-select-field5" class="form-label">Sample state</label>
                             <multiselect required v-model="inputdata[i].state" :options="['N/A','Received','Due','To be verified','Published','Cancelled','Invalid','All']"></multiselect>
 
-                          </div>
+                        </div>
                 
-            
                     </div>
+
+                    <div class="col-sm-12 col-md-6">
+
+                      <div class="mb-4">
+                          <label for="single-select-field5" class="form-label">Sample quality</label>
+                          <multiselect required v-model="inputdata[i].sample_quality" :options="['PASSED','FAILED']"></multiselect>
+
+                      </div>
+              
+                  </div>
+                  <div class="col-sm-12 col-md-12" v-if="inputdata[i].sample_quality=='FAILED'">
+
+                    <div class="mb-4">
+                        <label for="single-select-field5" class="form-label">Sample quality reason</label>
+                        <textarea required v-model="inputdata[i].sample_quality_reason" class="form-control" type="text" ></textarea>
+
+
+                    </div>
+            
+                </div>
 
                     <div class="col-sm-12 col-md-6">
 
@@ -147,7 +166,7 @@
                     </div>
 
 
-                    <div class="col-sm-12 col-md-6">
+                    <!-- <div class="col-sm-12 col-md-6">
 
                       <div class="mb-4">
                           <label for="single-select-field4" class="form-label">Technique</label>
@@ -155,19 +174,32 @@
                         </div>
               
           
-                  </div>
+                  </div> -->
 
 
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" :id="i+'referredout'" >
-                            <label  class="form-check-label ms-2" :for="i+'referredout'">Reffered Out?</label>
-                     
-                          </div>
-                          <div class="mb-4" v-if="inputdata[i].referredout">
+                          <div class="d-flex">
 
-                            <label  class="form-check-label ms-2" :for="i+'referredto'">Reffered From?</label>
+                            <div @click="inputdata[i].referredin=false">
+                              <input v-model="inputdata[i].referredout" class="form-check-input" type="checkbox" role="switch" :id="i+'referredout'" >
+                              <label  class="form-check-label ms-2" :for="i+'referredout'">Reffered Out?</label>
+                     
+                            </div>
+
+                            <div @click="inputdata[i].referredout=false" class="ms-3">
+                              <input v-model="inputdata[i].referredin" class="form-check-input" type="checkbox" role="switch" :id="i+'referredin'" >
+                              <label  class="form-check-label ms-2" :for="i+'referredin'">Reffered In?</label>
+                     
+                            </div>
+
+
+                          </div>
+                          </div>
+                          <div class="mb-4" v-if="inputdata[i].referredout||inputdata[i].referredin">
+
+                            <label  class="form-check-label ms-2" :for="i+'referredto'">Facility</label>
                             <input required v-model="inputdata[i].referredto" class="form-control" type="text"  :id="i+'referredto'" >
                             
                      
@@ -240,6 +272,7 @@
                 physician:null,
                 preleveur:null,
                 referredout:false,
+                referredin:false,
                 conformity:false,
                 referredto:null,
                 receptiondate:date.toISOString().split("T")[0],

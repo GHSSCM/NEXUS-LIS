@@ -28,7 +28,8 @@ Route::get('/test-report', [PDFController::class, 'generatePDF']);
 Route::get('/bill-report', [PDFController::class, 'generatePDFBill']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
-Route::get('/import-database', [DatabaseController::class, 'importDatabase']);
+Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
+
 
 // Route::get("/tt",function(){
 //     Schema::table('test_types', function (Blueprint $table) {
