@@ -40,7 +40,7 @@
         }
         .table {
             width: 100%;
-            border-collapse:collapse;
+            /* border-collapse:collapse; */
             border-spacing: 0px;
             /* margin-right:105px; */
         }

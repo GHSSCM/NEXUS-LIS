@@ -40,7 +40,7 @@
         }
         .table {
             width: 100%;
-            border-collapse:collapse;
+            /* border-collapse:collapse; */
             border-spacing: 0px;
             /* margin-right:105px; */
         }
@@ -237,6 +237,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                                         $hasColumnForReference=true;
                                         $tempData00XY[]=[
+                                            'isRef'=>true,
                                             "rowspan"=>1,
                                             "colspan"=>1,
                                             "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".(!empty($subresult['comparison'])?($subresult['comparisonvalue']." ".$subresult['comparisonoperand']):($subresult['minValue']. " - ".$subresult['maxValue'])." ".($subresult['unit']??'')). ($isRed?' * ':' ')."</span>"):($subresult['unit']??'')
@@ -280,6 +281,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                     
                                     $hasColumnForReference=true;
                                     $tempData00XYZZ[]= [
+                                            'isRef'=>true,
                                             "rowspan"=>1,
                                             "colspan"=>1,
                                             "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($result['guide']??'')." ".($result['unit']??''). ($isRed?' * ':' ')."</span>"):($result['unit']??'')
@@ -387,13 +389,12 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     <td>REFERENCE RANGE</td>
                 @endif
             </tr>
-            </table>
             
 
             <?php
                 $pageData=[];
                 $currentIndex=0;
-                $perPage=9;
+                $perPage=13;
                 foreach($tableData as $d){
                     foreach($d['contents'] as $content){
 
@@ -410,7 +411,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             $colspan=$content['colspan']??1;
                         }
 
-                        $spanData = getColumnSpanForPage($currentIndex,$content['rowspan'],$perPage);
+                        $spanData = getColumnSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage);
                         $startPage = floor($currentIndex/$perPage) ;
                         $spanDataCounter=0;
                         foreach($spanData as $d){
@@ -438,18 +439,17 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                     $currentIndex++;
                 }
-                dd($pageData);
+                // dd($pageData);
             
             
             ?>
             <?php $c=0; $pageNumber=1;?>
             @foreach($pageData as $pD)
-                <table class="table">
                     @foreach($pD as $d)
                         <tr >
-
+                          
                             @foreach ($d as $content)
-
+                                   
                                     <td   
                                     
                                     @if($content['toplevel']??false)
@@ -479,15 +479,26 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                     > {!! $content['text'] !!} </td>
                             
                             @endforeach
-                        
+                          <!-- in case the reference value is not there, but there is a reference column, it is totally left without a cell. i have to cover it. i'll check the last column -->
+                           
+                            @if($hasColumnForReference&& empty(end($d)['isRef'])&&  (end($d)['colspan']??1)==1)
+                                <td></td>
+                            @endif
+                            
                         
                         </tr>
                     @endforeach
 
                 </table>
-                <div class="page-break"></div>
+                <?php
+                    $c++;
+                ?>
+                @if(isset($pageData[$c]))
+                    <div class="page-break"></div>
+                    <table class="table">
+                @endif
             @endforeach
-           
+           </table>
            
         
 
