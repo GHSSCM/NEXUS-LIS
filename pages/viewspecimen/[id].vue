@@ -427,175 +427,175 @@
             for(var i=0;i<meta.length;i++){
                 // var meta = META[k]
                 if(meta[i].condition){
-                     this.dontshowfields[meta[i].id]=true;
+                    this.dontshowfields[meta[i].id]=true;
+                    for(var conditioncounter=0;conditioncounter<meta[i].condition.length;conditioncounter++){
+                        //check for age category
+                        if(meta[i].condition[conditioncounter].field && (meta[i].condition[conditioncounter].field.subfield=="age"||( meta[i].condition[conditioncounter].field.type=='numericrange' &&meta[i].condition[conditioncounter].field.subfield!="gender"))){
+                            const operator = meta[i].condition[conditioncounter].operator;
+                            const value = meta[i].condition[conditioncounter].value;
 
-                    //check for age category
-                    if(meta[i].condition[0].field && (meta[i].condition[0].field.subfield=="age"||( meta[i].condition[0].field.type=='numericrange' &&meta[i].condition[0].field.subfield!="gender"))){
-                        const operator = meta[i].condition[0].operator;
-                        const value = meta[i].condition[0].value;
+                            var sourceValue=null;
+                            if(meta[i].condition[conditioncounter].field.subfield=="age"){
+                                sourceValue=userAge;
+                            }else{
+                                const sourceInput= meta.find((x)=>x.id==meta[i].condition[conditioncounter].field.id);
+                                // alert(JSON.stringify(meta[i].condition[conditioncounter].field))
+                                sourceValue= (typeof sourceInput =="undefined")?null: sourceInput.value;
+                            }
+                            // const sourceValue=meta[i].condition[conditioncounter].field.subfield=="age"?userAge:;
+                            switch(operator){
+                                case ">": 
+                                    if(sourceValue>value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "<": 
+                                    if(sourceValue<value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "<=": 
+                                    if(sourceValue<=value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case ">=": 
+                                    if(sourceValue>=value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "!=": 
+                                    if(sourceValue!=value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "=": 
+                                    if(sourceValue==value){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
 
-                        var sourceValue=null;
-                        if(meta[i].condition[0].field.subfield=="age"){
-                            sourceValue=userAge;
-                        }else{
-                            const sourceInput= meta.find((x)=>x.id==meta[i].condition[0].field.id);
-                            // alert(JSON.stringify(meta[i].condition[0].field))
-                            sourceValue= (typeof sourceInput =="undefined")?null: sourceInput.value;
-                        }
-                        // const sourceValue=meta[i].condition[0].field.subfield=="age"?userAge:;
-                        switch(operator){
-                            case ">": 
-                                if(sourceValue>value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "<": 
-                                if(sourceValue<value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "<=": 
-                                if(sourceValue<=value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case ">=": 
-                                if(sourceValue>=value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "!=": 
-                                if(sourceValue!=value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "=": 
-                                if(sourceValue==value){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-
-                        }
-                        continue;
-                    }
-
-                    //check for gender category
-                    if(meta[i].condition[0].field && meta[i].condition[0].field.subfield=="gender"){
-                        const operator = meta[i].condition[0].operator;
-                        const value = meta[i].condition[0].value;
-                        switch(operator){
-                            case "equals": 
-                                if(value==gender){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "notequals": 
-                                if(value!=gender){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-
-                        }
-                        continue
-                    }
-
-                    //check for alpha numeric
-                    if(meta[i].condition[0].field){
-
-                        const operator = meta[i].condition[0].operator;
-                        const value = meta[i].condition[0].value;
-                        
-                        var sourceValue=null;
-
-                        if(meta[i].condition[0].field.type=="autocomplete"){
-                            //source input is certainly alpha numeric
-                            const sourceInput= meta.find((x)=>x.id==meta[i].condition[0].field.id);
-                            console.log(sourceInput);
-                            sourceValue= (typeof sourceInput =="undefined")?null:(sourceInput.values??[]);
-                        }else{
-                            const sourceInput= meta.find((x)=>x.id==meta[i].condition[0].field.id);
-
-                            sourceValue= (typeof sourceInput =="undefined")?null:sourceInput.value;
-                        }
-                        if(!sourceValue){
-                            console.error("No source value "+meta[i].name);
+                            }
                             continue;
                         }
-                        switch(operator){
-                            case "isanyof": 
-                                var values = meta[i].condition[0].values??[];
-                                for(var counter=0;counter<values.length;counter++){
-                                    if(typeof sourceValue=="string"){
-                                        if(values[counter].toLowerCase()==sourceValue.toLowerCase()){
+
+                        //check for gender category
+                        if(meta[i].condition[conditioncounter].field && meta[i].condition[conditioncounter].field.subfield=="gender"){
+                            const operator = meta[i].condition[conditioncounter].operator;
+                            const value = meta[i].condition[conditioncounter].value;
+                            switch(operator){
+                                case "equals": 
+                                    if(value==gender){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "notequals": 
+                                    if(value!=gender){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+
+                            }
+                            continue
+                        }
+
+                        //check for alpha numeric
+                        if(meta[i].condition[conditioncounter].field){
+
+                            const operator = meta[i].condition[conditioncounter].operator;
+                            const value = meta[i].condition[conditioncounter].value;
+                            
+                            var sourceValue=null;
+
+                            if(meta[i].condition[conditioncounter].field.type=="autocomplete"){
+                                //source input is certainly alpha numeric
+                                const sourceInput= meta.find((x)=>x.id==meta[i].condition[conditioncounter].field.id);
+                                console.log(sourceInput);
+                                sourceValue= (typeof sourceInput =="undefined")?null:(sourceInput.values??[]);
+                            }else{
+                                const sourceInput= meta.find((x)=>x.id==meta[i].condition[conditioncounter].field.id);
+
+                                sourceValue= (typeof sourceInput =="undefined")?null:sourceInput.value;
+                            }
+                            if(!sourceValue){
+                                console.error("No source value "+meta[i].name);
+                                continue;
+                            }
+                            switch(operator){
+                                case "isanyof": 
+                                    var values = meta[i].condition[conditioncounter].values??[];
+                                    for(var counter=0;counter<values.length;counter++){
+                                        if(typeof sourceValue=="string"){
+                                            if(values[counter].toLowerCase()==sourceValue.toLowerCase()){
+                                                delete this.dontshowfields[meta[i].id];
+                                                break;
+                                            }
+                                        }else{
+                                            sourceValue = sourceValue.map(x=>x.toLowerCase());
+                                            if(sourceValue.includes(values[counter].toLowerCase())){
+                                                delete this.dontshowfields[meta[i].id];
+                                                break;
+                                            }
+                                        }   
+                                    }
+                                    break;
+                                case "isnotanyof": 
+                                    var values = meta[i].condition[conditioncounter].values??[];
+                                    var found=false;
+                                    for(var counter=0;counter<values.length;counter++){
+                                        if(typeof sourceValue=="string"){
+                                            if(values[counter].toLowerCase()==sourceValue.toLowerCase()){
+                                                found=true; //already found, comeout 
+                                            }
+                                        }else{
+                                            sourceValue = sourceValue.map(x=>x.toLowerCase());
+                                            if(sourceValue.includes(values[counter].toLowerCase())){
+                                                found=true;//already found, comeout 
+                                            }
+                                        }   
+                                    }
+                                    
+                                    if(!found){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
+                                case "contains": 
+                                    var values = meta[i].condition[conditioncounter].values??[];
+                                    for(var counter=0;counter<values.length;counter++){
+                                        if(sourceValue.toLowerCase().includes(values[counter].toLowerCase())){
                                             delete this.dontshowfields[meta[i].id];
                                             break;
                                         }
-                                    }else{
-                                        sourceValue = sourceValue.map(x=>x.toLowerCase());
-                                        if(sourceValue.includes(values[counter].toLowerCase())){
-                                            delete this.dontshowfields[meta[i].id];
-                                            break;
-                                        }
-                                    }   
-                                }
-                                break;
-                            case "isnotanyof": 
-                                var values = meta[i].condition[0].values??[];
-                                var found=false;
-                                for(var counter=0;counter<values.length;counter++){
-                                    if(typeof sourceValue=="string"){
-                                        if(values[counter].toLowerCase()==sourceValue.toLowerCase()){
+                                    }
+                                    break;
+                                    
+
+                                case "notcontains": 
+                                    var values = meta[i].condition[conditioncounter].values??[];
+                                    var found=false;
+                                    for(var counter=0;counter<values.length;counter++){
+                                        if(sourceValue.toLowerCase().includes(values[counter].toLowerCase())){
                                             found=true; //already found, comeout 
                                         }
-                                    }else{
-                                        sourceValue = sourceValue.map(x=>x.toLowerCase());
-                                        if(sourceValue.includes(values[counter].toLowerCase())){
-                                            found=true;//already found, comeout 
-                                        }
-                                    }   
-                                }
-                                
-                                if(!found){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "contains": 
-                                var values = meta[i].condition[0].values??[];
-                                for(var counter=0;counter<values.length;counter++){
-                                    if(sourceValue.toLowerCase().includes(values[counter].toLowerCase())){
+                                    }
+                                    if(!found){
                                         delete this.dontshowfields[meta[i].id];
-                                        break;
                                     }
-                                }
-                                break;
-                                
-
-                            case "notcontains": 
-                                var values = meta[i].condition[0].values??[];
-                                var found=false;
-                                for(var counter=0;counter<values.length;counter++){
-                                    if(sourceValue.toLowerCase().includes(values[counter].toLowerCase())){
-                                        found=true; //already found, comeout 
+                                    break;
+                                case "equals": 
+                                    if(sourceValue.toLowerCase()==value.toLowerCase()){
+                                        delete this.dontshowfields[meta[i].id];
                                     }
-                                }
-                                if(!found){
-                                    delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "equals": 
-                                if(sourceValue.toLowerCase()==value.toLowerCase()){
-                                     delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
-                            case "notequals": 
-                                if(sourceValue.toLowerCase()!=value.toLowerCase()){
-                                     delete this.dontshowfields[meta[i].id];
-                                }
-                                break;
+                                    break;
+                                case "notequals": 
+                                    if(sourceValue.toLowerCase()!=value.toLowerCase()){
+                                        delete this.dontshowfields[meta[i].id];
+                                    }
+                                    break;
 
+                            }
                         }
                     }
-
 
                 }
             }

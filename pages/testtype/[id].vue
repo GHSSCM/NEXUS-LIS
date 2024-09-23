@@ -108,10 +108,10 @@
                                 </div>
                                 <input v-if="!meta.fields.measures[i].numericrangevalues[j].comparison" required v-model="meta.fields.measures[i].numericrangevalues[j].start" class="form-control form-control-sm mt-2"  step="0.000000001" type="number" style="max-width: 60px;" >
                                 <select class="mt-1" style="width:70px;" v-else v-model="meta.fields.measures[i].numericrangevalues[j].comparisonvalue" required> 
-                                  <option value=">" >Greater than</option>
-                                  <option value="<">Less than</option>
-                                  <option value="<=">Less than or equal to</option>
-                                  <option value=">=">Greater than or equal to</option>
+                                  <option value=">" >Greater than (>)</option>
+                                  <option value="<">Less than (<) </option>
+                                  <option value="<=">Less than or equal to (<=) </option>
+                                  <option value=">=">Greater than or equal to (>=) </option>
                                 </select>
                                 <lablel v-if="!meta.fields.measures[i].numericrangevalues[j].comparison">to</lablel>
                                 <input  v-if="meta.fields.measures[i].numericrangevalues[j].comparison" required v-model="meta.fields.measures[i].numericrangevalues[j].comparisonoperand" class="form-control form-control-sm mt-1"  step="0.000000001" type="number" style="max-width: 60px;">
@@ -333,11 +333,11 @@
 
                     <div style="border : 1px solid rgba(0,0,0,0.5); background:#f2f2f2; border-radius:5px; " class="p-3" v-if="meta.fields.measures[i].condition">
                       <label>Conditions, IF:</label>  
-                      <!-- <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition.push({logic:'and',subfield:'age',values:[]})">+ Add</button> -->
+                      <button style="transform:scale(0.8); border:0" type="button" class="btn btn-outline-primary btn-sm  "  @click="meta.fields.measures[i].condition.push({logic:'and',subfield:'age',values:[]})">+ Add</button>
                       
                       <div v-for=" (con,pos) in meta.fields.measures[i].condition" class=" d-flex flex-row">
                         <select required v-if="pos!=0"  v-model="meta.fields.measures[i].condition[pos].logic" class="me-2 form-control form-control-sm mt-2"  style="max-width: 60px;" >
-                          <option value="and">And</option>
+                          <!-- <option value="and">And</option> -->
                           <option value="or">Or</option>
                         </select>
     

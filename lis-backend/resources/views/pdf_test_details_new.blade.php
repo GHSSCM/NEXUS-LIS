@@ -212,7 +212,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                             "rowspan"=>1,
                                             "colspan"=>2,
                                             "dependsOnLastColumn"=>true,
-                                            "text"=>"<center><b>".strtoupper($result['name'])."</b></center>"
+                                            "text"=>"<center><b>".strtoupper($result['name']??'')."</b></center>"
                                         ],
                                     ]
                                 ];
@@ -227,7 +227,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=>"<b>".$subresult['name']."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
+                                            "text"=>"<b>".($subresult['name']??'')."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
                                         ]
                                     ];
 
@@ -270,7 +270,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>isset($result['noop'])?2:1,
-                                            "text"=>"<b>".$result['name']."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
+                                            "text"=>"<b>".($result['name']??'')."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
                                         ]
                                 ];
 
@@ -311,7 +311,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                         $firstRowContent = $rsData[0]["contents"];
                         $rsData[0]["contents"]=array_merge([[
-                            "text"=>$resultSet['test']['name'],
+                            "text"=>$resultSet['test']['name']??'',
                             "rowspan"=>$rs_total_rows,
                             "colspan"=>1,
                         ]],$firstRowContent); 
