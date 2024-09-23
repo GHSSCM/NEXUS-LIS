@@ -83,7 +83,10 @@
         .page-break-before{
             /* page-break-before: always; */
         }
-/* 
+        .page-break {
+            page-break-before: always;
+        }
+/*  
         table{
             page-break-inside: avoid;
         }
@@ -93,7 +96,7 @@
         }
         td,th{
             page-break-inside: avoid;
-        } */
+        }  */
     </style>
 </head>
 <body>
@@ -169,7 +172,6 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
     </div> -->
     <center><h2><u>LABORATORY TESTS REPORT</u></h2></center>
-    <br/>
 
 
 
@@ -385,53 +387,109 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     <td>REFERENCE RANGE</td>
                 @endif
             </tr>
-
-            <?php $c=0;?>
-            @foreach($tableData as $d)
-                <tr >
-
-                    @foreach ($d['contents'] as $content)
-
-                            <td   
-                            
-                            @if($content['toplevel']??false)
-                                style="font-style: italic;" class="highlight"
-                            @endif 
-
-
-                            {{-- This is the one that checks if the colspan should consider the last column for reference or not
-                            
-                                    The last column of reference is only to show when there is a unit (others) or a reference (numeric).
-
-                                    In case the column is there, keep the value i passed on. Else do -1.
-                            --}}
-                            @if(!empty($content['dependsOnLastColumn']))
-                                colspan="{{$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1}}"
-                            @else
-                                colspan="{{$content['colspan']??1}}"
-                            @endif
-                                 
-                            rowspan="{{$content['rowspan']??1}}"
-
-                             
-                             
-                             
-                             > {!! $content['text'] !!} </td>
-                    
-                    @endforeach
-                 
-                
-                </tr>
-                <?php 
-
+            </table>
             
-                
-                
-                $c++;?>
+
+            <?php
+                $pageData=[];
+                $currentIndex=0;
+                $perPage=9;
+                foreach($tableData as $d){
+                    foreach($d['contents'] as $content){
+
+                        /*
+                         This is the one that checks if the colspan should consider the last column for reference or not
+                            
+                         The last column of reference is only to show when there is a unit (others) or a reference (numeric).
+
+                         In case the column is there, keep the value i passed on. Else do -1.
+                         */
+                        if(!empty($content['dependsOnLastColumn'])){
+                            $colspan=$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1;
+                        }else{
+                            $colspan=$content['colspan']??1;
+                        }
+
+                        $spanData = getColumnSpanForPage($currentIndex,$content['rowspan'],$perPage);
+                        $startPage = floor($currentIndex/$perPage) ;
+                        $spanDataCounter=0;
+                        foreach($spanData as $d){
+                            if(!isset($pageData[$spanDataCounter+$startPage])){
+                                $pageData[$spanDataCounter+$startPage]=[];
+                            }
+                            $copiedContent = $content;
+                            $copiedContent['rowspan']= $d;
+                            if($spanDataCounter==0){
+                                // $pageData[$spanDataCounter+$startPage][]= $copiedContent;
+                                if(!isset($pageData[$spanDataCounter+$startPage][$currentIndex%$perPage])){
+                                    $pageData[$spanDataCounter+$startPage][$currentIndex%$perPage]=[];
+                                }
+
+                                $pageData[$spanDataCounter+$startPage][$currentIndex%$perPage][]=$copiedContent;
+                                //could not forcefully be on row 1. 
+                            }else{
+                                // $pageData[$spanDataCounter+$startPage][]= $copiedContent;
+                                $pageData[$spanDataCounter+$startPage][0][]=$copiedContent;
+                                //has crossed through pages and is on row 1 forcefully
+                            }
+                            $spanDataCounter++;
+                        }
+                    }
+
+                    $currentIndex++;
+                }
+                dd($pageData);
+            
+            
+            ?>
+            <?php $c=0; $pageNumber=1;?>
+            @foreach($pageData as $pD)
+                <table class="table">
+                    @foreach($pD as $d)
+                        <tr >
+
+                            @foreach ($d as $content)
+
+                                    <td   
+                                    
+                                    @if($content['toplevel']??false)
+                                        style="font-style: italic;" class="highlight"
+                                    @endif 
+
+
+                                    {{-- This is the one that checks if the colspan should consider the last column for reference or not
+                                    
+                                            The last column of reference is only to show when there is a unit (others) or a reference (numeric).
+
+                                            In case the column is there, keep the value i passed on. Else do -1.
+                                
+                                    @if(!empty($content['dependsOnLastColumn']))
+                                        colspan="{{$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1}}"
+                                    @else
+                                        colspan="{{$content['colspan']??1}}"
+                                    @endif --}}
+
+                                    colspan="{{$content['colspan']??1}}"
+
+                                    rowspan="{{$content['rowspan']??1}}"
+
+                                    
+                                    
+                                    
+                                    > {!! $content['text'] !!} </td>
+                            
+                            @endforeach
+                        
+                        
+                        </tr>
+                    @endforeach
+
+                </table>
+                <div class="page-break"></div>
             @endforeach
            
            
-        </table>
+        
 
         <br/>
         <br/>

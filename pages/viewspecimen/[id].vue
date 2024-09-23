@@ -118,11 +118,11 @@
                                                     <button  v-if="!meta[x].validated" class="btn btn-sm btn-primary  mt-2 p-1" type="button" @click="meta[x].results[j].values.push('')">+ Add</button>
                                                 </div>
                                                 <input placeholder="Enter value here" :disabled="meta[x].validated"  required v-else-if="m.type=='numericrange'"  type="number"  step="0.000000001"  class="form-control" v-model="meta[x].results[j].value" />
-                                                <textarea required :disabled="meta[x].validated" v-else type="text" class="form-control" v-model="meta[x].results[j].value" ></textarea>
+                                                <textarea required :disabled="meta[x].validated" v-else-if="m.type=='freeinput'" type="text" class="form-control" v-model="meta[x].results[j].value" ></textarea>
                                             </div>
 
                                             <div class="col-sm-2 d-flex" v-if="m.subs.length==0">
-                                                <input  v-if="!m.canremove" :disabled="meta[x].validated" placeholder="Enter optional remark here" type="text" class="form-control" v-model="meta[x].results[j].remark" />
+                                                <input  v-if="!m.canremove && !m.noremarks" :disabled="meta[x].validated" placeholder="Enter optional remark here" type="text" class="form-control" v-model="meta[x].results[j].remark" />
                                                 <div class="p-2" v-if="m.canremove">
                                                     <u style="color:red;cursor:pointer;" @click="meta[x].results.splice(j,1);specimen.others[x].test.meta.fields.measures.splice(j,1); ">Remove</u>
                                                 </div>
@@ -154,7 +154,7 @@
 
                                                             </div>
                                                             <input :disabled="meta[x].validated" placeholder="Enter value here" required v-else-if="s.type=='numericrange'"  type="number"  step="0.000000001"  class="form-control" v-model="meta[x].results[j].subs[h].value" />
-                                                            <textarea :disabled="meta[x].validated" required v-else type="text" class="form-control" v-model="meta[x].results[j].subs[h].value" ></textarea>
+                                                            <textarea :disabled="meta[x].validated" required v-else-if="s.type=='freeinput'" type="text" class="form-control" v-model="meta[x].results[j].subs[h].value" ></textarea>
                                                         </div>
 
                                                         <div class="col-sm-3">
@@ -337,9 +337,12 @@
                             context.meta[metaCounter].results[i].maxValue=range.end;
                             context.meta[metaCounter].results[i].unit=measure.unit;
                         })
-                        }else{
+                        }else {
 
                             context.meta[metaCounter].results[i].unit=measure.unit;
+                            if(measure.type=='noop'){
+                                context.meta[metaCounter].results[i].noop=true;
+                            }
                         }
                         if(measure.subs){
                             for(var j=0;j<measure.subs.length;j++){

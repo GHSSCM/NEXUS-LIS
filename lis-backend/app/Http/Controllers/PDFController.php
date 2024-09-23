@@ -17,7 +17,11 @@ class PDFController extends Controller
             return abort(404);
         }
 
-    $specimen=\App\Models\RegisteredSpecimen::query()->find($id)->toArray();
+    $specimen=\App\Models\RegisteredSpecimen::query()->find($id);
+
+    $specimen->state="Results Printed";
+    $specimen->save();
+    $specimen=$specimen->toArray();
     $specimen['patient']=\App\Models\Patient::query()->where("uniqid",$specimen['patient'])->first();
     $specimen['specimen']=\App\Models\SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
     $specimen['test']=\App\Models\TestType::query()->where("uniqid",$specimen['test'])->first();
@@ -41,7 +45,9 @@ class PDFController extends Controller
 
         $specimens=[];
         if($multiple && $specimen['groupID']){
+            \App\Models\RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->update(['state'=>'Results Printed']);
             $others= \App\Models\RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get()->toArray();
+           
             $specimens=[$specimen];
             foreach($others as $other){
                 $other['patient']=$specimen['patient'];
@@ -60,8 +66,8 @@ class PDFController extends Controller
         }else{
             $specimens=[$specimen];
         }
-
-        $pdf = Pdf::loadView('pdf_test_details', compact('specimen', 'specimens','footerContent'))->setPaper('a4')
+        // return view('pdf_test_details', compact('specimen', 'specimens','footerContent'));
+        $pdf = Pdf::loadView('pdf_test_details_new', compact('specimen', 'specimens','footerContent'))->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 

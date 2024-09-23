@@ -50,3 +50,53 @@ function formatDate($dateString) {
         return 'Invalid date format';
     }
 }
+
+function update_registered_specimens_state($rs,$state){
+     $rs->state = $state;
+     $rs->save();
+}
+
+/**
+ * 
+ * 
+ * @param int $pos = the index of the main loop
+ * @param int $truespan = the real span if the table was normal
+ */
+function getColumnSpanForPage($pos,$truespan,$maxSpanPerPage=10){
+    $expansion =  $pos+$truespan;
+    $spansInEachPage=[];
+
+     
+    if($pos==0){
+        $copyTrueSpan=$truespan;
+        while($copyTrueSpan>0){
+            if($copyTrueSpan<$maxSpanPerPage){
+                $spansInEachPage[]=$copyTrueSpan;
+                $copyTrueSpan=0;
+            }else{
+                $spansInEachPage[]=$maxSpanPerPage;
+                $copyTrueSpan=$copyTrueSpan-$maxSpanPerPage;
+            }
+        }
+    }else{
+        $copyTrueSpan=$truespan;
+
+        $counter=0;
+        while($copyTrueSpan>0){
+            if($counter==0){
+                $maxSpanable= $maxSpanPerPage - $pos;//the mount of size he can occupy on the first page
+            }else{
+                $maxSpanable=$maxSpanPerPage;
+            }
+            if($copyTrueSpan<$maxSpanable){
+                $spansInEachPage[]=($copyTrueSpan);
+                $copyTrueSpan=0;
+            }else{
+                $spansInEachPage[]=($maxSpanable);
+                $copyTrueSpan=$copyTrueSpan-$maxSpanable;
+            }
+        }
+    }
+
+    return $spansInEachPage;
+}

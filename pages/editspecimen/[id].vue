@@ -129,7 +129,7 @@
 
                         <div class="mb-4">
                             <label for="single-select-field5" class="form-label">Sample state</label>
-                            <multiselect required v-model="inputdata[i].state" :options="['N/A','Received','Due','To be verified','Published','Cancelled','Invalid','All']"></multiselect>
+                            <multiselect required v-model="inputdata[i].state" :options="['Registered','Tested','Results Available','Results Printed']"></multiselect>
 
                           </div>
                 
@@ -260,7 +260,7 @@
                 patient:this.inputdata[0].patient,
                 receptiondate:null,
                 receptiontime:null,
-                state:"N/A",
+                state:"Registered",
                 physician:null,
                 preleveur:null,
                 referredout:false,
@@ -339,7 +339,7 @@
                 patient:null,
                 receptiondate:null,
                 receptiontime:null,
-                state:"N/A",
+                state:"Registered",
                 physician:null,
                 preleveur:null,
                 referredout:false,

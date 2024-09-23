@@ -396,6 +396,18 @@ Route::post("/addspecimen",function(){
         $subtests = $specimen['test']['meta']['subtests']; //am array
         $subtests = TestType::query()->whereIn("uniqid",$subtests)->get();
         foreach($subtests as $subtest){
+            $specimen['test']['meta']['fields']["measures"][]=[
+                "type"=>"noop",
+                "subs"=>[],
+                "numericrangevalues"=>[],
+                "alphanumericvalues"=>[],
+                "autocompletevalues"=>[],
+                "id"=>sha1($subtest->id),
+                "name"=>$subtest->name,
+                "unit"=>"",
+                // "canremove"=>true,
+                "noremarks"=>true
+            ];
             $specimen['test']['meta']['fields']["measures"]=array_merge( $specimen['test']['meta']['fields']["measures"],$subtest['meta']['fields']["measures"]); 
             $lab_section= LabSection::query()->where('uniqid',$subtest['lab_section'])->first();
             if(!empty($lab_section)){
@@ -521,6 +533,7 @@ Route::post("/addspecimen",function(){
         $specimen->technique=$donnee['technique']??$specimen->technique;
         $specimen->meta=$meta;
         $specimen->enteredat = now();
+        $specimen->state="Results Available";
         $specimen->save();
         $resp[]=$specimen;
     }
