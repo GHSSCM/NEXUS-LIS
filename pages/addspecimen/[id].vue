@@ -323,7 +323,8 @@
         ata:inf
       },()=>{
           successToast("Saved successfully");
-          context.$router.push("/specimens")
+          window.location.href=("/specimens")
+          // context.$router.push("/specimens")
         
       })
       

@@ -62,7 +62,7 @@ function update_registered_specimens_state($rs,$state){
  * @param int $pos = the index of the main loop
  * @param int $truespan = the real span if the table was normal
  */
-function getColumnSpanForPage($pos,$truespan,$maxSpanPerPage=10){
+function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10){
     $expansion =  $pos+$truespan;
     $spansInEachPage=[];
 

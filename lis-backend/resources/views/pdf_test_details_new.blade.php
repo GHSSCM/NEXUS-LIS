@@ -379,7 +379,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     
                 }
                 ?>
-                <th colspan="4" class="highlight">{{strtoupper($labsection)}}</th>
+                <th colspan="{{$hasColumnForReference?4:3}}" class="highlight">{{strtoupper($labsection)}}</th>
             </tr>
             <tr>
                 <td></td>
@@ -395,6 +395,8 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 $pageData=[];
                 $currentIndex=0;
                 $perPage=13;
+                $rowPosition=1; $rowColumnsOccuppied=[];//at times, some rows have elements that cross above the accepted number of columns. let me try to do something manual
+                //the assoc rowColumnsOccupied, shows the number of columns already consumed by a row such that it should be the max possible (4 or 3 depending on if there is reference or not)
                 foreach($tableData as $d){
                     foreach($d['contents'] as $content){
 
@@ -411,7 +413,20 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             $colspan=$content['colspan']??1;
                         }
 
-                        $spanData = getColumnSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage);
+                        //count here
+                        $rpCounter = 0;
+                        while($rpCounter<$content['rowspan']??1){ //do not forget that the content can span through multiple rows
+                            if(!isset($rowColumnsOccuppied[$rowPosition+$rpCounter])){
+                                $rowColumnsOccuppied[$rowPosition+$rpCounter]=0;
+                            }
+                            $rowColumnsOccuppied[$rowPosition+$rpCounter]+=$content['colspan'];
+                            if($rowColumnsOccuppied[$rowPosition+$rpCounter]>($hasColumnForReference?4:3)){
+                                $content['colspan'] = $content['colspan'] -1;//let me just substract one to see
+                            }
+                            $rpCounter++;
+                        }
+
+                        $spanData = getRowSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage);
                         $startPage = floor($currentIndex/$perPage) ;
                         $spanDataCounter=0;
                         foreach($spanData as $d){
@@ -438,12 +453,14 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     }
 
                     $currentIndex++;
+                    $rowPosition++;
                 }
                 // dd($pageData);
             
             
             ?>
-            <?php $c=0; $pageNumber=1;?>
+            <?php $c=0; $pageNumber=1; ?>
+
             @foreach($pageData as $pD)
                     @foreach($pD as $d)
                         <tr >
@@ -496,6 +513,14 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 @if(isset($pageData[$c]))
                     <div class="page-break"></div>
                     <table class="table">
+                    <tr>
+                        <td></td>
+                        <td>TESTS</td>
+                        <td>RESULTS</td>
+                        @if($hasColumnForReference)
+                            <td>REFERENCE RANGE</td>
+                        @endif
+                    </tr>
                 @endif
             @endforeach
            </table>
