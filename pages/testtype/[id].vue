@@ -42,7 +42,7 @@
                     <div class="col-sm-12 col-md-6">
 
                         <div class="mb-4">
-                            <label class="form-label">Name</label>
+                            <label class="form-label">Name *</label>
                             <input v-model="name" required class="form-control" type="text" placeholder="Name"/>
                           </div>
                 
@@ -50,10 +50,17 @@
                           
 
                     </div>
-                    <div>
+                    <div class="col-sm-12 col-md-6">
                         <div class="mb-4">
                             <label class="form-label">Description</label>
                             <textarea v-model="description" class="form-control" type="text" placeholder="Description"></textarea>
+                          </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <div class="mb-4">
+                            <label class="form-label">Clinical Data</label>
+                            <textarea v-model="clinicaldata" class="form-control" type="text" placeholder="Clinical Data"></textarea>
                           </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
@@ -560,6 +567,7 @@
           id,
             name:"",
             description:"",
+            clinicaldata:"",
             specimens:[],
             tat:"",
             tatunit:"hours",
@@ -609,6 +617,7 @@
               context.hidename=testtype.hidename;
               context.threshold=testtype.threshold;
               context.meta=testtype.meta;
+              context.clinicaldata=testtype.clinicaldata;
               context.lab_section=testtype.lab_section;
               if(!context.meta.fields){
                 context.meta.fields={
@@ -652,6 +661,7 @@
           threshold:this.threshold,
           cost:this.cost,
           meta:this.meta,
+          clinicaldata:this.clinicaldata,
           lab_section:(this.lab_section??{}).uniqid,
         },(specimen)=>{
           if(context.id=='create'){

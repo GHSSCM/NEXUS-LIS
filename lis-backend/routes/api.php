@@ -372,6 +372,8 @@ Route::post("/addspecimen",function(){
             unset($b['tests']);
             $b['lab_ref']=request('lab_ref');
             $b['state']=$b['state']??"N/A";
+            $testType = TestType::query()->where("uniqid",$t)->first();
+            $b['clinical']= $testType->clinicaldata;
             RegisteredSpecimen::create($b);
         }
     }

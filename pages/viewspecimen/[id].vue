@@ -225,9 +225,11 @@
                                                 <!-- {{ specimen.test.name }} -->
                                             </div>
                                             
-                                            <div class="col-sm-12 col-md-10">
+                                            <div class="col-sm-12 col-md-10" v-if="specimen.others[x].clinical">
                                                 <div class="mb-4">
-                                                    <textarea :disabled="meta[x].validated" class="form-control" style="width:100%;height:100px;" placeholder="Enter clinical data (optional)" v-model="specimen.others[x].clinical"></textarea>
+                                                    <p>Clinical data</p>
+                                                    <!-- meta[x].validated -->
+                                                    <textarea :disabled="true" class="form-control" style="width:100%;height:100px;" placeholder="Enter clinical data (optional)" v-model="specimen.others[x].clinical"></textarea>
                                                   </div>
                                             </div>
 
