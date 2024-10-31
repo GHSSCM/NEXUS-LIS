@@ -126,7 +126,7 @@
                               </div>
                               
                               <div class="ms-3">
-                                <lablel>&nbsp;<br/>&nbsp;</lablel>
+                                <lablel>Gender&nbsp;<br/>&nbsp;</lablel>
                                 <select required  v-model="meta.fields.measures[i].numericrangevalues[j].gender" class="form-control form-control-sm mt-2"  style="max-width: 60px;" >
                                   <option value="M">Male</option>
                                   <option value="F">Female</option>
@@ -250,7 +250,7 @@
                               </div>
                    
                               <div class="ms-3">
-                                <lablel>&nbsp;</lablel>
+                                <lablel>Gender&nbsp;</lablel>
                                 <select required  v-model="meta.fields.measures[i].subs[s].numericrangevalues[j].gender" class="form-control form-control-sm mt-2"  style="max-width: 60px;" >
                                   <option value="M">Male</option>
                                   <option value="F">Female</option>

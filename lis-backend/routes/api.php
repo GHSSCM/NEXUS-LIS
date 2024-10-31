@@ -750,8 +750,8 @@ function parseListOfSpecimens($specimens){
             'uniqid'=>$patient->uniqid,
             'id'=>$patient->id,
         ],
-        'physicians'=>$uniquePhysicians,
-        'preleveurs'=>$uniquePreleveurs,
+        'physicians'=>array_filter($uniquePhysicians,function($elt){return !!$elt;}),
+        'preleveurs'=>array_filter($uniquePreleveurs,function($elt){return !!$elt;}),
         'specimens'=>$sp,
         'inputdata'=>$registeredSpecimen,
         'techniques'=>$techniques

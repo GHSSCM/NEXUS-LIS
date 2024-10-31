@@ -96,6 +96,50 @@
 
 
 
+                  <div class="col-sm-12 col-md-6">
+
+                    <div class="mb-4">
+                        <label class="form-label">Date of reception</label>
+                        <input v-model="inputdata[i].receptiondate" required class="result form-control " type="date" placeholder="Date of reception">
+                      </div>
+            
+                      
+                </div>
+
+
+                <div class="col-sm-12 col-md-6">
+
+                  <div class="mb-4">
+                      <label class="form-label">TIme of reception (optional)</label>
+                      <input v-model="inputdata[i].receptiontime"  class="result form-control " type="time" placeholder="Time of reception">
+                    </div>
+          
+                    
+              </div>
+
+
+              <div class="col-sm-12 col-md-6">
+
+                <div class="mb-4">
+                    <label class="form-label">Date of collection</label>
+                    <input v-model="inputdata[i].collectiondate" required class="result form-control " type="date" placeholder="Date of collection">
+                  </div>
+        
+                  
+            </div>
+
+
+            <div class="col-sm-12 col-md-6">
+
+              <div class="mb-4">
+                  <label class="form-label">TIme of collection (optional)</label>
+                  <input v-model="inputdata[i].collectiontime"  class="result form-control " type="time" placeholder="Time of collection">
+                </div>
+      
+                
+          </div>
+
+
 
                   <div class="col-sm-12 col-md-6">
 
@@ -358,7 +402,7 @@
         context.patientId = data.patientId;
             
         context.patient.id = data.patient.id;
-        context.physicians = data.physicians;
+        context.physicians = data.physicians??[];
         context.preleveurs = data.preleveurs;
         context.specimens = data.specimens;
         context.techniques = data.techniques;

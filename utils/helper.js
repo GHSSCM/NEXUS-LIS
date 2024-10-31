@@ -154,6 +154,7 @@ export const loadDataTables=()=>{
     var dts = $('.dttable');
     for(var i=0;i<dts.length;i++){
         var table = $(dts[i]).DataTable( {
+            order:[[1,'asc']],
             lengthChange: false,
             buttons: [ 'copy', 'excel', 'pdf', 'print']
         } );

@@ -140,7 +140,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
         <tr style="margin:0;padding:0">
             <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Age: {{calculateAge($specimen['patient']['dob'])}}</p></td>
             <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td> -->
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen collection: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen reception: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
 
         </tr>
 
@@ -227,7 +227,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=>"<b>".($subresult['name']??'')."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
+                                            "text"=>"<b  style='".($isRed?'color:red!important':'')."'>".($subresult['name']??'')."</b> <span style='".($isRed?'color:red!important':'')."'>".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).'</span>'
                                         ]
                                     ];
 
@@ -265,16 +265,17 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             }else{
                                 $rs_total_rows+=1;
                                 $total_rows+=1;
+                                $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
+
 
                                 $tempData00XYZZ=[
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>isset($result['noop'])?2:1,
-                                            "text"=>"<b>".($result['name']??'')."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
+                                            "text"=>"<b style='".($isRed?'color:red':'')."'>".($result['name']??'')."</b> <span style='".($isRed?'color:red':'')."'>".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") )."</span>",  
                                         ]
                                 ];
 
-                                $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
 
                                 //  YOU CAN BLOCK HERE
                                  if(!empty($result['guide'])||!empty($result['unit'])){
@@ -351,13 +352,15 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{ $specimen['placeofcollection']??""}}</td>
             </tr>
             <tr>
-                <td>Time of collection</td>
+                <td>Time of reception</td>
                 <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</td>
             </tr>
-            <tr>
-                <td>Time of testing</td>
-                <td  colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['testingdate']??"")." ".($specimen['testingtime']??""))}}</td>
-            </tr>
+            @if(isset($specimen['collectiondate']))
+                <tr>
+                    <td>Date of collection</td>
+                    <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['collectiondate']??"")." ".($specimen['collectiontime']??""))}}</td>
+                </tr>
+            @endif
             <tr>
                 <?php
                 

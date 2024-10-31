@@ -94,6 +94,27 @@
                   </div>
 
 
+                  <div class="col-sm-12 col-md-6">
+
+                    <div class="mb-4">
+                        <label class="form-label">Date of collection</label>
+                        <input v-model="inputdata[i].collectiondate" required class="result form-control " type="date" placeholder="Date of collection">
+                      </div>
+            
+                      
+                </div>
+
+
+                <div class="col-sm-12 col-md-6">
+
+                  <div class="mb-4">
+                      <label class="form-label">TIme of collection (optional)</label>
+                      <input v-model="inputdata[i].collectiontime"  class="result form-control " type="time" placeholder="Time of collection">
+                    </div>
+          
+                    
+              </div>
+
 
 
                   <div class="col-sm-12 col-md-6">
@@ -269,6 +290,7 @@
                 tests:[],
                 patient:this.inputdata[0].patient,
                 receptiontime:null,
+                collectiontime:null,
                 state:"Registered",
                 physician:null,
                 preleveur:null,
@@ -277,6 +299,7 @@
                 conformity:false,
                 referredto:null,
                 receptiondate:date.toISOString().split("T")[0],
+                collectiondate:date.toISOString().split("T")[0],
                 groupID:this.groupID
               })
       },
@@ -349,6 +372,7 @@
                 tests:[],
                 patient:null,
                 receptiontime:null,
+                collectiontime:null,
                 state:"Registered",
                 physician:null,
                 preleveur:null,
@@ -356,6 +380,7 @@
                 conformity:false,
                 referredto:null,
                 receptiondate:(new Date()).toISOString().split("T")[0],
+                collectiondate:(new Date()).toISOString().split("T")[0],
                 groupID
               }
             ]
