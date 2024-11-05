@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('patients',function(Blueprint $table){
-            $table->softDeletes();
+            // $table->softDeletes();
             $table->string("lab_ref");
         });
         Schema::create('customfields', function (Blueprint $table) {

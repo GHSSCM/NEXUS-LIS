@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseController extends Controller
 {
@@ -38,6 +40,24 @@ class DatabaseController extends Controller
         return response()->download($filepath)->deleteFileAfterSend(true);
     }
 
+    
+
+
+    function emptyDatabase()
+    {
+        $tables = DB::select('SHOW TABLES');
+        $tableKey = 'Tables_in_' . env('DB_DATABASE');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        foreach ($tables as $table) {
+            DB::table($table->$tableKey)->truncate();
+            DB::statement("DROP TABLE {$table->$tableKey}");
+        }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+    }
+
+
+    
 
     public function importDatabase(Request $request)
     {
@@ -61,11 +81,16 @@ class DatabaseController extends Controller
         $file = $request->file('sql_file');
 
 
+        $isCompiledVersion =  !empty(env("COMPILED_VERSION"));
+        $storageDirectory = $isCompiledVersion? storage_path('app/imports'): storage_path('app\\imports');
+        if(!file_exists($storageDirectory)){
+            mkdir($storageDirectory, 0777, true);
+        }
+
 
         $filepath = $file->storeAs('imports', now().'_'. $file->getClientOriginalName());
 
-
-        $isCompiledVersion =  !empty(env("COMPILED_VERSION"));
+        // dd($filepath);
 
 
         // DB::statement("DROP DATABASE IF EXISTS `$databaseName`");
@@ -78,7 +103,13 @@ class DatabaseController extends Controller
         // echo $path;
         $content  = file_get_contents($path);
         // echo $content;
-        $content="DROP DATABASE IF EXISTS `$databaseName`; CREATE DATABASE IF NOT EXISTS `$databaseName`; USE `$databaseName`; ".$content;
+
+        $this->emptyDatabase();
+
+        
+
+
+        $content="USE `$databaseName`; ".$content;
         DB::unprepared($content);
 
         die("<div style='padding:40px;'><h1>Imported successfully. Please wait. Redirecting to login... </h1><script> window.localStorage.clear();setTimeout(function(){window.location='/login'},3000)</script></div>");
