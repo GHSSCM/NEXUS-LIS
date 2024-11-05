@@ -80,28 +80,28 @@ class DatabaseController extends Controller
         
         $file = $request->file('sql_file');
 
+	//dd($file->get());
+        //$isCompiledVersion =  !empty(env("COMPILED_VERSION"));
+        //$storageDirectory = $isCompiledVersion? storage_path('app/imports'): storage_path('app\\imports');
+        //if(!file_exists($storageDirectory)){
+        //    mkdir($storageDirectory, 0777, true);
+        //}
 
-        $isCompiledVersion =  !empty(env("COMPILED_VERSION"));
-        $storageDirectory = $isCompiledVersion? storage_path('app/imports'): storage_path('app\\imports');
-        if(!file_exists($storageDirectory)){
-            mkdir($storageDirectory, 0777, true);
-        }
+	//dd($file);
+        //$filepath = $file->storeAs('imports', now().'_'. $file->getClientOriginalName(),'public');
 
-
-        $filepath = $file->storeAs('imports', now().'_'. $file->getClientOriginalName());
-
-        // dd($filepath);
+        //dd($filepath);
 
 
         // DB::statement("DROP DATABASE IF EXISTS `$databaseName`");
         // DB::statement("CREATE DATABASE IF NOT EXISTS `$databaseName`");
 
 
-        $path = !$isCompiledVersion? storage_path('app/' . $filepath): (storage_path('app\\'.str_replace("/","\\",$filepath)));
+        //$path = !$isCompiledVersion? storage_path('app/' . $filepath): (storage_path('app\\'.str_replace("/","\\",$filepath)));
 
 
         // echo $path;
-        $content  = file_get_contents($path);
+        $content  = $file->get();// file_get_contents($path);
         // echo $content;
 
         $this->emptyDatabase();
@@ -112,7 +112,7 @@ class DatabaseController extends Controller
         $content="USE `$databaseName`; ".$content;
         DB::unprepared($content);
 
-        die("<div style='padding:40px;'><h1>Imported successfully. Please wait. Redirecting to login... </h1><script> window.localStorage.clear();setTimeout(function(){window.location='http://localhost:3000/login'},3000)</script></div>");
+        die("<div style='padding:40px;'><h1>Imported successfully. Please wait. Redirecting to login... </h1><script> window.localStorage.clear();setTimeout(function(){window.location='/login'},3000)</script></div>");
 
 
         return;

@@ -123,7 +123,7 @@ else
     echo "Archive created: $archive_name"
 fi
 
-nautilus ./build
+open ./build
 
 exit 0
 
