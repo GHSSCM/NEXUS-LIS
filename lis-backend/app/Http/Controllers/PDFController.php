@@ -66,6 +66,11 @@ class PDFController extends Controller
         }else{
             $specimens=[$specimen];
         }
+
+        if(request('preview')){
+            return view('pdf_test_details_new', compact('specimen', 'specimens','footerContent'));
+        }
+
         // return view('pdf_test_details', compact('specimen', 'specimens','footerContent'));
         $pdf = Pdf::loadView('pdf_test_details_new', compact('specimen', 'specimens','footerContent'))->setPaper('a4')
         ->setWarnings(false);
@@ -74,6 +79,7 @@ class PDFController extends Controller
         if(request('dl')){
             return $pdf->download("test-report-".str_replace(" ","-",strtolower($specimen['patient']['name'])).'-'. str_replace(" ","-",strtolower($specimen['specimen']['name'])).'.pdf');
         }
+       
         return $pdf->stream('document.pdf');
     }
     //

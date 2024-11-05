@@ -62,10 +62,13 @@ function update_registered_specimens_state($rs,$state){
  * @param int $pos = the index of the main loop
  * @param int $truespan = the real span if the table was normal
  */
-function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10){
+function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10,$realCurrentIndex){
+
     $expansion =  $pos+$truespan;
     $spansInEachPage=[];
 
+
+    // $margin=9;//the first page already has headers and stuff, but the other pages are empty. if we give the same max number of rows to all of them, the other pages will be more empty at the bottom. The margin is the amount of rows that can add up to the initial maximum for the other pages.
      
     if($pos==0){
         $copyTrueSpan=$truespan;
@@ -79,22 +82,28 @@ function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10){
             }
         }
     }else{
+
+       
         $copyTrueSpan=$truespan;
 
         $counter=0;
         while($copyTrueSpan>0){
+            // if($realCurrentIndex>$maxSpanPerPage || $counter>0){ //meaning we are not on the first page, or we are calculating the number of rows this element will take on other pages.
+            //     $maxSpanPerPage +=$margin;
+            // }
             if($counter==0){
                 $maxSpanable= $maxSpanPerPage - $pos;//the mount of size he can occupy on the first page
             }else{
                 $maxSpanable=$maxSpanPerPage;
             }
             if($copyTrueSpan<$maxSpanable){
-                $spansInEachPage[]=($copyTrueSpan);
+                $spansInEachPage[]=$copyTrueSpan;
                 $copyTrueSpan=0;
             }else{
-                $spansInEachPage[]=($maxSpanable);
+                $spansInEachPage[]=$maxSpanable;
                 $copyTrueSpan=$copyTrueSpan-$maxSpanable;
             }
+            $counter++;
         }
     }
 

@@ -106,18 +106,18 @@
             <?php
             
                 //remote files disturb to load . let me load the base64 server side and send 
-                $path = public_path('/toplogo.png');
+                $path = public_path('/toplogonew.png');
                 $type = pathinfo($path, PATHINFO_EXTENSION);
                 $data = file_get_contents($path);
                 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
             ?>
 
-        <img src="{{$base64}}" height="70"/>
-        <br/>
+        <img src="{{$base64}}" height="100"/>
+        {{--<br/>
         <br/>
         </center>
         <center><i>Authorization No: 0667 MINSANTE/SG/DPML/SDLTS/SL/BNLALAM<br/>
-E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center>
+E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center>--}}
 
 <br/>    
     <hr/>
@@ -183,7 +183,9 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     $setOfResults =$specimens;
                     $tableData =[];
                     $total_rows=0;
+                    $counter=-1;
                     foreach($setOfResults as $resultSet){
+                        $counter++;
                         $rsData=[];
                         
                         $rs_total_rows=0;
@@ -216,6 +218,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         ],
                                     ]
                                 ];
+
 
                                 foreach($result['subs'] as $subresult){
 
@@ -264,6 +267,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                             }else{
                                 $rs_total_rows+=1;
+
                                 $total_rows+=1;
                                 $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
 
@@ -292,6 +296,8 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                 $rsData[]=[
                                     "contents"=>$tempData00XYZZ
                                 ];
+
+                                
                             }           
 
                         }
@@ -311,6 +317,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                         
 
                         $firstRowContent = $rsData[0]["contents"];
+
                         $rsData[0]["contents"]=array_merge([[
                             "text"=>$resultSet['test']['name']??'',
                             "rowspan"=>$rs_total_rows,
@@ -318,6 +325,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                         ]],$firstRowContent); 
 
 
+                        
                         $currentTableDataIndex=count($tableData);
 
 
@@ -327,12 +335,24 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                         $firstRowContent = $tableData[$currentTableDataIndex]["contents"];
                         $tableData[$currentTableDataIndex]["contents"]=array_merge([[
                             "toplevel"=>true,
-                            "rowspan"=>$total_rows,
+                            "rowspan"=>$rs_total_rows,
                             "colspan"=>1,
                             "text"=>$resultSet['technique']??""]],$firstRowContent); 
-                        $tableData[$currentTableDataIndex]["toplevel"]=true;
+
+                      
                     }
 
+                    // $firstRowContent = $tableData[$currentTableDataIndex]["contents"];
+                    // $tableData[$currentTableDataIndex]["contents"]=array_merge([[
+                    //     "toplevel"=>true,
+                    //     "rowspan"=>$total_rows,
+                    //     "colspan"=>1,
+                    //     "text"=>$resultSet['technique']??""]],$firstRowContent); 
+                    // $tableData[$currentTableDataIndex]["toplevel"]=true;
+
+                    // if($counter==1){
+                    //     dd($tableData);
+                    // }
                    
                
 
@@ -397,11 +417,15 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
             <?php
                 $pageData=[];
                 $currentIndex=0;
-                $perPage=13;
+                $perPage=16;
                 $rowPosition=1; $rowColumnsOccuppied=[];//at times, some rows have elements that cross above the accepted number of columns. let me try to do something manual
                 //the assoc rowColumnsOccupied, shows the number of columns already consumed by a row such that it should be the max possible (4 or 3 depending on if there is reference or not)
+              
+              
+                // dd($tableData);
                 foreach($tableData as $d){
                     foreach($d['contents'] as $content){
+
 
                         /*
                          This is the one that checks if the colspan should consider the last column for reference or not
@@ -424,12 +448,17 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             }
                             $rowColumnsOccuppied[$rowPosition+$rpCounter]+=$content['colspan'];
                             if($rowColumnsOccuppied[$rowPosition+$rpCounter]>($hasColumnForReference?4:3)){
-                                $content['colspan'] = $content['colspan'] -1;//let me just substract one to see
+                                $content['colspan'] = ($content['colspan'] -1);//let me just substract one to see
+                                $content['colspan'] = $content['colspan']>0?$content['colspan']:1; //make sure the min is 1
+                               
                             }
                             $rpCounter++;
                         }
-
-                        $spanData = getRowSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage);
+                       
+                        $spanData = getRowSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage, $currentIndex);
+                        if($currentIndex==4){
+                            // dd($spanData);
+                        }
                         $startPage = floor($currentIndex/$perPage) ;
                         $spanDataCounter=0;
                         foreach($spanData as $d){
@@ -509,11 +538,12 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                         </tr>
                     @endforeach
 
-                </table>
+       
                 <?php
                     $c++;
                 ?>
-                @if(isset($pageData[$c]))
+              @if(isset($pageData[$c]))         
+                    </table>
                     <div class="page-break"></div>
                     <table class="table">
                     <tr>
@@ -524,7 +554,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             <td>REFERENCE RANGE</td>
                         @endif
                     </tr>
-                @endif
+                @endif 
             @endforeach
            </table>
            

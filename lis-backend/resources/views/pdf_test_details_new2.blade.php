@@ -83,7 +83,10 @@
         .page-break-before{
             /* page-break-before: always; */
         }
-/* 
+        .page-break {
+            page-break-before: always;
+        }
+/*  
         table{
             page-break-inside: avoid;
         }
@@ -93,7 +96,7 @@
         }
         td,th{
             page-break-inside: avoid;
-        } */
+        }  */
     </style>
 </head>
 <body>
@@ -137,7 +140,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
         <tr style="margin:0;padding:0">
             <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">Age: {{calculateAge($specimen['patient']['dob'])}}</p></td>
             <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td> -->
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen collection: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date of specimen reception: {{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</p></td>
 
         </tr>
 
@@ -169,7 +172,6 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
     </div> -->
     <center><h2><u>LABORATORY TESTS REPORT</u></h2></center>
-    <br/>
 
 
 
@@ -210,7 +212,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                             "rowspan"=>1,
                                             "colspan"=>2,
                                             "dependsOnLastColumn"=>true,
-                                            "text"=>"<center><b>".strtoupper($result['name'])."</b></center>"
+                                            "text"=>"<center><b>".strtoupper($result['name']??'')."</b></center>"
                                         ],
                                     ]
                                 ];
@@ -225,7 +227,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=>"<b>".$subresult['name']."</b> ".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).''
+                                            "text"=>"<b  style='".($isRed?'color:red!important':'')."'>".($subresult['name']??'')."</b> <span style='".($isRed?'color:red!important':'')."'>".($subresult['value']??  (!empty($subresult['values'])?implode(", ",$subresult['values']):"")  ).'</span>'
                                         ]
                                     ];
 
@@ -235,6 +237,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                                         $hasColumnForReference=true;
                                         $tempData00XY[]=[
+                                            'isRef'=>true,
                                             "rowspan"=>1,
                                             "colspan"=>1,
                                             "text"=>(isset($subresult['maxValue'])&&isset($subresult['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".(!empty($subresult['comparison'])?($subresult['comparisonvalue']." ".$subresult['comparisonoperand']):($subresult['minValue']. " - ".$subresult['maxValue'])." ".($subresult['unit']??'')). ($isRed?' * ':' ')."</span>"):($subresult['unit']??'')
@@ -262,22 +265,24 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                             }else{
                                 $rs_total_rows+=1;
                                 $total_rows+=1;
+                                $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
+
 
                                 $tempData00XYZZ=[
                                         [
                                             "rowspan"=>1,
                                             "colspan"=>isset($result['noop'])?2:1,
-                                            "text"=>"<b>".($result['name']??"")."</b> ".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") ),  
+                                            "text"=>"<b style='".($isRed?'color:red':'')."'>".($result['name']??'')."</b> <span style='".($isRed?'color:red':'')."'>".($result['value']?? (!empty($result['values'])?implode(", ",$result['values']):"") )."</span>",  
                                         ]
                                 ];
 
-                                $isRed=(isset($result['maxValue'])&&isset($result['minValue']))?($result['maxValue']<$result['value']||$result['minValue']>$result['value']):false;
 
                                 //  YOU CAN BLOCK HERE
                                  if(!empty($result['guide'])||!empty($result['unit'])){
                                     
                                     $hasColumnForReference=true;
                                     $tempData00XYZZ[]= [
+                                            'isRef'=>true,
                                             "rowspan"=>1,
                                             "colspan"=>1,
                                             "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($result['guide']??'')." ".($result['unit']??''). ($isRed?' * ':' ')."</span>"):($result['unit']??'')
@@ -307,7 +312,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
                         $firstRowContent = $rsData[0]["contents"];
                         $rsData[0]["contents"]=array_merge([[
-                            "text"=>$resultSet['test']['name'],
+                            "text"=>$resultSet['test']['name']??'',
                             "rowspan"=>$rs_total_rows,
                             "colspan"=>1,
                         ]],$firstRowContent); 
@@ -347,13 +352,15 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{ $specimen['placeofcollection']??""}}</td>
             </tr>
             <tr>
-                <td>Time of collection</td>
+                <td>Time of reception</td>
                 <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['receptiondate']??"")." ".($specimen['receptiontime']??""))}}</td>
             </tr>
-            <tr>
-                <td>Time of testing</td>
-                <td  colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['testingdate']??"")." ".($specimen['testingtime']??""))}}</td>
-            </tr>
+            @if(isset($specimen['collectiondate']))
+                <tr>
+                    <td>Date of collection</td>
+                    <td colspan="{{!$hasColumnForReference?2:3}}" class="field">{{formatDate(($specimen['collectiondate']??"")." ".($specimen['collectiontime']??""))}}</td>
+                </tr>
+            @endif
             <tr>
                 <?php
                 
@@ -375,7 +382,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     
                 }
                 ?>
-                <th colspan="4" class="highlight">{{strtoupper($labsection)}}</th>
+                <th colspan="{{$hasColumnForReference?4:3}}" class="highlight">{{strtoupper($labsection)}}</th>
             </tr>
             <tr>
                 <td></td>
@@ -385,53 +392,143 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                     <td>REFERENCE RANGE</td>
                 @endif
             </tr>
-
-            <?php $c=0;?>
-            @foreach($tableData as $d)
-                <tr >
-
-                    @foreach ($d['contents'] as $content)
-
-                            <td   
-                            
-                            @if($content['toplevel']??false)
-                                style="font-style: italic;" class="highlight"
-                            @endif 
-
-
-                            {{-- This is the one that checks if the colspan should consider the last column for reference or not
-                            
-                                    The last column of reference is only to show when there is a unit (others) or a reference (numeric).
-
-                                    In case the column is there, keep the value i passed on. Else do -1.
-                            --}}
-                            @if(!empty($content['dependsOnLastColumn']))
-                                colspan="{{$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1}}"
-                            @else
-                                colspan="{{$content['colspan']??1}}"
-                            @endif
-                                 
-                            rowspan="{{$content['rowspan']??1}}"
-
-                             
-                             
-                             
-                             > {!! $content['text'] !!} </td>
-                    
-                    @endforeach
-                 
-                
-                </tr>
-                <?php 
-
             
-                
-                
-                $c++;?>
+
+            <?php
+                $pageData=[];
+                $currentIndex=0;
+                $perPage=13;
+                $rowPosition=1; $rowColumnsOccuppied=[];//at times, some rows have elements that cross above the accepted number of columns. let me try to do something manual
+                //the assoc rowColumnsOccupied, shows the number of columns already consumed by a row such that it should be the max possible (4 or 3 depending on if there is reference or not)
+                foreach($tableData as $d){
+                    foreach($d['contents'] as $content){
+
+                        /*
+                         This is the one that checks if the colspan should consider the last column for reference or not
+                            
+                         The last column of reference is only to show when there is a unit (others) or a reference (numeric).
+
+                         In case the column is there, keep the value i passed on. Else do -1.
+                         */
+                        if(!empty($content['dependsOnLastColumn'])){
+                            $colspan=$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1;
+                        }else{
+                            $colspan=$content['colspan']??1;
+                        }
+
+                        //count here
+                        $rpCounter = 0;
+                        while($rpCounter<$content['rowspan']??1){ //do not forget that the content can span through multiple rows
+                            if(!isset($rowColumnsOccuppied[$rowPosition+$rpCounter])){
+                                $rowColumnsOccuppied[$rowPosition+$rpCounter]=0;
+                            }
+                            $rowColumnsOccuppied[$rowPosition+$rpCounter]+=$content['colspan'];
+                            if($rowColumnsOccuppied[$rowPosition+$rpCounter]>($hasColumnForReference?4:3)){
+                                $content['colspan'] = $content['colspan'] -1;//let me just substract one to see
+                            }
+                            $rpCounter++;
+                        }
+
+                        $spanData = getRowSpanForPage($currentIndex%$perPage,$content['rowspan'],$perPage);
+                        $startPage = floor($currentIndex/$perPage) ;
+                        $spanDataCounter=0;
+                        foreach($spanData as $d){
+                            if(!isset($pageData[$spanDataCounter+$startPage])){
+                                $pageData[$spanDataCounter+$startPage]=[];
+                            }
+                            $copiedContent = $content;
+                            $copiedContent['rowspan']= $d;
+                            if($spanDataCounter==0){
+                                // $pageData[$spanDataCounter+$startPage][]= $copiedContent;
+                                if(!isset($pageData[$spanDataCounter+$startPage][$currentIndex%$perPage])){
+                                    $pageData[$spanDataCounter+$startPage][$currentIndex%$perPage]=[];
+                                }
+
+                                $pageData[$spanDataCounter+$startPage][$currentIndex%$perPage][]=$copiedContent;
+                                //could not forcefully be on row 1. 
+                            }else{
+                                // $pageData[$spanDataCounter+$startPage][]= $copiedContent;
+                                $pageData[$spanDataCounter+$startPage][0][]=$copiedContent;
+                                //has crossed through pages and is on row 1 forcefully
+                            }
+                            $spanDataCounter++;
+                        }
+                    }
+
+                    $currentIndex++;
+                    $rowPosition++;
+                }
+                // dd($pageData);
+            
+            
+            ?>
+            <?php $c=0; $pageNumber=1; ?>
+
+            @foreach($pageData as $pD)
+                    @foreach($pD as $d)
+                        <tr >
+                          
+                            @foreach ($d as $content)
+                                   
+                                    <td   
+                                    
+                                    @if($content['toplevel']??false)
+                                        style="font-style: italic;" class="highlight"
+                                    @endif 
+
+
+                                    {{-- This is the one that checks if the colspan should consider the last column for reference or not
+                                    
+                                            The last column of reference is only to show when there is a unit (others) or a reference (numeric).
+
+                                            In case the column is there, keep the value i passed on. Else do -1.
+                                
+                                    @if(!empty($content['dependsOnLastColumn']))
+                                        colspan="{{$content['colspan']?(!$hasColumnForReference?($content['colspan']-1):$content['colspan']):1}}"
+                                    @else
+                                        colspan="{{$content['colspan']??1}}"
+                                    @endif --}}
+
+                                    colspan="{{$content['colspan']??1}}"
+
+                                    rowspan="{{$content['rowspan']??1}}"
+
+                                    
+                                    
+                                    
+                                    > {!! $content['text'] !!} </td>
+                            
+                            @endforeach
+                          <!-- in case the reference value is not there, but there is a reference column, it is totally left without a cell. i have to cover it. i'll check the last column -->
+                           
+                            @if($hasColumnForReference&& empty(end($d)['isRef'])&&  (end($d)['colspan']??1)==1)
+                                <td></td>
+                            @endif
+                            
+                        
+                        </tr>
+                    @endforeach
+
+                </table>
+                <?php
+                    $c++;
+                ?>
+           {{--     @if(isset($pageData[$c]))
+                    <div class="page-break"></div>
+                    <table class="table">
+                    <tr>
+                        <td></td>
+                        <td>TESTS</td>
+                        <td>RESULTS</td>
+                        @if($hasColumnForReference)
+                            <td>REFERENCE RANGE</td>
+                        @endif
+                    </tr>
+                @endif --}}
             @endforeach
+           </table>
            
-           
-        </table>
+        
 
         <br/>
         <br/>

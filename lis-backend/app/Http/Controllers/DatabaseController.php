@@ -112,7 +112,7 @@ class DatabaseController extends Controller
         $content="USE `$databaseName`; ".$content;
         DB::unprepared($content);
 
-        die("<div style='padding:40px;'><h1>Imported successfully. Please wait. Redirecting to login... </h1><script> window.localStorage.clear();setTimeout(function(){window.location='/login'},3000)</script></div>");
+        die("<div style='padding:40px;'><h1>Imported successfully. Please wait. Redirecting to login... </h1><script> window.localStorage.clear();setTimeout(function(){window.location='http://localhost:3000/login'},3000)</script></div>");
 
 
         return;

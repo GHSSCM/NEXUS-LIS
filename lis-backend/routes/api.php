@@ -462,17 +462,47 @@ Route::post("/addspecimen",function(){
 
     
     if($specimen['groupID']){
-        $others= RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get();
+        $others= RegisteredSpecimen::query()->where('groupID',$specimen['groupID'])->whereNot("id",$specimen['id'])->get()->toArray();
         $specimen['others']=[$specimen];
         foreach($others as $other){
             $other['patient']=$specimen['patient'];
             $other['specimen']=SpecimenType::query()->where("uniqid",$other['specimen'])->first();
-            $other['test']=TestType::query()->where("uniqid",$other['test'])->first();
+            $other['test']=TestType::query()->where("uniqid",$other['test'])->first()->toArray();
             $other['billing']= Bill::query()->where("specimen_id",$other['uniqid'])->first();
 
             $lab_section= LabSection::query()->where('uniqid',$other['test']['lab_section'])->first();
             if(!empty($lab_section)){
                 $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+            }
+
+            if($other['test']['type']=='GROUP'){
+                
+                $other['test']['meta']['fields']=["measures"=>[]];
+                $subtests = $other['test']['meta']['subtests']; //am array
+                $subtests = TestType::query()->whereIn("uniqid",$subtests)->get();
+                foreach($subtests as $subtest){
+                    $other['test']['meta']['fields']["measures"][]=[
+                        "type"=>"noop",
+                        "subs"=>[],
+                        "numericrangevalues"=>[],
+                        "alphanumericvalues"=>[],
+                        "autocompletevalues"=>[],
+                        "id"=>sha1($subtest->id),
+                        "name"=>$subtest->name,
+                        "unit"=>"",
+                        // "canremove"=>true,
+                        "noremarks"=>true
+                    ];
+                    $other['test']['meta']['fields']["measures"]=array_merge( $other['test']['meta']['fields']["measures"],$subtest['meta']['fields']["measures"]); 
+                    $lab_section= LabSection::query()->where('uniqid',$subtest['lab_section'])->first();
+                    if(!empty($lab_section)){
+                        $techniques= array_unique(array_merge($techniques,$lab_section->techniques??[]));
+                    }
+                }
+
+
+
+
             }
 
        
