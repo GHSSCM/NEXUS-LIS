@@ -106,7 +106,7 @@
             <?php
             
                 //remote files disturb to load . let me load the base64 server side and send 
-                $path = public_path('/toplogonew.png');
+                $path = public_path('/toplogonew2.png');
                 $type = pathinfo($path, PATHINFO_EXTENSION);
                 $data = file_get_contents($path);
                 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -289,7 +289,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                                             'isRef'=>true,
                                             "rowspan"=>1,
                                             "colspan"=>1,
-                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($result['guide']??'')." ".($result['unit']??''). ($isRed?' * ':' ')."</span>"):($result['unit']??'')
+                                            "text"=> (isset($result['maxValue'])&&isset($result['minValue']))? ("<span style='".($isRed?'color:red':'')."'>".($result['guide']??$result['unit'])/*." ".($result['units']??'')*/. ($isRed?' * ':' ')."</span>"):($result['unit']??'')
                                         ];
                                 }
 
@@ -578,21 +578,48 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
 
     </main>
-    <script type="text/php">
-        if ( isset($pdf) ) { 
-            $pdf->page_script('
-                if ($PAGE_COUNT >= 1) {
-                    $size = 10;
-                    $pageText = $PAGE_NUM . " | " . $PAGE_COUNT. " Page";
 
-                    $font = $fontMetrics->get_font("serif", "bold");
-                    $y = 790;  // Position at the bottom
-                    $x = 35;  // Position on the right
-                    $pdf->text($x, $y, $pageText, $font, $size);
-                } 
-            ');
-        }
-    </script>
+    <script type="text/php">
+    if ( isset($pdf) ) { 
+        $pdf->page_script('
+            if ($PAGE_COUNT >= 1) {
+                $size = 10;
+
+                // Text content
+                $pageText = "Page " . $PAGE_NUM . " | " . $PAGE_COUNT;
+                $headerText = "QUALITY DIAGNOSTIC, QUALITY CARE";
+                //$footerTextDouala = "Akwa at the Rue Prince des Galles, about 100m to Immeuble Activa, Douala, Littoral Region, Republic of Cameroon";
+                $footerText = "Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
+
+                // Load fonts
+                $fontRegular = $fontMetrics->get_font("serif", "normal");
+                $fontItalic = $fontMetrics->get_font("serif", "italic");
+
+                // Get page width
+                $pageWidth = $pdf->get_width();
+
+                // Position for page number (bottom-left corner)
+                $yPage = 790;  // Adjust as needed
+                $xPage = 35;   // Left-aligned
+                $pdf->text($xPage, $yPage, $pageText, $fontRegular, $size);
+
+                // Position and styling for centered header text
+                $headerWidth = $fontMetrics->get_text_width($headerText, $fontItalic, $size);
+                $xHeader = ($pageWidth - $headerWidth) / 2; // Center alignment
+                $yHeader = $yPage; // Same Y position as page text
+                $pdf->text($xHeader, $yHeader, $headerText, $fontItalic, $size);
+
+                // Position and styling for footer text (centered, below header)
+                $footerWidth = $fontMetrics->get_text_width($footerText, $fontItalic, $size);
+                $xFooter = ($pageWidth - $footerWidth) / 2; // Center alignment
+                $yFooter = $yHeader + 12; // Below header text
+                $pdf->text($xFooter, $yFooter, $footerText, $fontItalic, $size);
+            } 
+        ');
+    }
+</script>
+
+   
 
 </body>
 
