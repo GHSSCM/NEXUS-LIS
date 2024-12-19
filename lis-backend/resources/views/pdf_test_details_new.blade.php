@@ -79,6 +79,10 @@
             margin-top: 230px; /* This is the value that finally helped me */
             margin-bottom: 0px; 
         }
+        body {
+    font-family: 'DejaVu Sans', sans-serif;
+    font-size: 8pt;
+}
 
         .page-break-before{
             /* page-break-before: always; */
@@ -417,7 +421,7 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
             <?php
                 $pageData=[];
                 $currentIndex=0;
-                $perPage=16;
+                $perPage=14;
                 $rowPosition=1; $rowColumnsOccuppied=[];//at times, some rows have elements that cross above the accepted number of columns. let me try to do something manual
                 //the assoc rowColumnsOccupied, shows the number of columns already consumed by a row such that it should be the max possible (4 or 3 depending on if there is reference or not)
               

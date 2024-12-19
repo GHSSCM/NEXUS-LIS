@@ -12,6 +12,15 @@ class PDFController extends Controller
     public function generatePDF()
     {
 
+//         $dompdf = new Pdf();
+// $html = '<html><body><p>Test: ≥</p></body></html>';
+// $dompdf->loadHtml($html);
+// $dompdf->setPaper('A4', 'portrait');
+// $dompdf->render();
+// $dompdf->stream();
+// return;
+        header('Content-Type: text/html; charset=utf-8');
+
         $id= request('id');
         if(empty($id)){
             return abort(404);
@@ -76,6 +85,8 @@ class PDFController extends Controller
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 
+        $pdf->set_option('isFontSubsettingEnabled', true);
+
         if(request('dl')){
             return $pdf->download("test-report-".str_replace(" ","-",strtolower($specimen['patient']['name'])).'-'. str_replace(" ","-",strtolower($specimen['specimen']['name'])).'.pdf');
         }
@@ -88,6 +99,7 @@ class PDFController extends Controller
     public function generatePDFBill()
     {
 
+        header('Content-Type: text/html; charset=utf-8');
 
         $id= request('id');
         if(empty($id)){
