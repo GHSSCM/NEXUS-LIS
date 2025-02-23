@@ -30,7 +30,9 @@ Route::get('/bill-report', [PDFController::class, 'generatePDFBill']);
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
 
-
+Route::get("/permissions",function(){
+    return [];
+});
 // Route::get("/tt",function(){
 //     Schema::table('test_types', function (Blueprint $table) {
 //         $table->string("type")->default("SINGLE")->change();

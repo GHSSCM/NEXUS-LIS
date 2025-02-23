@@ -598,8 +598,11 @@
     </template>
 
 <script>
+import { useMyPermissionsStore } from '@/stores/permissions'
   export default {
     setup () {
+    const permissionsStore = useMyPermissionsStore()
+    permissionsStore.loadPermissions()
     useHead({
       bodyAttrs: {
         class: 'bg-white'

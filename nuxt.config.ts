@@ -1,16 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  
-  // modules: [
-  //     '@primevue/nuxt-module'
-  // ],
-  // primevue: {
-  //     /* Configuration */
-  // },
+
   devtools: { enabled: true },
+
   plugins: [
     {src:'~/plugins/vuemultiselect.js',ssr:false}
   ],
+
   app:{
     head: {
       meta: [
@@ -111,5 +107,11 @@ export default defineNuxtConfig({
         
       ]
     },
-  }
+  },
+
+  compatibilityDate: '2025-02-23',
+  modules: ['@pinia/nuxt'],
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
 })
