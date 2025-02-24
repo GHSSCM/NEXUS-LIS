@@ -1,138 +1,113 @@
 <template>
-    <NuxtLayout name="inner">
-        
-              <!--start breadcrumb-->
-              <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
-                <div class="ps-3">
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0 align-items-center">
-                      <li class="breadcrumb-item"><a href="javascript:;">
-                          <ion-icon name="home-outline"></ion-icon>
-                        </a>
-                      </li>
-                      <li class="breadcrumb-item active" aria-current="page">{{id=='create'?"New Group Test Type":"Edit Group Test Type"}}</li>
-                    </ol>
-                  </nav>
-                </div>
-                <!-- <div class="ms-auto">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary">Options</button>
-                    <button type="button"
-                      class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                      data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                        href="javascript:;">Action</a>
-                      <a class="dropdown-item" href="javascript:;">Another action</a>
-                      <a class="dropdown-item" href="javascript:;">Something else here</a>
-                      <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                    </div>
-                  </div>
-                </div> -->
-              </div>
-              <!--end breadcrumb-->
-  
-              <div>
-                       
-                <h6 class="mb-0 text-uppercase">{{id=='create'?"Create A New Group Test Type":"Edit Group Test Type"}}</h6>
-                <hr/>
-                <form @submit.prevent="save">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <label class="form-label">Name</label>
-                            <input v-model="name" required class="form-control" type="text" placeholder="Name"/>
-                          </div>
-                
-
-                          
-
-                    </div>
-                    <div>
-                        <div class="mb-4">
-                            <label class="form-label">Description</label>
-                            <textarea v-model="description" class="form-control" type="text" placeholder="Description"></textarea>
-                          </div>
-                    </div>
-                   
-            
-
-
-                      <div class="mb-4">
-                          <label class="form-label">Sub test(s)</label>
-                         
-                          <multiselect v-model="subtests" :options="loadedtests" label="name" track-by="uniqid" multiple></multiselect>
-                      </div>
-
-
-
-                      <div class="mb-4">
-                        <label class="form-label">Compatible specimen(s)</label>
-                       
-                        <multiselect v-model="specimens" :options="loadedspecimens" label="name" track-by="uniqid" multiple></multiselect>
-
-                      </div>
-                </div>
-
-
-            
-
-                <hr/>
-              
-                  <div class="row">
-
-                  
-
-                
-
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <label class="form-label">Target TAT </label>
-                            <input v-model="tat" class="result form-control" type="text" placeholder="Target TAT"/>
-                          </div>
-                
-
-                          
-
-                    </div>
-
-                    <div class="col-sm-12 col-md-6">
-
-                        <div class="mb-4">
-                            <label class="form-label">Cost to patient in {{curr}}</label>
-                            <input  v-model="cost" class="form-control" type="number"  step="0.000000001"  placeholder="Cost to patient"/>
-                          </div>
-                
-
-                          
-
-                    </div>
-
-
-
-                </div>
-            
-                <br/>
-                <br/>
-                <div class="d-flex flex-row justify-content-end">
-                    <button type="submit" class="btn btn-primary w-100" >+ Save</button>
-                </div>
-                </form>
-                <br/>
-                <br/>
-                <br/>
-                </div>
-  
-      
+  <NuxtLayout name="inner">
     
+    <!--start breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">
+        <Translate text="Dashboard"/>
+      </div>
+      <div class="ps-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0 p-0 align-items-center">
+            <li class="breadcrumb-item">
+              <a href="javascript:;">
+                <ion-icon name="home-outline"></ion-icon>
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ id=='create' ? $t("New Group Test Type") : $t("Edit Group Test Type") }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <!-- (Commented block remains unchanged) -->
+    </div>
+    <!--end breadcrumb-->
   
-    </NuxtLayout>
-  </template>
+    <div>
+      <h6 class="mb-0 text-uppercase">
+        {{ id=='create' ? $t("Create A New Group Test Type") : $t("Edit Group Test Type") }}
+      </h6>
+      <hr/>
+      <form @submit.prevent="save">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <div class="mb-4">
+              <label class="form-label">
+                <Translate text="Name"/>
+              </label>
+              <input v-model="name" required class="form-control" type="text" :placeholder="$t('Name')"/>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div class="mb-4">
+              <label class="form-label">
+                <Translate text="Description"/>
+              </label>
+              <textarea v-model="description" class="form-control" type="text" :placeholder="$t('Description')"></textarea>
+            </div>
+          </div>
+  
+          <div class="col-sm-12">
+            <div class="mb-4">
+              <label class="form-label">
+                <Translate text="Sub test(s)"/>
+              </label>
+              <multiselect v-model="subtests" :options="loadedtests" label="name" track-by="uniqid" multiple></multiselect>
+            </div>
+          </div>
+  
+          <div class="mb-4">
+            <label class="form-label">
+              <Translate text="Compatible specimen(s)"/>
+            </label>
+            <multiselect v-model="specimens" :options="loadedspecimens" label="name" track-by="uniqid" multiple></multiselect>
+          </div>
+        </div>
+  
+        <hr/>
+  
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <div class="mb-4">
+              <label class="form-label">
+                <Translate text="Target TAT"/>
+              </label>
+              <input v-model="tat" class="result form-control" type="text" :placeholder="$t('Target TAT')"/>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div class="mb-4">
+              <label class="form-label">
+                <Translate text="Cost to patient"/> in {{ curr }}
+              </label>
+              <input v-model="cost" class="form-control" type="number" step="0.000000001" :placeholder="$t('Cost to patient')"/>
+            </div>
+          </div>
+        </div>
+  
+        <br/>
+        <br/>
+        <div class="d-flex flex-row justify-content-end">
+          <button type="submit" class="btn btn-primary w-100">
+            + <Translate text="Save"/>
+          </button>
+        </div>
+      </form>
+      <br/>
+      <br/>
+      <br/>
+    </div>
+  
+  </NuxtLayout>
+</template>
+
   <script>
   export default{
+
+  setup(){
+    forceOutPermissionVerify('MANAGE_TEST_TYPE',this); 
+  },
     data(){
       const route = useRoute();
     const id= route.params.id;
@@ -192,9 +167,9 @@
         
         postRequestLoad_(context.id=='create'?'/testtype':'/testtype/'+context.id,d,(specimen)=>{
           if(context.id=='create'){
-            successToast("Created successfully");
+            successToast(this.$t("Created successfully"));
           }else{
-            successToast("Updated successfully");
+            successToast(this.$t("Updated successfully"));
           }
         context.$router.push("/testtypes");
       })

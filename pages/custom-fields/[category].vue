@@ -128,7 +128,7 @@ export default {
         fields:this.fields,
         category:this.category
       },(fields)=>{
-            successToast("Saved successfully");
+            successToast(this.$t("Saved successfully"));
           context.fields=fields;
       },()=>{
         // alert("Connection error. Please refresh and try again.");
@@ -163,7 +163,7 @@ export default {
               if(field.id){
                 getRequestLoad_('/customfield/'+field.id+'/delete',{},()=>{
                       this.fields.splice(index, 1);
-                    successToast("Field deleted successfully");
+                    successToast(this.$t("Field deleted successfully"));
                   })
               }else{
                  this.fields.splice(index, 1);

@@ -1,10 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   plugins: [
-    {src:'~/plugins/vuemultiselect.js',ssr:false}
+    {src:'~/plugins/vuemultiselect.js',ssr:false},
+    { src: '~/plugins/tinymce.js', mode: 'client' }
   ],
 
   app:{
@@ -57,9 +58,18 @@ export default defineNuxtConfig({
         {src:'/assets/js/component-popovers-tooltips.js'},
         {src:'/assets/plugins/notifications/js/lobibox.min.js'},
 
-       
-        
-        
+
+        {src:'/assets/plugins/tinymce/tinymce.min.js'},
+        {src:'/assets/plugins/tinymce/themes/silver/theme.min.js'},
+        {src:'/assets/plugins/tinymce/icons/default/icons.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/autolink/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/lists/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/link/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/image/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/media/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/table/plugin.min.js'},
+        {src:'/assets/plugins/tinymce/plugins/code/plugin.min.js'}
+
         
       
       ],
@@ -110,8 +120,24 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2025-02-23',
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxtjs/i18n'],
+  //,'@nuxtjs/i18n'
   pinia: {
     storesDirs: ['./stores/**'],
   },
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'fr', name: 'Français', file: 'fr.json' }
+    ],
+    defaultLocale: 'en',
+    strategy: "no_prefix",
+
+    // lazy: true,
+    langDir: './locales/',
+    // vueI18n: {
+    //   legacy: false,
+    //   locale: 'en'
+    // }
+  }
 })

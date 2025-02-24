@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Laboratory;
 
 function error_response($code,$message){
     if($code>=200 && $code<=299){
@@ -62,7 +63,7 @@ function update_registered_specimens_state($rs,$state){
  * @param int $pos = the index of the main loop
  * @param int $truespan = the real span if the table was normal
  */
-function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10,$realCurrentIndex){
+function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10,$realCurrentIndex=null){
 
     $expansion =  $pos+$truespan;
     $spansInEachPage=[];
@@ -108,4 +109,55 @@ function getRowSpanForPage($pos,$truespan,$maxSpanPerPage=10,$realCurrentIndex){
     }
 
     return $spansInEachPage;
+}
+
+/**
+ * Replaces all image URLs in the provided HTML with their Base64-encoded versions.
+ *
+ * @param string $html The original HTML string.
+ * @return string The updated HTML string with images encoded in Base64.
+ */
+function replaceImagesWithBase64(string $html): string
+{
+    // Create a new DOMDocument instance.
+    $dom = new DOMDocument();
+
+    // Suppress warnings due to potential malformed HTML.
+    libxml_use_internal_errors(true);
+    $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    libxml_clear_errors();
+
+    // Get all <img> elements.
+    $images = $dom->getElementsByTagName('img');
+
+    foreach ($images as $img) {
+        
+        $src = $img->getAttribute('src');
+        $path = parse_url($src, PHP_URL_PATH);
+   
+
+        $path = public_path($path);
+        // $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+
+        // Determine the MIME type of the image.
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->buffer($data);
+
+        // Encode the image data to base64.
+        $base64  = base64_encode($data);
+        $dataUrl = "data:$mimeType;base64,$base64";
+        
+        // Replace the src attribute with the Base64 data URL.
+        $img->setAttribute('src', $dataUrl);
+    }
+
+    // Return the modified HTML.
+    return $dom->saveHTML();
+}
+
+function getCurrentLab($ref=null){
+    $lab =  Laboratory::query()->where('ref',$ref??request('lab_ref'))->first();
+    // dd($ref);
+    return $lab;
 }

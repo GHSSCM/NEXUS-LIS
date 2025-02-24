@@ -1,263 +1,288 @@
 <template>
-    <NuxtLayout name="inner">
-        
-              <!--start breadcrumb-->
-              <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
-                <div class="ps-3">
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0 align-items-center">
-                      <li class="breadcrumb-item"><a href="javascript:;">
-                          <ion-icon name="home-outline"></ion-icon>
-                        </a>
-                      </li>
-                      <li class="breadcrumb-item active" aria-current="page">New patient</li>
-                    </ol>
-                  </nav>
-                </div>
-                <!-- <div class="ms-auto">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary">Options</button>
-                    <button type="button"
-                      class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                      data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                        href="javascript:;">Action</a>
-                      <a class="dropdown-item" href="javascript:;">Another action</a>
-                      <a class="dropdown-item" href="javascript:;">Something else here</a>
-                      <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                    </div>
-                  </div>
-                </div> -->
+  <NuxtLayout name="inner">
+      
+            <!--start breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+              <div class="breadcrumb-title pe-3">
+                <Translate text="Dashboard" />
               </div>
-              <!--end breadcrumb-->
-  
-              <div>
-               
-                  
-                <h6 class="mb-0 text-uppercase">Register a patient</h6>
-                <hr/>
-
-                <form @submit.prevent="save">
-
-                <div class="row">
-
-
-                  <div class="col-sm-12 col-md-6">
-
-                      <div class="mb-4">
-                          <label class="form-label">Patient Number</label>
-                          <input class="form-control" type="text" placeholder="Patient Number"  v-model="reference">
-                        </div>
-              
-                      
+              <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0 p-0 align-items-center">
+                    <li class="breadcrumb-item">
+                      <a href="javascript:;">
+                        <ion-icon name="home-outline"></ion-icon>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      <Translate text="New patient" />
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+              <!-- <div class="ms-auto">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-primary">Options</button>
+                  <button type="button"
+                    class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
+                      href="javascript:;">Action</a>
+                    <a class="dropdown-item" href="javascript:;">Another action</a>
+                    <a class="dropdown-item" href="javascript:;">Something else here</a>
+                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
                   </div>
+                </div>
+              </div> -->
+            </div>
+            <!--end breadcrumb-->
 
-                  <div class="col-sm-12 col-md-6">
+            <div>
+             
+              <h6 class="mb-0 text-uppercase">
+                <Translate text="Register a patient" />
+              </h6>
+              <hr/>
 
+              <form @submit.prevent="save">
+
+              <div class="row">
+
+                <div class="col-sm-12 col-md-6">
                     <div class="mb-4">
-                        <label class="form-label">Extra ID</label>
-                        <input class="form-control" type="text" placeholder="Extra ID"  v-model="extraid">
+                        <label class="form-label">
+                          <Translate text="Patient Number" />
+                        </label>
+                        <input class="form-control" type="text" placeholder="Auto"  v-model="reference" disabled>
                       </div>
-            
-                    
                 </div>
 
-                  <div class="col-sm-12 col-md-6">
-                      <label class="form-label">Patient Name</label>
-                      <input required type="text" class="form-control" placeholder="Patient Name" v-model="name"/>
-                  </div>
-              <div class="col-sm-12 col-md-6">
-
+                <div class="col-sm-12 col-md-6">
                   <div class="mb-4">
-                      <label class="form-label">Gender</label>
-                      <select  class="form-select " id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
-                       
-                        <option value="M" selected>Male</option>
-                        <option value="F">Female</option>
-                      </select>
+                      <label class="form-label">
+                        <Translate text="Extra ID" />
+                      </label>
+                      <input class="form-control" type="text" placeholder="Extra ID" v-model="extraid">
                     </div>
-          
-                    
-              </div>
-
-
-              <div class="col-sm-12 col-md-6">
-                <p>Age/Date Of Birth</p>
-                <div class="mb-4" >
-                  <input v-model="hasage" id="ageordob"  class="form-check-input" type="checkbox" role="switch">
-                  <label class="form-check-label ms-2" for="ageordob">Use Age Instead</label>
                 </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <label class="form-label">
+                      <Translate text="Patient Name" />
+                    </label>
+                    <input required type="text" class="form-control" placeholder="Patient Name" v-model="name"/>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Gender" />
+                        </label>
+                        <select class="form-select" id="single-select-field1" data-placeholder="Enter gender" v-model="gender">
+                          <option value="M" selected>
+                            <Translate text="Male" />
+                          </option>
+                          <option value="F">
+                            <Translate text="Female" />
+                          </option>
+                        </select>
+                      </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <p>
+                    <Translate text="Age/Date Of Birth" />
+                  </p>
+                  <div class="mb-4">
+                    <input v-model="hasage" id="ageordob" class="form-check-input" type="checkbox" role="switch">
+                    <label class="form-check-label ms-2" for="ageordob">
+                      <Translate text="Use Age Instead" />
+                    </label>
+                  </div>
                   <div class="mb-4" v-if="!hasage">
-                      <label class="form-label">Date of birth</label>
-                      <input  v-model="dob" required class=" form-control" type="date" placeholder="Date of birth">
+                    <label class="form-label">
+                      <Translate text="Date of birth" />
+                    </label>
+                    <input v-model="dob" required class="form-control" type="date" placeholder="Date of birth">
                   </div>
                   <div class="mb-4" v-else>
-                    <label class="form-label">Age</label>
-                    <input  v-model="age" required class=" form-control" type="number" placeholder="Age">
+                    <label class="form-label">
+                      <Translate text="Age" />
+                    </label>
+                    <input v-model="age" required class="form-control" type="number" placeholder="Age">
+                  </div>
                 </div>
 
-          
-                    
-              </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Region of origin" />
+                        </label>
+                        <select v-model="region" class="form-select" id="single-select-field2" data-placeholder="Region of origin">
+                          <option value="Far North">
+                            <Translate text="Far north" />
+                          </option>
+                          <option value="North">
+                            <Translate text="North" />
+                          </option>
+                          <option value="Adamoua">
+                            <Translate text="Adamoua" />
+                          </option>
+                          <option value="East">
+                            <Translate text="East" />
+                          </option>
+                          <option value="South">
+                            <Translate text="South" />
+                          </option>
+                          <option value="North-West">
+                            <Translate text="North-West" />
+                          </option>
+                          <option value="South-West">
+                            <Translate text="South-West" />
+                          </option>
+                          <option value="West" selected>
+                            <Translate text="West" />
+                          </option>
+                          <option value="Centre">
+                            <Translate text="Centre" />
+                          </option>
+                          <option value="Littoral">
+                            <Translate text="Littoral" />
+                          </option>
+                        </select>
+                      </div>
+                </div>
 
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Address" />
+                        </label>
+                        <input v-model="address" class="form-control" type="text" placeholder="Address">
+                      </div>
+                </div>
 
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Profession" />
+                        </label>
+                        <input v-model="profession" class="form-control" type="text" placeholder="Profession">
+                      </div>
+                </div>
 
-              <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Phone number" />
+                        </label>
+                        <input v-model="phone" class="form-control" type="text" placeholder="Phone number">
+                      </div>
+                </div>
 
-                  <div class="mb-4">
-                      <label class="form-label">Region of origin</label>
-                      <select  v-model="region" class="form-select " id="single-select-field2" data-placeholder="Region of origin">
-                       
-                        <option value="Far North">Far north</option>
-                        <option value="North">North</option>
-                        <option value="Adamoua">Adamoua</option>
-                        <option value="East">East</option>
-                        <option value="South">South</option>
-                        <option value="North-West">North-West</option>
-                        <option value="South-West">South-West</option>
-                        <option value="West" selected>West</option>
-                        <option value="Centre">Centre</option>
-                        <option value="Littoral">Littoral</option>
-                      </select>
-                    </div>
-          
-                    
-              </div>
-
-
-              <div class="col-sm-12 col-md-6">
-
-                  <div class="mb-4">
-                      <label class="form-label">Address</label>
-                      <input v-model="address" class="form-control" type="text" placeholder="Address">
-                    </div>
-          
-                  
-              </div>
-
-
-              <div class="col-sm-12 col-md-6">
-
-                  <div class="mb-4">
-                      <label class="form-label">Profession</label>
-                      <input v-model="profession" class="form-control" type="text" placeholder="Profession">
-                    </div>
-          
-                  
-              </div>
-
-              <div class="col-sm-12 col-md-6">
-
-                <div class="mb-4">
-                    <label class="form-label">Phone number</label>
-                    <input v-model="phone" class="form-control" type="text" placeholder="Phone number">
-                  </div>
-        
-                
-            </div>
-
-              <div class="col-sm-12 col-md-6">
-
-                <div class="mb-4">
-                    <label class="form-label">Email</label>
-                    <input v-model="email" class="form-control" type="email" placeholder="Email">
-                  </div>
-        
-                
-            </div>
-         
-
-
-            
-
+                <div class="col-sm-12 col-md-6">
+                    <div class="mb-4">
+                        <label class="form-label">
+                          <Translate text="Email" />
+                        </label>
+                        <input v-model="email" class="form-control" type="email" placeholder="Email">
+                      </div>
+                </div>
 
               </div>
               <hr/>
 
               <!--    <option value="freeinput">Free input/text</option>
-                            <option value="number">Number</option>
-                            <option value="yesno">Yes/No</option>
-                            <option value="limitedvalues">Limited values</option>
-                            <option value="datetime">Date/Time</option>
-                            <option value="dateonly">Date Only</option>
-                            <option value="timeonly">Time Only</option> -->
+                          <option value="number">Number</option>
+                          <option value="yesno">Yes/No</option>
+                          <option value="limitedvalues">Limited values</option>
+                          <option value="datetime">Date/Time</option>
+                          <option value="dateonly">Date Only</option>
+                          <option value="timeonly">Time Only</option> -->
               <div class="row">
-                  <div class="col-sm-12 col-md-6" v-for="(f,i) in fields" :key="'cf-'+i">
+                <div class="col-sm-12 col-md-6" v-for="(f,i) in fields" :key="'cf-'+i">
 
-                    <div class="mb-4" v-if="f.type=='number'">
-                      <label class="form-label">{{f.name}}</label>
-                      <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="number"  step="0.000000001"  :placeholder="f.name">
-                    </div>
-
-
-                      <div class="mb-4" v-else-if="f.type=='yesno'">
-                          <input v-model="meta['fields'][f.name]" :required="f.required" class="form-check-input" type="checkbox" role="switch">
-                          <label class="form-check-label ms-2" for="referredout">{{f.name}}</label>
-                      </div>
-              
-
-                      <div class="mb-4" v-else-if="f.type=='limitedvalues'">
-                        <label class="form-label">{{f.name}}</label>
-                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]"></multiselect>
-                      </div>
-
-                      <div class="mb-4" v-else-if="f.type=='limitedmultiplevalues'">
-                        <label class="form-label">{{f.name}}</label>
-                        <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum??[]" multiple="true"></multiselect>
-                      </div>
-                      
-                      <div class="mb-4" v-else-if="f.type=='datetime'">
-                        <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="datetime-local" :placeholder="f.name">
-                      </div>
-
-                      <div class="mb-4" v-else-if="f.type=='dateonly'">
-                        <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="date" :placeholder="f.name">
-                      </div>
-
-                      <div class="mb-4" v-else-if="f.type=='timeonly'">
-                        <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="time" :placeholder="f.name">
-                      </div>
-
-
-                      <div class="mb-4" v-else>
-                        <label class="form-label">{{f.name}}</label>
-                        <input v-model="meta['fields'][f.name]" :required="f.required" class=" form-control" type="text" :placeholder="f.name">
-                      </div>
+                  <div class="mb-4" v-if="f.type=='number'">
+                    <label class="form-label">
+                      {{f.name}}
+                    </label>
+                    <input v-model="meta['fields'][f.name]" :required="f.required" class="form-control" type="number" step="0.000000001" :placeholder="f.name">
                   </div>
-               
 
-            
+                  <div class="mb-4" v-else-if="f.type=='yesno'">
+                        <input v-model="meta['fields'][f.name]" :required="f.required" class="form-check-input" type="checkbox" role="switch">
+                        <label class="form-check-label ms-2" for="referredout">
+                          {{f.name}}
+                        </label>
+                  </div>
 
+                  <div class="mb-4" v-else-if="f.type=='limitedvalues'">
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum ?? []"></multiselect>
+                  </div>
 
+                  <div class="mb-4" v-else-if="f.type=='limitedmultiplevalues'">
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <multiselect v-model="meta['fields'][f.name]" :required="f.required" :options="f.meta.enum ?? []" multiple="true"></multiselect>
+                  </div>
+                    
+                  <div class="mb-4" v-else-if="f.type=='datetime'">
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class="form-control" type="datetime-local" :placeholder="f.name">
+                  </div>
 
+                  <div class="mb-4" v-else-if="f.type=='dateonly'">
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class="form-control" type="date" :placeholder="f.name">
+                  </div>
+
+                  <div class="mb-4" v-else-if="f.type=='timeonly'">
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class="form-control" type="time" :placeholder="f.name">
+                  </div>
+
+                  <div class="mb-4" v-else>
+                      <label class="form-label">
+                        {{f.name}}
+                      </label>
+                      <input v-model="meta['fields'][f.name]" :required="f.required" class="form-control" type="text" :placeholder="f.name">
+                  </div>
+                </div>
               </div>
-
 
               <div class="mt-4">
-                  <Button type="submit" class="btn btn-primary w-100" >Save</Button>
+                <Button type="submit" class="btn btn-primary w-100">
+                  <Translate text="Save" />
+                </Button>
               </div>
-                </form>
-                
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                </div>
-  
-      
-    
-  
-    </NuxtLayout>
-  </template>
+              </form>
+              
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+            </div>
+
+  </NuxtLayout>
+</template>
+
 
   <script>
   import {getRequest_} from "@/utils/helper";
 export default{
+  setup(){
+    forceOutPermissionVerify('MODIFY_PATIENT_INFO',this);
+  },
   data(){
     const route=useRoute();
 

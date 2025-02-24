@@ -11,6 +11,7 @@ use App\Models\RegisteredSpecimen;
 use App\Models\SpecimenTest;
 use App\Models\SpecimenType;
 use App\Models\TestType;
+use App\Models\ResultSheetExportation;
 use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,23 +23,80 @@ use App\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Http\Controllers\ImageUploadController;
 
 Route::get('/run-migrations', [MigrationController::class, 'runMigrations']);
 
 Route::get('/test-report', [PDFController::class, 'generatePDF']);
+Route::get('/test-report-data',function(){
+
+    $find = ResultSheetExportation::query()->where('registered_specimen',request('id'))->first();
+    if($find){
+        return [
+            'data'=>$find->html
+        ];
+    }
+    
+    $pdfController = new PDFController();
+    return [
+        'data'=>$pdfController->generatePDF()->render()
+    ];
+});
+
+Route::post('/test-report-save',function(){
+    if(empty(request('html'))||empty(request('registered_specimen'))){
+        return error_response(400,"Faulty data");
+    }
+    
+    $params = request()->all();
+
+    $find = ResultSheetExportation::query()->where('registered_specimen',$params['registered_specimen'])->first();
+    if($find){
+        $find->update(request()->all());
+        return ['data'=>'ok'];
+    }
+    ResultSheetExportation::create($params);
+    return ['data'=>'ok'];
+});
+
+Route::get('/test-report-delete',function(){
+    if(empty(request('id'))){
+        return error_response(400,"Faulty data");
+    }
+    $find = ResultSheetExportation::query()->where('registered_specimen',request('id'))->first();
+    if($find){
+        $find->delete();
+    }
+    $pdfController = new PDFController();
+    return ['data'=> $pdfController->generatePDF()->render()];
+});
+
+Route::post('/upload/image', [ImageUploadController::class, 'upload'])->name('tinymce.upload');
+
 Route::get('/bill-report', [PDFController::class, 'generatePDFBill']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
 
 Route::get("/permissions",function(){
+    $lab =  Laboratory::query()->where('ref',request('lab_ref'))->first();
+    $labName="";
+    if(empty($lab)){
+        $labName =  $lab->name;
+    }
     if(request('user_id')){
         $user =  \App\Models\UserAccount::find(request('user_id'));
         if($user){
-            return $user->perms??[];
+            return [
+                "permissions"=>$user->perms??[],
+                "labName"=>$labName
+            ];
         }
     }
-    return [];
+    return [
+        "labName"=>$labName,
+        "permissions"=>[]
+    ];
 });
 // Route::get("/tt",function(){
 //     Schema::table('test_types', function (Blueprint $table) {
@@ -52,7 +110,43 @@ Route::get("/patients",function(){
 });
 
 Route::post("/patient",function(){
-    return Patient::create(request()->all());
+    $data =request()->all();
+    $lab = getCurrentLab();
+    $meta = $lab['meta']??[];
+    $periodicity = $meta['patient_counterperiod']??'daily';
+    $period_id = "";
+
+    switch($periodicity){
+        case 'daily':  $period_id =\Carbon\Carbon::now()->format('dmY');break;
+        case 'monthly':  $period_id =\Carbon\Carbon::now()->format('mY');break;
+        case 'yearly':  $period_id =\Carbon\Carbon::now()->format('Y');break;
+        default:  $period_id =\Carbon\Carbon::now()->format('Y');
+    }
+
+    $current_period_id = $meta['current_period_id']??\Carbon\Carbon::now()->format('dmY');
+
+    $last_counter= $meta['last_counter']??0;
+
+
+    if($current_period_id==$period_id){
+        $counter = $last_counter+1; 
+    }else{
+        $current_period_id=$period_id;    
+        $counter=1;
+    }
+
+    $last_counter=$counter;
+    $meta['last_counter']=$last_counter;
+    $meta['current_period_id']=$current_period_id;
+    $meta['patient_counterperiod']=$periodicity;
+
+    $lab->meta=$meta;
+    $lab->save();
+
+    $data['reference']=trim($meta['patient_prefix']??'')."$counter"."$current_period_id".trim($meta['patient_suffix']??'');
+
+
+    return Patient::create($data);
 });
 
 Route::get("/patient/{id}",function($id){
@@ -198,7 +292,7 @@ Route::get('/duplicate-specimen/{id}',function($id){
 });
 
 
-Route::get("/config",function(){
+Route::get("/lab",function(){
     $labref = request()->get("lab_ref");
     if(empty($labref)){
         return  error_response(400,"Incorrect lab data");
@@ -208,10 +302,10 @@ Route::get("/config",function(){
 
         return  error_response(400,"Incorrect lab data [2]");
     }
-    return $lab->meta;
+    return $lab;
 });
 
-Route::post("/config",function(){
+Route::post("/lab",function(){
     
     $labref = request()->get("lab_ref");
     if(empty($labref)){
@@ -224,11 +318,11 @@ Route::post("/config",function(){
     }
 
     $data = request()->all();
-    unset($data['lab_ref']);
+    // unset($data['lab_ref']);
 
-    $lab->meta = $data;
-    $lab->save();
-    return $lab->meta;
+    $lab->update($data);
+    // $lab->save();
+    return $lab;
 
 });
 

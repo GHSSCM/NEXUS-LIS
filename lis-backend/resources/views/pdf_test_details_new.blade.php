@@ -106,7 +106,7 @@
 <body>
     <header>
         <!-- Header content here -->
-        <center>
+        <!-- <center>
             <?php
             
                 //remote files disturb to load . let me load the base64 server side and send 
@@ -116,7 +116,11 @@
                 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
             ?>
 
-        <img src="{{$base64}}" height="100"/>
+        <img src="{{request('preview')?asset('/toplogonew2.png'):$base64}}" height="100"/>
+
+         </center> -->
+
+         {!! $headerContent!!}
         {{--<br/>
         <br/>
         </center>
@@ -593,7 +597,8 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
                 $pageText = "Page " . $PAGE_NUM . " | " . $PAGE_COUNT;
                 $headerText = "QUALITY DIAGNOSTIC, QUALITY CARE";
                 //$footerTextDouala = "Akwa at the Rue Prince des Galles, about 100m to Immeuble Activa, Douala, Littoral Region, Republic of Cameroon";
-                $footerText = "Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
+                $footerText = "{{$credits}}";
+                //"Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
 
                 // Load fonts
                 $fontRegular = $fontMetrics->get_font("serif", "normal");

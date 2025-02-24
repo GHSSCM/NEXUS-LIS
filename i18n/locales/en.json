@@ -1,0 +1,424 @@
+{
+    "Choose an option from the menu":"Choose an option from the menu",
+    "Welcome back!":"Welcome back!",
+    "Dashboard":"Dashboard",
+    "Patients Registered":"Patients Registered",
+    "Today":"Today",
+    "Specimens Collected":"Specimens Collected",
+    "Recent Specimens Collected":"Recent Specimens Collected",
+    "View All":"View All",
+    "Patient":"Patient",
+    "Referred From":"Referred From",
+    "Referred?":"Referred?",
+    "Received On":"Received On",
+    "Physician":"Physician",
+    "Test":"Test",
+    "Specimen":"Specimen",
+    "Verify":"Verify",
+    "Enter Results":"Enter Results",
+    "View":"View",
+    "Edit":"Edit",
+    "Patient profile":"Patient profile",
+    "Generate Bill":"Generate Bill",
+    "View Bill":"View Bill",
+    "Summary":"Summary",
+    "Lang:": "Lang:",
+    "French": "French",
+    "English": "English",
+    "Patients": "Patients",
+    "All Patients": "All Patients",
+    "New Patient": "New Patient",
+    "Laboratory": "Laboratory",
+    "Tests": "Tests",
+    "Registered tests": "Registered tests",
+    "All test types": "All test types",
+    "New Test type": "New Test type",
+    "New Group Test type": "New Group Test type",
+    "Access": "Access",
+    "User accounts": "User accounts",
+    "All accounts": "All accounts",
+    "New Account": "New Account",
+    "Advanced": "Advanced",
+    "Database operations": "Database operations",
+    "Export database": "Export database",
+    "Copyright © 2024. All rights reserved.": "Copyright © 2024. All rights reserved.",
+
+    "Specimens": "Specimens",
+    "Registered specimens": "Registered specimens",
+    "All specimen types": "All specimen types",
+    "New specimen type": "New specimen type",
+    "Billing": "Billing",
+    "Generated Bills": "Generated Bills",
+    "LAB Configuration": "LAB Configuration",
+    "Custom fields (CF)": "Custom fields (CF)",
+    "Test types CF": "Test types CF",
+    "Specimen CF": "Specimen CF",
+    "Patient CF": "Patient CF",
+    "App Config": "App Config",
+    "Parameters": "Parameters",
+    "Lab Section": "Lab Section",
+    "Lab Sections": "Lab Sections",
+    "New Lab Section": "New Lab Section",
+    "Profile": "Profile",
+    "Logout": "Logout",
+    "Copyright © 2024. All right reserved.": "Copyright © 2024. All right reserved.",
+
+  
+    "State": "State",
+    "Referred": "Referred",
+
+    "Specimen & Test Details": "Specimen & Test Details",
+    "View PDF": "View PDF",
+    "Download PDF": "Download PDF",
+    "Patient:": "Patient:",
+    "Age:": "Age:",
+    "Details:": "Details:",
+    "Test Results": "Test Results",
+    "Measures": "Measures",
+    "Values": "Values",
+    "Remarks (Optional)": "Remarks (Optional)",
+    "Nothing else to show": "Nothing else to show",
+
+
+    "New patient": "New patient",
+    "Options": "Options",
+    "Register a patient": "Register a patient",
+    "Patient Name": "Patient Name",
+    "Enter patient name": "Enter patient name",
+    "Enter a name to continue": "Enter a name to continue",
+    "Searching...": "Searching...",
+    "similar patients": "similar patients",
+    "Nothing found.": "Nothing found.",
+    "#": "#",
+    "Name": "Name",
+    "Age": "Age",
+    "Profession": "Profession",
+    "View Details": "View Details",
+    "+ Create New": "+ Create New",
+
+
+    "Patient Number": "Patient Number",
+    "Extra ID": "Extra ID",
+    "Gender": "Gender",
+    "Male": "Male",
+    "Female": "Female",
+    "Age/Date Of Birth": "Age/Date Of Birth",
+    "Use Age Instead": "Use Age Instead",
+    "Date of birth": "Date of birth",
+    "Region of origin": "Region of origin",
+    "Far north": "Far north",
+    "North": "North",
+    "Adamoua": "Adamoua",
+    "East": "East",
+    "South": "South",
+    "North-West": "North-West",
+    "South-West": "South-West",
+    "West": "West",
+    "Centre": "Centre",
+    "Littoral": "Littoral",
+    "Address": "Address",
+    "Phone number": "Phone number",
+    "Email": "Email",
+    "Save": "Save",
+
+
+
+    "Patient Profile": "Patient Profile",
+    "Toggle Dropdown": "Toggle Dropdown",
+    "Add patient specimen": "Add patient specimen",
+    "Edit patient Info": "Edit patient Info",
+    "Register Specimen": "Register Specimen",
+    "Create a bill": "Create a bill",
+    "Contacts": "Contacts",
+    "No Email": "No Email",
+    "No phone number": "No phone number",
+    "More Info": "More Info",
+    "Profession:": "Profession:",
+    "Gender:": "Gender:",
+    "Region of origin:": "Region of origin:",
+    "Unset": "Unset",
+    "Yes": "Yes",
+    "No": "No",
+    "Specimens & Tests": "Specimens & Tests",
+    "Export PDF": "Export PDF",
+
+
+    "Registered Patients": "Registered Patients",
+    "Patient ID": "Patient ID",
+    "Adress": "Adress",
+    "Registered On": "Registered On",
+    "View Profile": "View Profile",
+    "Add Specimen": "Add Specimen",
+
+
+  
+    "Add specimen": "Add specimen",
+    "Register Specimen(s)": "Register Specimen(s)",
+    "year(s) old, Patient REF:": "year(s) old, Patient REF:",
+    "Specimen type": "Specimen type",
+    "Test type(s)": "Test type(s)",
+    "Choose a specimen type.": "Choose a specimen type.",
+    "Date of reception": "Date of reception",
+    "Time of reception (optional)": "Time of reception (optional)",
+    "Date of collection": "Date of collection",
+    "Time of collection (optional)": "Time of collection (optional)",
+    "Place of Collection": "Place of Collection",
+    "Sample quality": "Sample quality",
+    "Sample quality reason": "Sample quality reason",
+    "Preleveur": "Preleveur",
+    "Referred Out?": "Referred Out?",
+    "Referred In?": "Referred In?",
+    "Facility": "Facility",
+    "Remove Specimen": "Remove Specimen",
+    "Duplicate Specimen": "Duplicate Specimen",
+    "Add Specimens": "Add Specimens",
+    
+    
+    "Saved successfully":"Saved successfully",
+
+    "Login successful!":"Login successful!",
+    "Duplicated successfully":"Duplicated successfully",
+    "The two passwords do not match":"The two passwords do not match",
+    "Account created successfully":"Account created successfully",
+    "Account updated successfully":"Account updated successfully",
+    "Field deleted successfully":"Field deleted successfully",
+    "Created successfully":"Created successfully",
+    "Updated successfully":"Updated successfully",
+    "You must choose a specimen":"You must choose a specimen",
+
+
+
+    "Details": "Details",
+    "Update Results": "Update Results",
+    "Save Results": "Save Results",
+    "Remote": "Remote",
+    "Verified by ": "Verified by ",
+    "Validate Results": "Validate Results",
+
+     "Time of collection":"Time of collection",
+    "Time of reception":"Time of reception",
+
+
+    "Enter value here":"Enter value here",
+    "Enter optional remark here":"Enter optional remark here",
+
+    "View Single PDF": "View Single PDF",
+    "Download Single PDF": "Download Single PDF",
+    "Received:": "Received:",
+    "Preleveur:": "Preleveur:",
+    "Physician:": "Physician:",
+    "Entered by:": "Entered by:",
+    "Verified by:": "Verified by:",
+    "Referred from:": "Referred from:",
+    "Specimen:": "Specimen:",
+    "Description:": "Description:",
+    "Test:": "Test:",
+    "Expected TAT:": "Expected TAT:",
+    "Expected Cost:": "Expected Cost:",
+    "Test type:": "Test type:",
+
+
+    "New User Account": "New User Account",
+    "Edit User Account": "Edit User Account",
+    "Create a new account": "Create a new account",
+    "Edit Account": "Edit Account",
+    "Fields marked with (*) are obligatory": "Fields marked with (*) are obligatory",
+    "Full Name * ": "Full Name * ",
+    "Username *": "Username *",
+    "Phone Number": "Phone Number",
+    "Set a new password only if you want to change the old password": "Set a new password only if you want to change the old password",
+    "Password *": "Password *",
+    "Password": "Password",
+    "Retype Password *": "Retype Password *",
+    "Retype Password": "Retype Password",
+    "Permissions": "Permissions",
+
+
+    "Enter Full Name":"Enter Full Name",
+    "Enter username here":"Enter username here",
+    "Enter Phone number here":"Enter Phone number here",
+    "Enter email here":"Enter email here",
+    "Enter Password Here":"Enter Password Here",
+    "Retype Password Here":"Retype Password Here",
+
+ 
+    "Create new account": "Create new account",
+    "Registered Accounts": "Registered Accounts",
+    "ID": "ID",
+    "Username": "Username",
+    "Phone": "Phone",
+    "Registered on": "Registered on",
+    "View/Edit account": "View/Edit account",
+
+
+    "New Section": "New Section",
+    "Description": "Description",
+    "Techniques": "Techniques",
+    "Creation date": "Creation date",
+    "View/Edit": "View/Edit",
+
+    "Welcome Back !": "Welcome Back !",
+    "Sign In to your account": "Sign In to your account",
+    "Sign In": "Sign In",
+    "Forgot Password?": "Forgot Password?",
+    "or continue with": "or continue with",
+    "Don't have an account?": "Don't have an account?",
+    "Sign up": "Sign up",
+
+
+
+   
+    "Test types": "Test types",
+    "New single test type": "New single test type",
+    "New group test type": "New group test type",
+    "Test Types": "Test Types",
+    "Type": "Type",
+    "Duplicate": "Duplicate",
+
+
+    "New Test Type": "New Test Type",
+    "Edit Test Type": "Edit Test Type",
+    "Create a new test type": "Create a new test type",
+    "Name *": "Name *",
+    "Enter name": "Enter name",
+    "Clinical Data": "Clinical Data",
+    "Compatible specimen(s)": "Compatible specimen(s)",
+    "Add Submeasure": "Add Submeasure",
+    "Data type": "Data type",
+    "Comparison": "Comparison",
+    "Range": "Range",
+    "Use comparison": "Use comparison",
+    "Use range": "Use range",
+    "to": "to",
+    "Greater than (>)": "Greater than (>)",
+    "Less than (<)": "Less than (<)",
+    "Less than or equal to (<=)": "Less than or equal to (<=)",
+    "Greater than or equal to (>=)": "Greater than or equal to (>=)",
+    "Both": "Both",
+    "Add Values": "Add Values",
+    "Remove": "Remove",
+    "Unit / Default": "Unit / Default",
+    "Enter Unit / Default value": "Enter Unit / Default value",
+    "Remove Condition": "Remove Condition",
+    "Add Condition": "Add Condition",
+    "Sub measures": "Sub measures",
+    "Patient age": "Patient age",
+    "Patient gender": "Patient gender",
+    "Add": "Add",
+    "Prevalence Threshold": "Prevalence Threshold",
+    "Target TAT": "Target TAT",
+    "Cost to patient": "Cost to patient",
+    "Laboratory Section": "Laboratory Section",
+
+
+    "Free Input":"Free Input",
+    "Numeric Range":"Numeric Range",
+    "Alpha numeric":"Alpha numeric",
+    "Autocomplete":"Autocomplete",
+    "Conditions, IF":"Conditions, IF",
+    "Is Any Of":"Is Any Of",
+    "Is Not Any Of":"Is Not Any Of",
+    "Equals":"Equals",
+    "Not Equals":"Not Equals",
+    "Contains (Or)":"Contains (Or)",
+    "Not Contains (Or)":"Not Contains (Or)",
+    "Hide patient name in report?":"Hide patient name in report?",
+    "Cost to patient in":"Cost to patient in",
+    "Minutes":"Minutes",
+    "Hours":"Hours",
+    "Value":"Value",
+
+
+
+  "New Group Test Type": "New Group Test Type",
+  "Edit Group Test Type": "Edit Group Test Type",
+  "Create A New Group Test Type": "Create A New Group Test Type",
+  "Sub test(s)": "Sub test(s)",
+
+    
+    
+    
+    
+
+  "Specimen types": "Specimen types",
+  "New Specimen": "New Specimen",
+  "Specimen Types": "Specimen Types",
+
+  "New Specimen Type": "New Specimen Type",
+  "Edit Specimen Type": "Edit Specimen Type",
+  "Create A New Specimen Type": "Create A New Specimen Type",
+  "Compatible test(s)": "Compatible test(s)",
+
+
+
+  "Bills": "Bills",
+
+
+  "Date": "Date",
+
+  "Generated By": "Generated By",
+  "Test(s)": "Test(s)",
+
+  "Delete": "Delete",
+  "BILL_": "BILL_",
+  "Generate billing": "Generate billing",
+  "PATIENT:": "PATIENT:",
+  "Choose the different test(s) from below:": "Choose the different test(s) from below:",
+  "Test Name": "Test Name",
+  "Specimen Type": "Specimen Type",
+  "Test Cost": "Test Cost",
+  "Discount": "Discount",
+  "Discount Amount": "Discount Amount",
+  "Total": "Total",
+  "Please select a test.": "Please select a test.",
+  "None": "None",
+  "Percentage": "Percentage",
+  "Flat": "Flat",
+  "Total Amount": "Total Amount",
+  "Create bill": "Create bill",
+  "Are you sure you want to reset this sheet?":"Are you sure you want to reset this sheet?",
+  "Lab Config":"Lab Config",
+
+
+
+  "Configuration Data": "Configuration Data",
+  "Laboratory Name": "Laboratory Name",
+  "Currency Unit": "Currency Unit",
+  "Result Sheet Config": "Result Sheet Config",
+  "Exportation header": "Exportation header",
+  "Footer credits": "Footer credits",
+  "Patient Creation Config": "Patient Creation Config",
+  "Patient ID - Nomenclature": "Patient ID - Nomenclature",
+  "Prefix (Optional)": "Prefix (Optional)",
+  "Prefix": "Prefix",
+  "Reset counter period": "Reset counter period",
+  "Daily": "Daily",
+  "Monthly": "Monthly",
+  "Yearly": "Yearly",
+  "Suffix (Optional)": "Suffix (Optional)",
+  "Suffix": "Suffix",
+
+  "Visualize Result Result Sheet": "Visualize Result Result Sheet",
+  "Export": "Export",
+  "Update data": "Update data",
+  "Reset data": "Reset data",
+  "Page": "Page"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+  
+    
+}

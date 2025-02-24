@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Models\Laboratory;
 
 class PDFController extends Controller
 {
     
-    public function generatePDF()
+    public function generatePDF($viewOnly=false)
     {
+
+        $find = \App\Models\ResultSheetExportation::query()->where('registered_specimen',request('id'))->first();
+        if($find){
+            return  $this->genPDFFromHTML($find->html);
+        }
 
 //         $dompdf = new Pdf();
 // $html = '<html><body><p>Test: ≥</p></body></html>';
@@ -19,7 +25,6 @@ class PDFController extends Controller
 // $dompdf->render();
 // $dompdf->stream();
 // return;
-        header('Content-Type: text/html; charset=utf-8');
 
         $id= request('id');
         if(empty($id)){
@@ -35,9 +40,15 @@ class PDFController extends Controller
     $specimen['specimen']=\App\Models\SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
     $specimen['test']=\App\Models\TestType::query()->where("uniqid",$specimen['test'])->first();
 
+        $labData=getCurrentLab($specimen['lab_ref']);
+        $labMeta = !empty($labData['meta'])?$labData['meta']:[];
+        $footerContent = $labMeta['sheetfooter']??'';
+        $headerContent = $labMeta['sheetheader']??'';
+        $credits = addslashes($labMeta['credits']??'');
 
         // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
-        $footerContent = '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';
+
+        // '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';
     
         $multiple=request('multiple')?true:false;
 
@@ -75,13 +86,17 @@ class PDFController extends Controller
         }else{
             $specimens=[$specimen];
         }
-
-        if(request('preview')){
-            return view('pdf_test_details_new', compact('specimen', 'specimens','footerContent'));
+        if(request('preview') || $viewOnly){
+           
+     
+            return view('pdf_test_details_new', compact('specimen', 'specimens','footerContent','headerContent','credits'));
         }
 
+
+
+        header('Content-Type: text/html; charset=utf-8');
         // return view('pdf_test_details', compact('specimen', 'specimens','footerContent'));
-        $pdf = Pdf::loadView('pdf_test_details_new', compact('specimen', 'specimens','footerContent'))->setPaper('a4')
+        $pdf = Pdf::loadView('pdf_test_details_new', compact('specimen', 'specimens','footerContent','headerContent','credits'))->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 
@@ -98,21 +113,54 @@ class PDFController extends Controller
 
     public function generatePDFBill()
     {
-
+      
         header('Content-Type: text/html; charset=utf-8');
 
         $id= request('id');
         if(empty($id)){
             return abort(404);
         }
+        
 
-    $bill=\App\Models\Bill::query()->find($id);
-    $bill['patient']=Patient::query()->where('uniqid',$bill->patient)->get()->first();
+        $bill=\App\Models\Bill::query()->find($id);
+        $bill['patient']=Patient::query()->where('uniqid',$bill->patient)->get()->first();
+
+        $labData=getCurrentLab($bill->lab_ref);
+        $labMeta = !empty($labData['meta'])?$labData['meta']:[];
 
         // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
-        $footerContent = '<i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>';
-    
-        $pdf = Pdf::loadView('pdf_bill_details', compact( 'bill','footerContent'))->setPaper('a4')
+        $footerContent = $labMeta['sheetfooter']??'';
+        $headerContent = $labMeta['sheetheader']??'';
+        $credits = addslashes($labMeta['credits']??'');
+
+        // <i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>
+        $pdf = Pdf::loadView('pdf_bill_details', compact( 'bill','footerContent','headerContent','credits'))->setPaper('a4')
+        ->setWarnings(false);
+        $pdf->set_option('isPhpEnabled', true);
+        $pdf->set_option('isRemoteEnabled', true); 
+        
+
+        if(request('dl')){
+            return $pdf->download('document.pdf');
+        }
+        return $pdf->stream('document.pdf');
+    }
+
+
+    public function genPDFFromHTML($html)
+    {
+        error_reporting(E_ALL & ~E_DEPRECATED);
+        ini_set('memory_limit', '256M');
+        set_time_limit(300);
+        $html= replaceImagesWithBase64($html);
+        // die('ss');
+        header('Content-Type: text/html; charset=utf-8');
+        // return view('pdf_test_details_container',['html'=>$html])->render();
+        // return $html;
+        if(request('preview')){
+            return view('pdf_test_details_container',['html'=>$html])->render();
+        }
+        $pdf = Pdf::loadView('pdf_test_details_container',['html'=>$html])->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 

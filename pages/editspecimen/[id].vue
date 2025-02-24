@@ -356,7 +356,7 @@
         // return;
         const context=this;
       postRequestLoad_('/editspecimen/'+this.id,inf[0],()=>{
-          successToast("Saved successfully");
+          successToast(this.$t("Saved successfully"));
           context.$router.push("/specimens")
         
       })

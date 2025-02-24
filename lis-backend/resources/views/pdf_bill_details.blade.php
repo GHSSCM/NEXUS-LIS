@@ -68,8 +68,8 @@
     <header>
         <!-- Header content here -->
         <!-- Header content here -->
-        <center>
-            <?php
+        <!-- <center> -->
+            <!-- <?php
             
                 //remote files disturb to load . let me load the base64 server side and send 
                 $path = public_path('/toplogonew2.png');
@@ -80,8 +80,8 @@
 
         <img src="{{$base64}}" height="100"/>
 <br/>
-<br/>
-
+<br/> -->
+        {!! $headerContent !!}
 
     </header>
     <footer>
@@ -91,7 +91,9 @@
         <!-- <strong style="width:100%">{PAGE_NUM} | {PAGE_COUNT} Page</strong> -->
        <center>
        <br/>
-        {{-- $footerContent --}}
+        <!-- {{-- $footerContent --}}
+        {{$footerContent}}
+        <h1>a</h1> -->
        </center>
     </footer>
     <main class="content">
@@ -188,7 +190,7 @@
 
     </table>
 
-
+      
     </main>
     <script type="text/php">
     if ( isset($pdf) ) { 
@@ -200,7 +202,7 @@
                 $pageText = "Page " . $PAGE_NUM . " | " . $PAGE_COUNT;
                 $headerText = "QUALITY DIAGNOSTIC, QUALITY CARE";
                 //$footerTextDouala = "Akwa at the Rue Prince des Galles, about 100m to Immeuble Activa, Douala, Littoral Region, Republic of Cameroon";
-                $footerText = "Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
+                $footerText =  "{{$credits}}"; //"Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
 
                 // Load fonts
                 $fontRegular = $fontMetrics->get_font("serif", "normal");

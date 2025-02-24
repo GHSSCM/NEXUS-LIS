@@ -20,7 +20,7 @@ export default {
       login(){
         const context=this;
         postRequestLoad_('/login',{username:this.username,password:this.password},(user)=>{
-              successToast("Login successful!");
+              successToast(this.$t("Login successful!"));
               window.localStorage.setItem("user",JSON.stringify(user));
               window.localStorage.setItem("lis_config",JSON.stringify(user.config));
               window.localStorage.setItem("lab_ref",user.lab_ref);
@@ -78,17 +78,21 @@ export default {
             <div class="card shadow-none">
               <div class="card-body">
                 <div class="text-center">
-                  <h4>Welcome Back !</h4>
-                  <p>Sign In to your account</p>
+                  <h4><Translate text="Welcome Back !"/></h4>
+                  <p><Translate text="Sign In to your account"/></p>
                 </div>
                 <form class="form-body row g-3" @submit.prevent="login">
           
                   <div class="col-12">
-                    <label for="inputEmail" class="form-label">Username *</label>
+                    <label for="inputEmail" class="form-label">
+                      <Translate text="Username *"/>
+                    </label>
                     <input required v-model="username" type="text" class="form-control" id="inputUsername">
                   </div>
                   <div class="col-12">
-                    <label for="inputPassword" class="form-label">Password</label>
+                    <label for="inputPassword" class="form-label">
+                      <Translate text="Password"/>
+                    </label>
                     <input required v-model="password" type="password" class="form-control" id="inputPassword">
                   </div>
                   <div class="col-12 col-lg-6">
@@ -98,29 +102,46 @@ export default {
                     </div> -->
                   </div>
                   <div class="col-12 col-lg-6 text-end d-none">
-                    <a href="authentication-reset-password-cover.html">Forgot Password?</a>
+                    <a href="authentication-reset-password-cover.html">
+                      <Translate text="Forgot Password?"/>
+                    </a>
                   </div>
                   <div class="col-12 col-lg-12">
                      <div class="d-grid">
-                      <button type="submit" class="btn btn-primary">Sign In</button>  
+                      <button type="submit" class="btn btn-primary">
+                        <Translate text="Sign In"/>
+                      </button>  
                     </div>
                   </div>
                   <div class="col-12 col-lg-12 d-none">
                     <div class="position-relative border-bottom my-3">
-                      <div class="position-absolute seperator translate-middle-y">or continue with</div>
+                      <div class="position-absolute seperator translate-middle-y">
+                        <Translate text="or continue with"/>
+                      </div>
                     </div>
                   </div>
                   <div class="col-12 col-lg-12 d-none">
                     <div class="social-login d-flex flex-row align-items-center justify-content-center gap-2 my-2">
-                      <a href="javascript:;" class=""><img src="assets/images/icons/facebook.png" alt=""></a>
-                      <a href="javascript:;" class=""><img src="assets/images/icons/apple-black-logo.png" alt=""></a>
-                      <a href="javascript:;" class=""><img src="assets/images/icons/google.png" alt=""></a>
+                      <a href="javascript:;" class="">
+                        <img src="assets/images/icons/facebook.png" alt="">
+                      </a>
+                      <a href="javascript:;" class="">
+                        <img src="assets/images/icons/apple-black-logo.png" alt="">
+                      </a>
+                      <a href="javascript:;" class="">
+                        <img src="assets/images/icons/google.png" alt="">
+                      </a>
                     </div>
                   </div>
                   
-                    <div class="col-12 col-lg-12 text-center d-none">
-                        <p class="mb-0">Don't have an account? <a href="authentication-sign-up-cover.html">Sign up</a></p>
-                      </div>
+                  <div class="col-12 col-lg-12 text-center d-none">
+                    <p class="mb-0">
+                      <Translate text="Don't have an account?"/>
+                      <a href="authentication-sign-up-cover.html">
+                        <Translate text="Sign up"/>
+                      </a>
+                    </p>
+                  </div>
                 
                 </form>
               </div>

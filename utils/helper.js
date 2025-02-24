@@ -1,8 +1,16 @@
 import axios from 'axios';
-
+import { useMyPermissionsStore } from '~/stores/permissions'
+import { useI18n } from 'vue-i18n'
 
 export const BASE_URL="http://localhost:8000/api";
 
+export const trans_=(x)=>{
+    const { t,locale } = useI18n() 
+    const { setLocale } = useI18n();
+    locale.value = getUserLang();
+    setLocale( getUserLang());
+    return t(x);
+}
 export const getBaseUrl=()=>{
     if(window){
         return (isLocal?(window.location.origin+"/api"):BASE_URL);
@@ -11,7 +19,21 @@ export const getBaseUrl=()=>{
     }
     
 }
+export const getUserLang=()=>{
+    
+    if(!process.client){
+        return "en";
+    }
+   return window.localStorage.getItem("user_lang")??"en"
+}
 
+export const setUserLang=(lgn)=>{
+    if(!process.client){
+        return;
+    }
+  window.localStorage.setItem("user_lang",lgn)
+  window.location.reload();
+ }
 export const generateRandomStringWithTimestamp=(length)=> {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let randomString = '';
@@ -27,7 +49,12 @@ export const generateRandomStringWithTimestamp=(length)=> {
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
-    params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc";
+    params.lab_ref=window.localStorage.getItem("lab_ref")??"lab_abc"
+    var currentUser = window.localStorage.getItem("user");
+    if(currentUser && endpoint=="/permissions/"){
+        currentUser = JSON.parse(currentUser).id;
+        params.user_id = currentUser;
+    }
     axios.get((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,{params}).then((d)=>{
         successFunction(d.data);
         window.reloadComps();
@@ -41,7 +68,7 @@ export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunctio
 }
 
 export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
-    var id=endpoint.split("/").join("");
+    var id=endpoint.split("/").join("").split("?").join("").split("&").join("").split("=").join("");
     // setTimeout(function(){
        
     // },500);
@@ -87,6 +114,40 @@ export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFuncti
     })
 }
 
+export const hasPermission=(perm)=>{
+    console.log("TESTING FOR "+perm)
+  const store = useMyPermissionsStore()
+  var split = perm.split(",");
+  for(var i=0;i<=split.length;i++){
+    if(store.permissions.includes(split[i])){
+        console.log("returning true. includes")
+        return true;
+    }
+  }
+  return false;
+}
+
+export const forceOutPermissionVerify=(perm,context)=>{
+    // return;
+    const store = useMyPermissionsStore();
+    //if has not loaded permissions yet, add it to the list.
+    if(store.loadedPermissions){
+        console.log("checking perm", perm)
+        if(!hasPermission(perm)){
+            if(context){
+                context.$router.push("/");
+            }
+            if(!process.client){
+                return;
+            }
+            return window.location.href='/';
+        }
+    }else{
+        console.log("not yet loaded perm. come back later",perm)
+        store.checkAfterLoad.push({perm,context});
+    }
+   
+}
 export const successToast=(ms)=>{
     Lobibox.notify('success', {
 		pauseDelayOnHover: true,

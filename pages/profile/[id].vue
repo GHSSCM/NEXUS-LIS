@@ -1,216 +1,262 @@
 <template>
-    <NuxtLayout name="inner">
-        
-              <!--start breadcrumb-->
-              <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
-                <div class="ps-3">
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0 align-items-center">
-                      <li class="breadcrumb-item"><a href="javascript:;">
-                          <ion-icon name="home-outline"></ion-icon>
-                        </a>
-                      </li>
-                      <li class="breadcrumb-item active" aria-current="page">Patient Profile</li>
-                    </ol>
-                  </nav>
-                </div>
-                <div class="ms-auto">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary">Options</button>
-                    <button type="button"
-                      class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                      data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <NuxtLink v-if="user" class="dropdown-item"
-                      :to="'/addspecimen/'+user.id">Add patient specimen</NuxtLink>
-
-                      <NuxtLink v-if="user" class="dropdown-item"
-                      :to="'/patientinfo/'+user.id">Edit patient Info</NuxtLink>
-                      <!-- <a class="dropdown-item" href="javascript:;">Another action</a> -->
-                      <!-- <a class="dropdown-item" href="javascript:;">Something else here</a> -->
-                      <!-- <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a> -->
-                    </div>
+  <NuxtLayout name="inner">
+      
+            <!--start breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+              <div class="breadcrumb-title pe-3">
+                <Translate text="Dashboard" />
+              </div>
+              <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0 p-0 align-items-center">
+                    <li class="breadcrumb-item">
+                      <a href="javascript:;">
+                        <ion-icon name="home-outline"></ion-icon>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      <Translate text="Patient Profile" />
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+              <div class="ms-auto">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-primary">
+                    <Translate text="Options" />
+                  </button>
+                  <button type="button"
+                    class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown">
+                    <span class="visually-hidden">
+                      <Translate text="Toggle Dropdown" />
+                    </span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                    <NuxtLink v-if="user" class="dropdown-item"
+                      :to="'/addspecimen/'+user.id">
+                      <Translate text="Add patient specimen" />
+                    </NuxtLink>
+                    <NuxtLink v-if="user" class="dropdown-item"
+                      :to="'/patientinfo/'+user.id">
+                      <Translate text="Edit patient Info" />
+                    </NuxtLink>
+                    <!-- <a class="dropdown-item" href="javascript:;">Another action</a> -->
+                    <!-- <a class="dropdown-item" href="javascript:;">Something else here</a> -->
+                    <!-- <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a> -->
                   </div>
                 </div>
               </div>
-              <!--end breadcrumb-->
-  
-              <div v-if="user">
-              
-              
-                <br/>
-                <h6 class="mb-0 text-uppercase" v-if="user && user.name">{{user.name}}</h6>
-                <hr/>
-  
+            </div>
+            <!--end breadcrumb-->
 
-                <!-- start -->
-                <div class="row">
-                    <div class="col-12">
-                      <div class="card overflow-hidden radius-10">
-                        <div class="profile-cover bg-dark position-relative mb-4">
-                          <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x" style="width: 80px;
-                          height: 80px;
-                          margin-left: 4.5rem;">
-                            <img src="assets/images/man.png" alt="...">
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <div class="mt-2 d-flex align-items-start justify-content-between">
-                            <div class="">
-                              <h3 class="mb-2">{{user.name}}</h3>
-                              <p class="mb-1">Age: {{calculateAge(user.dob)}}, ({{user.dob}})</p>
-                            
+            <div v-if="user">
+            
+              <br/>
+              <h6 class="mb-0 text-uppercase" v-if="user && user.name">{{user.name}}</h6>
+   
+              <hr/>
 
-
-                              <div class="">
-
-                                <NuxtLink class="btn btn-primary me-2" :to="'/addspecimen/'+user.id" >Register Specimen</NuxtLink>
-                                <NuxtLink class="btn btn-primary me-2" :to="'/initbilling/patient/'+user.id" >Create a bill</NuxtLink>
-                                <!-- <span class="badge rounded-pill bg-primary">UX Research</span>
-                                <span class="badge rounded-pill bg-primary">CX Strategy</span>
-                                <span class="badge rounded-pill bg-primary">Project Management</span>
-                             --> </div> 
-                            </div>
-                            <!-- <div class="">
-                               <a href="javascript:;" class="btn btn-primary"><ion-icon name="send-sharp"></ion-icon>Send Message</a>
-                            </div> -->
-                          </div>
+              <!-- start -->
+              <div class="row">
+                  <div class="col-12">
+                    <div class="card overflow-hidden radius-10">
+                      <div class="profile-cover bg-dark position-relative mb-4">
+                        <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x" style="width: 80px; height: 80px; margin-left: 4.5rem;">
+                          <img src="assets/images/man.png" alt="...">
                         </div>
                       </div>
-                     
-
-                     
-                    </div>
-                  
-                    <div class="col-sm-4">
-                 
-        
-                        <div class="card radius-10">
-                          <div class="card-body">
-                            <h5 class="mb-3">Contacts</h5>
-                             <p class=""><ion-icon name="globe-sharp" class="me-2"></ion-icon>{{user.email??"No Email"}}</p>
-                             <p class=""><i class="lni lni-phone me-2"></i>{{user.phone??"No phone number"}}</p>
+                      <div class="card-body">
+                        <div class="mt-2 d-flex align-items-start justify-content-between">
+                          <div class="">
+                            <h3 class="mb-2">{{user.name}}</h3>
+                            <p class="mb-1">
+                              <Translate text="Age:" /> {{calculateAge(user.dob)}}, ({{user.dob}})
+                            </p>
+                            <p>Reference: {{user.reference}}</p>
+                            <div class="">
+                              <NuxtLink class="btn btn-primary me-2" :to="'/addspecimen/'+user.id"  v-if="hasPermission('REGISTER_SPECIMEN')">
+                                <Translate text="Register Specimen" />
+                              </NuxtLink>
+                              <NuxtLink class="btn btn-primary me-2" :to="'/initbilling/patient/'+user.id"  v-if="hasPermission('MANAGE_BILLING')">
+                                <Translate text="Create a bill" />
+                              </NuxtLink>
+                              <!-- <span class="badge rounded-pill bg-primary">UX Research</span>
+                              <span class="badge rounded-pill bg-primary">CX Strategy</span>
+                              <span class="badge rounded-pill bg-primary">Project Management</span> -->
+                            </div> 
                           </div>
+                          <!-- <div class="">
+                             <a href="javascript:;" class="btn btn-primary"><ion-icon name="send-sharp"></ion-icon>Send Message</a>
+                          </div> -->
                         </div>
-  
-                       
-            
-  
+                      </div>
                     </div>
-                    <div class="col-sm-8">
+                   
+                  </div>
+                
+                  <div class="col-sm-4">
                       <div class="card radius-10">
                         <div class="card-body">
-                          <h5 class="mb-3">More Info</h5>
-                          
-                          <div class="row">
-                            <div class="col-4">
-                              <p>Profession: {{user.profession??"Unset"}}</p>
-                            </div>
-                            <div class="col-4">
-                              <p>Gender: {{user.gender=='M'?"Male":"Female"}}</p>
-                            </div>
-                            <div class="col-4">
-                              <p>Region of origin: {{user.region??"Unset"}}</p>
-                            </div>
-                            <div class="col-4" v-for="(o,i) in Object.keys(user.meta.fields)" :key="'cf-value-'+i">
-                              <p >{{o}}: {{user.meta.fields[o]? (user.meta.fields[o] ===true||user.meta.fields[o] ===false)?(user.meta.fields[o]?"Yes":"No"):user.meta.fields[o] :"Unset"}}</p>
-                            </div>
+                          <h5 class="mb-3">
+                            <Translate text="Contacts" />
+                          </h5>
+                           <p class="">
+                             <ion-icon name="globe-sharp" class="me-2"></ion-icon>
+                             {{user.email ?? $t("No Email")}}
+                           </p>
+                           <p class="">
+                             <i class="lni lni-phone me-2"></i>
+                             {{user.phone ?? $t("No phone number")}}
+                           </p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="card radius-10">
+                      <div class="card-body">
+                        <h5 class="mb-3">
+                          <Translate text="More Info" />
+                        </h5>
+                        
+                        <div class="row">
+                          <div class="col-4">
+                            <p>
+                              <Translate text="Profession:" /> {{user.profession ?? $t("Unset")}}
+                            </p>
                           </div>
-                      
-    
+                          <div class="col-4">
+                            <p>
+                              <Translate text="Gender:" /> {{user.gender=='M' ? $t("Male") : $t("Female")}}
+                            </p>
+                          </div>
+                          <div class="col-4">
+                            <p>
+                              <Translate text="Region of origin:" /> {{user.region ?? $t("Unset")}}
+                            </p>
+                          </div>
+                          <div class="col-4" v-for="(o,i) in Object.keys(user.meta.fields)" :key="'cf-value-'+i">
+                            <p>
+                              {{o}}: {{user.meta.fields[o] ? (user.meta.fields[o] === true || user.meta.fields[o] === false ? (user.meta.fields[o] ? $t("Yes") : $t("No")) : user.meta.fields[o]) : $t("Unset")}}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                     
-                    </div>
-                    <div class="col-sm-12">
-                      <div class="card">
-                        <div class="card-body">
-                          <h4 class="mb-2">Specimens & Tests</h4>
-                          <br/>
-                                <!-- SPECIMENS TABLE -->
-
-                        <div class="table-responsive">
-
-                          <div  class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
-                               
-                         <div class="row">
-                           <div class="col-sm-12">
-                               <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
-                                 <thead>
-                                     <tr role="row">
-                                      <th rowspan="1" colspan="1">Patient</th>
-                                      <th rowspan="1" colspan="1">Specimen</th>
-                                      <th rowspan="1" colspan="1">Test</th>
-                                      <th rowspan="1" colspan="1">Physician</th>
-                                      <th rowspan="1" colspan="1">Received On</th>
-                                      <th rowspan="1" colspan="1">Referred?</th>
-                                      <th rowspan="1" colspan="1">Referred From</th>
-                                      <th rowspan="1" colspan="1"></th>
-                                       </tr>
-                                 </thead>
-                                 <tbody>
-     
-                                     
-                                 <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                         <td class="">{{ u.patient.name }}</td>
-                                         <td class="">{{u.specimen.name}}</td>
-                                         <td class="">{{u.test.name}}</td>
-                                         <td class="">{{u.physician}}</td>
-                                         <td class="">{{u.received.receptiondate}} {{u.received.receptiontime}}</td>
-                                         <td class="">{{u.referredout?"Yes":"No"}}</td>
-                                         <td class="">{{u.referredto??""}}</td>
-                                         <td>
-                                             <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Verify</NuxtLink>
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/viewspecimen/'+u.id">Enter Results</NuxtLink>
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/viewspecimen/'+u.id">View </NuxtLink>
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.meta.validated" :to="'/editspecimen/'+u.id">Edit </NuxtLink>
-
-                                             <NuxtLink class="btn btn-primary btn-sm"  v-if="!u.meta &&  !u.meta.enteredby && !u.meta.validated" :to="'/editspecimen/'+u.id">Edit</NuxtLink>
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" target="_blank" v-if="u.meta && u.meta.validated" :to="baseUrl+'/test-report?id='+u.id">Export PDF</NuxtLink>
-                                             
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.billing" :to="'/initbilling/specimen/'+u.id">Generate Bill</NuxtLink>
-                                             <NuxtLink class="btn btn-primary btn-sm me-3" v-else target="_blank"  :to="baseUrl+'/bill-report?id='+u.billing.id">View Bill</NuxtLink>
-                                             <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
-                                         </td>
-                                         
-                                   </tr>
-                                 </tbody>
-                                 <tfoot>
-                                     <tr>
-                                      <th rowspan="1" colspan="1">Patient</th>
-                                      <th rowspan="1" colspan="1">Specimen</th>
-                                      <th rowspan="1" colspan="1">Test</th>
-                                      <th rowspan="1" colspan="1">Physician</th>
-                                      <th rowspan="1" colspan="1">Received On</th>
-                                      <th rowspan="1" colspan="1"></th>
-                                     </tr>
-                                 </tfoot>
-                             </table>
-                           </div>
-                         </div>
-             
-                           </div>
-                       </div>
-                       <!--  SPECIMENS TABLES ENDS -->
-
-                        </div>
-                      </div>
-
-
-                
                     </div>
                   </div>
-                  <!-- end -->
-  
-  
+                  <div class="col-sm-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="mb-2">
+                          <Translate text="Specimens & Tests" />
+                        </h4>
+                        <br/>
+                        <!-- SPECIMENS TABLE -->
+                        <div class="table-responsive">
+                          <div class="dataTables_wrapper dt-bootstrap5 dttable_wrapper">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <table id="onetoabc" class="table table-striped table-bordered dttable" role="grid" aria-describedby="example2_info">
+                                  <thead>
+                                   <tr role="row">
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Patient" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Specimen" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Test" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Physician" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Received On" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Referred?" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Referred From" />
+                                    </th>
+                                    <th rowspan="1" colspan="1"></th>
+                                   </tr>
+                                  </thead>
+                                  <tbody>
+                                   <tr role="row" v-for="(u,i) in specimens" :class="i % 2 === 0 ? 'even' : 'odd'" :key="'account-'+i">
+                                       <td>{{ u.patient.name }}</td>
+                                       <td>{{ u.specimen.name }}</td>
+                                       <td>{{ u.test.name }}</td>
+                                       <td>{{ u.physician }}</td>
+                                       <td>{{ u.received.receptiondate }} {{ u.received.receptiontime }}</td>
+                                       <td>{{ u.referredout ? $t("Yes") : $t("No") }}</td>
+                                       <td>{{ u.referredto ?? "" }}</td>
+                                       <td>
+                                           <NuxtLink class="btn btn-success btn-sm me-3" v-if="u.meta && u.meta.enteredby && !u.meta.validated &&  hasPermission('VALIDATE_RESULTS')" :to="'/viewspecimen/'+u.id">
+                                             <Translate text="Verify" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="u.meta && !u.meta.enteredby && !u.meta.validated && hasPermission('ENTER_RESULTS')" :to="'/viewspecimen/'+u.id" >
+                                             <Translate text="Enter Results" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" :to="'/viewspecimen/'+u.id" v-if="hasPermission('REGISTER_SPECIMEN')">
+                                             <Translate text="View" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.meta.validated && hasPermission('REGISTER_SPECIMEN')" :to="'/editspecimen/'+u.id">
+                                             <Translate text="Edit" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm" v-if="!u.meta && !u.meta.enteredby && !u.meta.validated && hasPermission('REGISTER_SPECIMEN')" :to="'/editspecimen/'+u.id">
+                                             <Translate text="Edit" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" target="_blank" v-if="u.meta && u.meta.validated && hasPermission('EXPORT_SHEET')" :to="'/visualizer/'+u.id">
+                                             <Translate text="Export PDF" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" v-if="!u.billing && hasPermission('MANAGE_BILLING')" :to="'/initbilling/specimen/'+u.id">
+                                             <Translate text="Generate Bill" />
+                                           </NuxtLink>
+                                           <NuxtLink class="btn btn-primary btn-sm me-3" v-else-if="hasPermission('MANAGE_BILLING')" target="_blank" :to="baseUrl+'/bill-report?id='+u.billing.id"  >
+                                             <Translate text="View Bill" />
+                                           </NuxtLink>
+                                           <!-- <NuxtLink class="btn btn-primary btn-sm" :to="'/profile/'+u.patient.id">View profile</NuxtLink> -->
+                                       </td>
+                                   </tr>
+                                  </tbody>
+                                  <tfoot>
+                                   <tr>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Patient" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Specimen" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Test" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Physician" />
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                      <Translate text="Received On" />
+                                    </th>
+                                    <th rowspan="1" colspan="1"></th>
+                                   </tr>
+                                  </tfoot>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--  SPECIMENS TABLES ENDS -->
+                      </div>
+                    </div>
+                  </div>
                 </div>
-  
-      
-    
-  
-    </NuxtLayout>
-  </template>
+                <!-- end -->
+
+              </div>
+  </NuxtLayout>
+</template>
+
   <script>
   export default{
     mounted(){
