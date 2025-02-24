@@ -7,8 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAccount extends Model
 {
-    protected $fillable=['name','email','phone','password','username','lab_ref','uniqid'];
+    protected $fillable=['name','email','phone','password','username','lab_ref','uniqid','perms'];
     use HasFactory;
+
+    protected $casts = [
+        'perms' => 'array', // Ensure it's an array
+    ];
+
+    protected $attributes = [
+        'perms' => '[]', // JSON default (as a string)
+    ];
 
     protected static function boot()
     {

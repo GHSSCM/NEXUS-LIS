@@ -18,6 +18,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\PDFController;
 use App\Models\Bill;
 use App\Models\LabSection;
+use App\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,6 +32,12 @@ Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
 
 Route::get("/permissions",function(){
+    if(request('user_id')){
+        $user =  \App\Models\UserAccount::find(request('user_id'));
+        if($user){
+            return $user->perms??[];
+        }
+    }
     return [];
 });
 // Route::get("/tt",function(){
@@ -105,8 +112,14 @@ Route::get("/accounts",function(){
     return UserAccount::query()->where(request()->all())->get();
 });
 
+Route::get("/permissions-available",function(){
+    return array_map(fn($perm) => $perm->value, Permission::cases());
+});
+
 Route::get("/account/{id}",function($id){
-    return UserAccount::query()->findOrFail($id);
+    $u = UserAccount::query()->findOrFail($id)->toArray();
+    $u['permissions']= array_map(fn($perm) => $perm->value, Permission::cases());
+    return $u;
 });
 Route::post("/account/{id}",function($id){
     $data= request()->all();
