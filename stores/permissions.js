@@ -8,7 +8,8 @@ export const useMyPermissionsStore = defineStore('myPermissionsStore',{
       permissions:[],
       loadedPermissions:false,
       checkAfterLoad:[],
-      labName:""
+      labName:"",
+      showManual:false
     }
   },
   actions: {

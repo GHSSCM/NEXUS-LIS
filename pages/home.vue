@@ -99,7 +99,12 @@
                             <!-- class="card-body" -->
                               <div > 
                                 <div  class="d-flex justify-content-between align-items-center">
-                                  <h4 class="mb-2"><Translate text="Recent Specimens Collected"/></h4>
+                                  <div>
+                                    <h4 class="mb-2"><Translate text="Recent Specimens Collected"/></h4>
+                                    <!-- <Tooltip  tooltipHtml="<h3>Help Topic</h3><p>This is a detailed help topic with <strong>HTML</strong> content that can span multiple lines.</p>">
+                                      <button class="btn">Hover Me</button>
+                                    </Tooltip> -->
+                                  </div>
                                   <strong><u><NuxtLink to="/specimens"><Translate text="View All"/> &rightarrow;</NuxtLink></u></strong>
                                 </div>
                                 <br/>

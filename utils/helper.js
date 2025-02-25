@@ -115,12 +115,12 @@ export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFuncti
 }
 
 export const hasPermission=(perm)=>{
-    console.log("TESTING FOR "+perm)
+    // console.log("TESTING FOR "+perm)
   const store = useMyPermissionsStore()
   var split = perm.split(",");
   for(var i=0;i<=split.length;i++){
     if(store.permissions.includes(split[i])){
-        console.log("returning true. includes")
+        // console.log("returning true. includes")
         return true;
     }
   }

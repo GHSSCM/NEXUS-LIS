@@ -119,7 +119,7 @@
                                           <Translate text="+ Add"/>
                                         </button>
                                     </div>
-                                    <input :placeholder="trans('Enter value here')" :disabled="meta[x].validated" required v-else-if="m.type=='numericrange'" type="number" step="0.000000001" class="form-control" v-model="meta[x].results[j].value"/>
+                                    <input :placeholder="$t('Enter value here')" :disabled="meta[x].validated" required v-else-if="m.type=='numericrange'" type="number" step="0.000000001" class="form-control" v-model="meta[x].results[j].value"/>
                                     <textarea required :disabled="meta[x].validated" v-else-if="m.type=='freeinput'" type="text" class="form-control" v-model="meta[x].results[j].value"></textarea>
                                 </div>
                                 <div class="col-sm-2 d-flex" v-if="m.subs.length==0">
