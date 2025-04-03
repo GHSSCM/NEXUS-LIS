@@ -47,15 +47,22 @@ Route::post('/test-report-save',function(){
     if(empty(request('html'))||empty(request('registered_specimen'))){
         return error_response(400,"Faulty data");
     }
-    
+    $html = request('html'); // The HTML from TinyMCE
+
+
+
     $params = request()->all();
+
+    $params['html'] = fixTinyMCEHtml($html);
 
     $find = ResultSheetExportation::query()->where('registered_specimen',$params['registered_specimen'])->first();
     if($find){
-        $find->update(request()->all());
+        $find->update($params);
+        // return $params['html'];
         return ['data'=>'ok'];
     }
     ResultSheetExportation::create($params);
+    // return $params['html'];
     return ['data'=>'ok'];
 });
 

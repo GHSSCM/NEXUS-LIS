@@ -100,7 +100,9 @@
     </style>
 </head>
 <body>
-    <header>
+ 
+<!-- Section -->
+<header>
         <!-- Header content here -->
         <center>
             <?php
@@ -150,6 +152,10 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
     <hr/>
     <br/>
     </header>
+
+
+
+
     <footer>
          <hr/><div class="footer-left">
                 <!-- Page <span class="page-num"></span> of <span class="page-count"></span> -->
@@ -160,6 +166,10 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
         {!! $footerContent !!}
        </center>
     </footer>
+
+
+
+    
     <main class="content">
         
 
@@ -548,6 +558,9 @@ E-mail: ghslltd.lab@gmail.com | Phone: +237 696 124 683/ 675 148 894</i></center
 
 
     </main>
+
+
+
     <script type="text/php">
         if ( isset($pdf) ) { 
             $pdf->page_script('

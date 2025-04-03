@@ -161,3 +161,11 @@ function getCurrentLab($ref=null){
     // dd($ref);
     return $lab;
 }
+
+function fixTinyMCEHtml($html){
+    $html = str_replace('</header>', '', $html);
+    if(str_contains($html,'<header>')){
+        $html = str_replace('<footer>', '</header><footer>', $html);
+    }
+    return $html;
+}

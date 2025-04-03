@@ -6,7 +6,10 @@ use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\Laboratory;
-
+// For testing only, to see if you still time out:
+ini_set('max_execution_time', 300); // 5 minutes
+ini_set('memory_limit', '512M');
+    
 class PDFController extends Controller
 {
     
@@ -86,6 +89,10 @@ class PDFController extends Controller
         }else{
             $specimens=[$specimen];
         }
+
+     
+    
+
         if(request('preview') || $viewOnly){
            
      
@@ -96,6 +103,9 @@ class PDFController extends Controller
 
         header('Content-Type: text/html; charset=utf-8');
         // return view('pdf_test_details', compact('specimen', 'specimens','footerContent'));
+
+        
+
         $pdf = Pdf::loadView('pdf_test_details_new', compact('specimen', 'specimens','footerContent','headerContent','credits'))->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
@@ -155,12 +165,13 @@ class PDFController extends Controller
         $html= replaceImagesWithBase64($html);
         // die('ss');
         header('Content-Type: text/html; charset=utf-8');
-        // return view('pdf_test_details_container',['html'=>$html])->render();
-        // return $html;
+        
+    
+        // die('h');
         if(request('preview')){
-            return view('pdf_test_details_container',['html'=>$html])->render();
+            return view('pdf_test_details_container',['html'=>fixTinyMCEHtml($html)])->render();
         }
-        $pdf = Pdf::loadView('pdf_test_details_container',['html'=>$html])->setPaper('a4')
+        $pdf = Pdf::loadView('pdf_test_details_container',['html'=>fixTinyMCEHtml($html)])->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 

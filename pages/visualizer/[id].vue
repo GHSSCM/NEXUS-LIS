@@ -118,7 +118,21 @@ export default {
         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
         init_instance_callback: function (editor) {
           editor.setContent(res.data);
-        }
+        },
+
+        // // ...
+
+        // // Tell TinyMCE that header, footer, and main are valid
+        // extended_valid_elements: 'header[name|class],footer[name|class],main[name|class]',
+        
+        // // Also let body contain header, footer, or main
+        // valid_children: '+body[header|footer|main]',
+
+
+        // cleanup: false,
+        // verify_html: false
+
+
       });
     });
 
