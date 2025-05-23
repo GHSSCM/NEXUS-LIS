@@ -181,7 +181,7 @@
           meta:this.meta
         },(specimen)=>{
           successToast(this.$t("Created successfully"));
-        context.$router.push("/specimentypes");
+        context.$router.push("/lb/specimentypes");
       })
       }
     }

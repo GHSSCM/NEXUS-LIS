@@ -163,9 +163,9 @@ export default{
           (r)=>{
               successToast(this.$t("Duplicated successfully"));
               if(d.type=='SINGLE'){
-                context.$router.push("/testtype/"+r.id);
+                context.$router.push("/lb/testtype/"+r.id);
               }else{
-                context.$router.push("/grouptesttype/"+r.id);
+                context.$router.push("/lb/grouptesttype/"+r.id);
               }
           }
         )

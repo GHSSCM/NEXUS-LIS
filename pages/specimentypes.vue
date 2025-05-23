@@ -149,7 +149,7 @@
           (r)=>{
               successToast(this.$t("Duplicated successfully"));
 
-              context.$router.push("/specimentype/"+r.id);
+              context.$router.push("/lb/specimentype/"+r.id);
               
           }
         )

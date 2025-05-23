@@ -578,7 +578,7 @@
                 // context.canValidate=true;
                 context.meta=meta;
                 successToast(this.$t("Updated successfully"))
-                context.$router.push("/specimens")
+                context.$router.push("/lb/specimens")
             })
         }
       },
@@ -616,7 +616,7 @@
 
             postRequestLoad_("/specimenbulkvalidate/",{data:finalMetas},(meta)=>{
                 context.meta=meta;
-                context.$router.push("/specimens")
+                context.$router.push("/lb/specimens")
                 successToast(this.$t("Validated Successfully"))
             })
         }

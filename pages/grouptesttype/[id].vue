@@ -171,7 +171,7 @@
           }else{
             successToast(this.$t("Updated successfully"));
           }
-        context.$router.push("/testtypes");
+        context.$router.push("/lb/testtypes");
       })
       }
     }

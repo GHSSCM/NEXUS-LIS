@@ -344,7 +344,7 @@ export default{
       }
     
       postRequestLoad_(this.pageId=='create'?'/patient':'/patient/'+this.pageId,data,(user)=>{
-        context.$router.push("/profile/"+user.id);
+        context.$router.push("/p/profile/"+user.id);
       })
     }
   },

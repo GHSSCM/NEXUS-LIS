@@ -169,7 +169,7 @@
           meta:this.meta
         },(specimen)=>{
           successToast(this.$t("Created successfully"));
-        context.$router.push("/lab-sections");
+        context.$router.push("/lb/lab-sections");
       })
       }
     }
