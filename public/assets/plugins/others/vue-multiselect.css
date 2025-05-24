@@ -24,7 +24,7 @@
     width: 16px;
     height: 16px;
     border-radius: 100%;
-    border-color: #19257b transparent transparent;
+    border-color: #1A58A2 transparent transparent;
     border-style: solid;
     border-width: 2px;
     box-shadow: 0 0 0 1px transparent;
@@ -169,7 +169,7 @@
     margin-right: 10px;
     color: #fff;
     line-height: 1;
-    background: #19257b;
+    background: #1A58A2;
     margin-bottom: 5px;
     white-space: nowrap;
     overflow: hidden;
@@ -332,14 +332,14 @@
   }
 
   .multiselect__option--highlight {
-    background: #19257b;
+    background: #1A58A2;
     outline: none;
     color: white;
   }
 
   .multiselect__option--highlight::after {
     content: attr(data-select);
-    background: #19257b;
+    background: #1A58A2;
     color: white;
   }
 

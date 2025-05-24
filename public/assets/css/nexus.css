@@ -1,0 +1,63 @@
+.bg-gradient{
+    background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(1, 195, 246, 1.0))!important;
+}/* Overwriting styles */
+
+.btn-primary {
+    background: rgba(26, 88, 162, 1.0);
+    /* background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(1, 195, 246, 1.0)); */
+    border: none;
+    transition: all ease 0.4s;
+}
+.btn-primary:hover {
+   /*background: rgba(1, 195, 246, 1.0);*/
+     background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(1, 195, 246, 1.0));
+}
+
+a:hover {
+   color: rgba(1, 195, 246, 1.0);
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+/* .btn-primary:active {
+  
+} */
+/* .btn-primary:active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+} */
+.btn-primary:disabled {
+  background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(1, 195, 246, 1.0));
+  opacity: 0.65;
+}
+.btn-primary:disabled:hover {
+  background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(1, 195, 246, 1.0));
+  opacity: 0.65;
+}
+/* .btn-primary:disabled:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+} */
+/* .btn-primary:disabled:active {
+  background-color: #007bff;
+  border-color: #007bff;
+} */
+/* .btn-primary:disabled:active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+} */
+.btn-primary:disabled {
+  cursor: not-allowed;
+}
+.btn-primary:disabled:hover {
+  cursor: not-allowed;
+}
+.btn-primary:disabled:focus {
+  cursor: not-allowed;
+}
+.btn-primary:disabled:active {
+  cursor: not-allowed;
+}
+.btn-primary:disabled:active:focus {
+  cursor: not-allowed;
+}
+.btn-primary:disabled {
+  pointer-events: none;
+}       

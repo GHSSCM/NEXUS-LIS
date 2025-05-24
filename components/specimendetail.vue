@@ -5,10 +5,10 @@
       <!-- (No visible text here) -->
     </div>
     <div class="col-sm-5 d-flex">
-      <NuxtLink class="btn btn-primary btn-sm my-3 mb-5" target="_blank" v-if="meta.validated && hasPermission('EXPORT_SHEET')" :to="baseUrl+'/test-report?id='+specimen.id">
+      <NuxtLink class="btn btn-primary btn-sm my-3 mb-5" target="_blank" v-if="meta.validated && hasPermission('LABORATORY.EXPORT_SHEET')" :to="baseUrl+'/test-report?id='+specimen.id">
         <Translate text="View Single PDF"/>
       </NuxtLink>
-      <a class="btn btn-primary btn-sm my-3 mb-5 ms-4" target="_blank" v-if="meta.validated && hasPermission('EXPORT_SHEET')"
+      <a class="btn btn-primary btn-sm my-3 mb-5 ms-4" target="_blank" v-if="meta.validated && hasPermission('LABORATORY.EXPORT_SHEET')"
          :download="'test-report-'+specimen.patient.name.trim().split(' ').join('-')+'-'+specimen.test.name.trim().split(' ').join('-')+'.pdf'"
          :href="baseUrl+'/test-report?id='+specimen.id+'&dl=true'">
         <Translate text="Download Single PDF"/>

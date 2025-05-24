@@ -44,7 +44,7 @@ $(function () {
 			type: 'gradient',
 			gradient: {
 				shade: 'light',
-				gradientToColors: ['#19257b'],
+				gradientToColors: ['#1A58A2'],
 				shadeIntensity: 1,
 				type: 'horizontal',
 				opacityFrom: 1,
@@ -54,14 +54,14 @@ $(function () {
 		},
 		markers: {
 			size: 4,
-			colors: ["#19257b"],
+			colors: ["#1A58A2"],
 			strokeColors: "#fff",
 			strokeWidth: 2,
 			hover: {
 				size: 7,
 			}
 		},
-		colors: ["#19257b"],
+		colors: ["#1A58A2"],
 		yaxis: {
 			title: {
 				text: 'Engagement',
@@ -93,7 +93,7 @@ $(function () {
 			curve: 'smooth',
 			width: 5
 		},
-		colors: ["#19257b", '#18bb6b'],
+		colors: ["#1A58A2", '#18bb6b'],
 		series: [{
 			name: "Music",
 			data: [1, 15, 56, 20, 33, 27, 15, 56, 20, 56]
@@ -160,7 +160,7 @@ $(function () {
 				show: true
 			},
 		},
-		colors: ["#19257b", '#18bb6b'],
+		colors: ["#1A58A2", '#18bb6b'],
 		title: {
 			text: 'Area Chart',
 			align: 'left',
@@ -227,7 +227,7 @@ $(function () {
 				fontSize: '14px'
 			}
 		},
-		colors: ["#6184ff", '#19257b', '#c4d1ff'],
+		colors: ["#6184ff", '#1A58A2', '#c4d1ff'],
 		xaxis: {
 			categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
 		},
@@ -312,7 +312,7 @@ $(function () {
 				endingShape: 'rounded'
 			}
 		},
-		colors: ["#0d6efd", "#212529"],
+		colors: ["#1A58A2", "#212529"],
 		title: {
 			text: 'Traffic Sources'
 		},
@@ -366,7 +366,7 @@ $(function () {
 				show: true
 			},
 		},
-		colors: ["#0d6efd", "#17a00e", "#f41127"],
+		colors: ["#1A58A2", "#17a00e", "#f41127"],
 		stroke: {
 			width: [0, 2, 5],
 			curve: 'smooth'
@@ -425,7 +425,7 @@ $(function () {
 			height: 330,
 			type: 'pie',
 		},
-		colors: ["#19257b", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
+		colors: ["#1A58A2", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
 		labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
 		responsive: [{
 			breakpoint: 480,
@@ -451,7 +451,7 @@ $(function () {
 			height: 380,
 			type: 'donut',
 		},
-		colors: ["#19257b", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
+		colors: ["#1A58A2", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
 		responsive: [{
 			breakpoint: 480,
 			options: {
@@ -491,7 +491,7 @@ $(function () {
 				top: 1
 			}
 		},
-		colors: ["#19257b", "#f73757", "#18bb6b"],
+		colors: ["#1A58A2", "#f73757", "#18bb6b"],
 		title: {
 			text: 'Radar Chart - Multi Series'
 		},
@@ -540,7 +540,7 @@ $(function () {
 		title: {
 			text: 'Radar with Polygon Fill'
 		},
-		colors: ["#0d6efd"],
+		colors: ["#1A58A2"],
 		markers: {
 			size: 4,
 			colors: ['#fff'],
@@ -591,7 +591,7 @@ $(function () {
             }
           },
         },
-		colors: ["#19257b"],
+		colors: ["#1A58A2"],
         labels: ['Cricket'],
         };
 
@@ -629,7 +629,7 @@ $(function () {
             }
           }
         },
-		colors: ["#19257b", "#f73757", "#18bb6b", "#32bfff"],
+		colors: ["#1A58A2", "#f73757", "#18bb6b", "#32bfff"],
         labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
         };
 
