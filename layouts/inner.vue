@@ -1,4 +1,5 @@
 
+<!-- https://codervent.com/fobia/index.html?storefront=envato-elements -->
 <template>
   <!--start wrapper-->
   <div class="wrapper mainwrapper">
@@ -263,7 +264,7 @@
     <!--start footer-->
     <footer class="footer">
       <div class="footer-text">
-        <Translate text="Copyright © 2024. All right reserved."/>
+        <Translate text="Copyright © 2025. All right reserved."/>
       </div>
     </footer>
     <!--end footer-->

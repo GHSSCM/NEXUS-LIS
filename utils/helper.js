@@ -225,7 +225,7 @@ export const loadDataTables=()=>{
     }
 }
 export const getAppConfig=(param)=>{
-    const d=  window.localStorage.getItem("lis_config");
+    const d=  window.localStorage.getItem("his_config");
     if(!d){
         return null;
     }
@@ -239,9 +239,9 @@ export const getAppConfig=(param)=>{
 
 export const setAppConfig=(data)=>{
    if(typeof data =='string'){
-    window.localStorage.setItem("lis_config",data);
+    window.localStorage.setItem("his_config",data);
    }else{
-        window.localStorage.setItem("lis_config",JSON.stringify(data));
+        window.localStorage.setItem("his_config",JSON.stringify(data));
    }
 }
 
