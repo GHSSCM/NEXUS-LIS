@@ -248,7 +248,7 @@ import { useMyPermissionsStore } from '@/stores/permissions'
   data(){
     return {
       user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
-      lab:window?window.localStorage.getItem("lab_ref"):null,
+      lab:window?window.localStorage.getItem("facility_ref"):null,
       baseUrl:getBaseUrl()
     }
   },
@@ -271,7 +271,7 @@ import { useMyPermissionsStore } from '@/stores/permissions'
     methods: {
       logOut(){
           window.localStorage.removeItem("user");
-          window.localStorage.removeItem("lab_ref");
+          window.localStorage.removeItem("facility_ref");
           this.$router.push("/login");
       },
       loadScript() {

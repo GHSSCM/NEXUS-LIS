@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('threshold');
             $table->string('tat');
             $table->integer('cost');
-            $table->integer('lab_ref');
+            $table->integer('facility_ref');
         });
     }
 

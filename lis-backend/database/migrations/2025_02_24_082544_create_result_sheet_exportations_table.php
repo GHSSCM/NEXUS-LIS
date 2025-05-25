@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('uniqid');
-            $table->string('lab_ref');
+            $table->string('facility_ref');
             $table->string('html');
             $table->integer('registered_specimen');
         });

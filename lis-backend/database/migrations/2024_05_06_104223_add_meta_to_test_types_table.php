@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('test_types', function (Blueprint $table) {
             //
 
-            $table->string('lab_ref');
+            $table->string('facility_ref');
         });
     }
 

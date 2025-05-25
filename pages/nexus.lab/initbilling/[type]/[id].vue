@@ -196,7 +196,7 @@
                 possiblespecimens:[],
                 type:route.params.type,
                 bill:{
-                    // "uniqid","meta","generatedby","specimen_id","total","patient","lab_ref"
+                    // "uniqid","meta","generatedby","specimen_id","total","patient","facility_ref"
 
                 },
                 total:0

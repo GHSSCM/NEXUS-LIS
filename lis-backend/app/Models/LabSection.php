@@ -11,7 +11,7 @@ class LabSection extends Model
     use HasFactory;
 
 
-    protected $fillable=['reference','lab_ref','name','description','techniques'];
+    protected $fillable=['reference','facility_ref','name','description','techniques'];
   
   
     use SoftDeletes;

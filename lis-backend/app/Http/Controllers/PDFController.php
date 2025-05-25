@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use App\Models\Laboratory;
+use App\Models\Facility;
 // For testing only, to see if you still time out:
 ini_set('max_execution_time', 300); // 5 minutes
 ini_set('memory_limit', '512M');
@@ -43,7 +43,7 @@ class PDFController extends Controller
     $specimen['specimen']=\App\Models\SpecimenType::query()->where("uniqid",$specimen['specimen'])->first();
     $specimen['test']=\App\Models\TestType::query()->where("uniqid",$specimen['test'])->first();
 
-        $labData=getCurrentLab($specimen['lab_ref']);
+        $labData=getCurrentLab($specimen['facility_ref']);
         $labMeta = !empty($labData['meta'])?$labData['meta']:[];
         $footerContent = $labMeta['sheetfooter']??'';
         $headerContent = $labMeta['sheetheader']??'';
@@ -135,7 +135,7 @@ class PDFController extends Controller
         $bill=\App\Models\Bill::query()->find($id);
         $bill['patient']=Patient::query()->where('uniqid',$bill->patient)->get()->first();
 
-        $labData=getCurrentLab($bill->lab_ref);
+        $labData=getCurrentLab($bill->facility_ref);
         $labMeta = !empty($labData['meta'])?$labData['meta']:[];
 
         // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content

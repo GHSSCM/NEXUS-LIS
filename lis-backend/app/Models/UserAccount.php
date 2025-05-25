@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAccount extends Model
 {
-    protected $fillable=['name','email','phone','password','username','lab_ref','uniqid','perms'];
+    protected $fillable=['name','email','phone','password','username','facility_ref','uniqid','perms'];
     use HasFactory;
 
     protected $casts = [

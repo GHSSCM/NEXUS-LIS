@@ -325,7 +325,7 @@ import {useMyServicesStore} from '@/stores/services.js'
   data(){
     return {
       user:window?(window.localStorage.getItem("user")?JSON.parse(window.localStorage.getItem("user")):null):null,
-      lab:window?window.localStorage.getItem("lab_ref"):null,
+      lab:window?window.localStorage.getItem("facility_ref"):null,
       baseUrl:getBaseUrl()
     }
   },
@@ -348,7 +348,7 @@ import {useMyServicesStore} from '@/stores/services.js'
     methods: {
       logOut(){
           window.localStorage.removeItem("user");
-          window.localStorage.removeItem("lab_ref");
+          window.localStorage.removeItem("facility_ref");
           this.$router.push("/login");
       },
       loadScript() {

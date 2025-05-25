@@ -13,7 +13,7 @@ class CustomField extends Model
         'meta' => 'json',
     ];
     protected $table="customfields";
-    protected $fillable=['name','type','category','meta','lab_ref','uniqid'];
+    protected $fillable=['name','type','category','meta','facility_ref','uniqid'];
     use SoftDeletes;
     protected static function boot()
     {

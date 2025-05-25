@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json("techniques")->nullable();
             $table->text("name");
             $table->text("description")->nullable();
-            $table->text("lab_ref");
+            $table->text("facility_ref");
             $table->string('uniqid');
             $table->softDeletes();
         });

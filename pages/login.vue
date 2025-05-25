@@ -23,7 +23,7 @@ export default {
               successToast(this.$t("Login successful!"));
               window.localStorage.setItem("user",JSON.stringify(user));
               window.localStorage.setItem("his_config",JSON.stringify(user.config));
-              window.localStorage.setItem("lab_ref",user.lab_ref);
+              window.localStorage.setItem("facility_ref",user.facility_ref);
               context.$router.push('/home');   
         });
       },
@@ -67,19 +67,30 @@ export default {
 }
 </script>
 
+<style>
+.thelogin-cover-wrapper {
+  width: 55rem;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
 <template>
 
   <!--start wrapper-->
-  <div class="wrapper mainwrapper">
+  <div class="wrapper mainwrapper bg-gradient" style="height: 100vh">
     <div class="">
       <div class="row g-0 m-0">
-        <div class="col-xl-6 col-lg-12">
-          <div class="login-cover-wrapper">
+        <div class="col-xl-12 col-lg-12">
+          <div class="thelogin-cover-wrapper">
             <div class="card shadow-none">
               <div class="card-body">
                 <div class="text-center">
-                  <h4><Translate text="Welcome Back !"/></h4>
-                  <p><Translate text="Sign In to your account"/></p>
+                  <img src="/assets/cropped-HBR-logo.png" height="80">
+                  <h4 class="mt-2"><Translate text="Welcome To HealthBridge"/></h4>
+                  <p><Translate text="Enter your login details to continue"/></p>
                 </div>
                 <form class="form-body row g-3" @submit.prevent="login">
           
@@ -148,11 +159,11 @@ export default {
             </div>
           </div>
         </div>
-        <div class="col-xl-6 col-lg-12">
+       <!-- <div class="col-xl-6 col-lg-12">
           <div class="position-fixed top-0 h-100 d-xl-block d-none login-cover-img">
-         
+
           </div>
-        </div>
+        </div>-->
 
         <img src="assets/logo.png" style="width:100px; bottom:90px; right:50px" class="position-absolute "/> 
       </div>

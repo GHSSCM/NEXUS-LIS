@@ -15,7 +15,7 @@ class CheckLabReference
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(request()->has('lab_ref')){
+        if(request()->has('facility_ref')){
             
         }
         return $next($request);

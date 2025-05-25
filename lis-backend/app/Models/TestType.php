@@ -16,7 +16,7 @@ class TestType extends Model
     use SoftDeletes;
 
 
-    protected $fillable=['uniqid','name','lab_ref','description','hidename','meta','threshold','tat','cost','type','tatunit','lab_section','clinicaldata'];
+    protected $fillable=['uniqid','name','facility_ref','description','hidename','meta','threshold','tat','cost','type','tatunit','lab_section','clinicaldata'];
 
 
     protected $casts = [

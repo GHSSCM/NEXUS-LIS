@@ -13,7 +13,7 @@ class Bill extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ["uniqid","meta","generatedby","specimen_id","total","patient","lab_ref"] ;
+    protected $fillable = ["uniqid","meta","generatedby","specimen_id","total","patient","facility_ref"] ;
     //specimen_id is the uniqid of the registered_specimen and should only be used when it is one specimen we are billing for.
 
     protected $casts = [

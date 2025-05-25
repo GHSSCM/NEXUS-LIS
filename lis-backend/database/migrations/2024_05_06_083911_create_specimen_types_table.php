@@ -26,7 +26,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->string('uniqid');
             $table->string('name');
-            $table->string('lab_ref');
+            $table->string('facility_ref');
             $table->string('description');
             $table->json('meta');
         });

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Laboratory;
+use App\Models\Facility;
 
 function error_response($code,$message){
     if($code>=200 && $code<=299){
@@ -157,7 +157,7 @@ function replaceImagesWithBase64(string $html): string
 }
 
 function getCurrentLab($ref=null){
-    $lab =  Laboratory::query()->where('ref',$ref??request('lab_ref'))->first();
+    $lab =  Facility::query()->where('ref',$ref??request('facility_ref'))->first();
     // dd($ref);
     return $lab;
 }

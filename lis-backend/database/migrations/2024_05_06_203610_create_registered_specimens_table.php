@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('specimen');
             $table->string('test'); 
             $table->string('patient'); 
-            $table->string('lab_ref'); 
+            $table->string('facility_ref'); 
             $table->date('receptiondate')->nullable(); 
             $table->time('receptiontime')->nullable(); 
             $table->string('state')->default("N/A"); 

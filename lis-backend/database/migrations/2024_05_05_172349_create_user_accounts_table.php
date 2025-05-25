@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('lab_ref');
+            $table->string('facility_ref');
             $table->string('name');
             $table->string('username');
             $table->string('email')->nullable();

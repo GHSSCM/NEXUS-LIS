@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('test_types', function (Blueprint $table) {
             
-            $table->dropColumn('lab_ref');
+            $table->dropColumn('facility_ref');
         });
     }
 

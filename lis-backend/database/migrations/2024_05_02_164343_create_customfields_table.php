@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('patients',function(Blueprint $table){
             // $table->softDeletes();
-            $table->string("lab_ref");
+            $table->string("facility_ref");
         });
         Schema::create('customfields', function (Blueprint $table) {
             $table->id();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string("name");
             $table->string("type");
             $table->json("meta");
-            $table->string("lab_ref");
+            $table->string("facility_ref");
         });
     }
 

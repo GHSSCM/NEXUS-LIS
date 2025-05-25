@@ -15,7 +15,7 @@ class RegisteredSpecimen extends Model
     use SoftDeletes;
 
 
-    protected $fillable=['uniqid','specimen','test','patient','lab_ref','receptiondate','meta',
+    protected $fillable=['uniqid','specimen','test','patient','facility_ref','receptiondate','meta',
     'receptiontime','state','physician','preleveur','referredout','referredin','conformity','referredto','validatedat','enteredat','placeofcollection','testingdate','testingtime',
 'technique','groupID','clinical','sample_quality','sample_quality_reason','collectiontime','collectiondate'];
     

@@ -14,7 +14,7 @@ class SpecimenType extends Model
     use SoftDeletes;
 
 
-    protected $fillable=['uniqid','name','lab_ref','description','meta'];
+    protected $fillable=['uniqid','name','facility_ref','description','meta'];
 
     protected $casts = [
         'meta' => 'json',

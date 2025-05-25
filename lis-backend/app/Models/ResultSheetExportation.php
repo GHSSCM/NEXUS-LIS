@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ResultSheetExportation extends Model
 {
     use HasFactory;
-    protected $fillable = ['uniqid','lab_ref','html','registered_specimen'];
+    protected $fillable = ['uniqid','facility_ref','html','registered_specimen'];
     protected static function boot()
     {
         parent::boot();

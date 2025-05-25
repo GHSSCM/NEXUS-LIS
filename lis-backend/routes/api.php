@@ -5,7 +5,7 @@
 
 use App\Http\Controllers\MigrationController;
 use App\Models\CustomField;
-use App\Models\Laboratory;
+use App\Models\Facility;
 use App\Models\Patient;
 use App\Models\RegisteredSpecimen;
 use App\Models\SpecimenTest;
@@ -150,7 +150,7 @@ Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
 
 Route::get("/permissions",function(){
-    $lab =  Laboratory::query()->where('ref',request('lab_ref'))->first();
+    $lab =  Facility::query()->where('ref',request('facility_ref'))->first();
     $labName="";
     if(empty($lab)){
         $labName =  $lab->name;
@@ -243,7 +243,7 @@ Route::post("/customfields",function(){
     $fieldsdata = request()->get('fields');
     $category =  request()->get('category');
     foreach($fieldsdata as $data){
-        $data['lab_ref']=request('lab_ref');
+        $data['facility_ref']=request('facility_ref');
         if(isset($data['id'])){
             // unset($data[''])
             CustomField::find($data['id'])->update($data);
@@ -320,7 +320,7 @@ Route::post("/login",function(){
         return error_response(400,"Incorrect password. Verify and try again!");
     }
 
-    $lab =  Laboratory::query()->where('ref',$account->lab_ref)->first();
+    $lab =  Facility::query()->where('ref',$account->facility_ref)->first();
     if(empty($lab)){
 
         return  error_response(400,"Incorrect lab data [2]");
@@ -363,11 +363,11 @@ Route::get('/duplicate-specimen/{id}',function($id){
 
 
 Route::get("/lab",function(){
-    $labref = request()->get("lab_ref");
+    $labref = request()->get("facility_ref");
     if(empty($labref)){
         return  error_response(400,"Incorrect lab data");
     }
-    $lab =  Laboratory::query()->where('ref',$labref)->first();
+    $lab =  Facility::query()->where('ref',$labref)->first();
     if(empty($lab)){
 
         return  error_response(400,"Incorrect lab data [2]");
@@ -377,18 +377,18 @@ Route::get("/lab",function(){
 
 Route::post("/lab",function(){
 
-    $labref = request()->get("lab_ref");
+    $labref = request()->get("facility_ref");
     if(empty($labref)){
         return  error_response(400,"Incorrect lab data");
     }
-    $lab =  Laboratory::query()->where('ref',$labref)->first();
+    $lab =  Facility::query()->where('ref',$labref)->first();
     if(empty($lab)){
 
         return  error_response(400,"Incorrect lab data [2]");
     }
 
     $data = request()->all();
-    // unset($data['lab_ref']);
+    // unset($data['facility_ref']);
 
     $lab->update($data);
     // $lab->save();
@@ -437,7 +437,7 @@ Route::get("/testtype/{id}",function($id){
 
     $sp = SpecimenTest::where('test',$test['uniqid'])->get()->pluck('specimen')->toArray();
 
-    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('lab_ref',request('lab_ref'))->get();
+    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('facility_ref',request('facility_ref'))->get();
     if(!empty($test['lab_section'])){
         $test['lab_section']=LabSection::query()->where('uniqid',$test['lab_section'])->first();
     }
@@ -469,9 +469,9 @@ Route::get("/grouptesttype/{id}",function($id){
 
     $sp = SpecimenTest::where('test',$test['uniqid'])->get()->pluck('specimen')->toArray();
 
-    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('lab_ref',request('lab_ref'))->get();
+    $test['specimens'] = SpecimenType::query()->whereIn('uniqid',$sp)->where('facility_ref',request('facility_ref'))->get();
 
-    $test['subtests']=TestType::query()->whereIn('uniqid',($test['meta']??[])['subtests']??[])->where('lab_ref',request('lab_ref'))->get();
+    $test['subtests']=TestType::query()->whereIn('uniqid',($test['meta']??[])['subtests']??[])->where('facility_ref',request('facility_ref'))->get();
     return $test;
 });
 
@@ -481,7 +481,7 @@ Route::get("/specimentype/{id}",function($id){
 
     $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
 
-    $specimen['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+    $specimen['tests'] = TestType::query()->whereIn('uniqid',$t)->where('facility_ref',request('facility_ref'))->get();
     return $specimen;
 });
 
@@ -503,13 +503,13 @@ Route::post("/specimentype/{id}",function($id){
 
 Route::get("/addspecimen-data/{id}",function($id){
    $patient = Patient::findOrFail($id);
-   $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
+   $sp =  SpecimenType::query()->where('facility_ref',request('facility_ref'))->get()->toArray();
 
    $techniques=[];
    for($i=0;$i<count($sp);$i++){
     $specimen=$sp[$i];
         $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
-        $tests=TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get()->toArray();
+        $tests=TestType::query()->whereIn('uniqid',$t)->where('facility_ref',request('facility_ref'))->get()->toArray();
 
 
 
@@ -549,7 +549,7 @@ Route::post("/addspecimen",function(){
             $b = $a;
             $b['test']=$t;
             unset($b['tests']);
-            $b['lab_ref']=request('lab_ref');
+            $b['facility_ref']=request('facility_ref');
             $b['state']=$b['state']??"N/A";
             $testType = TestType::query()->where("uniqid",$t)->first();
             $b['clinical']= $testType->clinicaldata;
@@ -927,14 +927,14 @@ function parseListOfSpecimens($specimens){
     $registeredSpecimen['specimen']=SpecimenType::query()->where('uniqid',$registeredSpecimen["specimen"])->firstOrFail()->toArray();
 
     $patient = Patient::query()->where('uniqid',$registeredSpecimen["patient"])->firstOrFail();
-    $sp =  SpecimenType::query()->where('lab_ref',request('lab_ref'))->get()->toArray();
+    $sp =  SpecimenType::query()->where('facility_ref',request('facility_ref'))->get()->toArray();
 
     $techniques=[];
 
     for($i=0;$i<count($sp);$i++){
      $specimen=$sp[$i];
          $t = SpecimenTest::where('specimen',$specimen['uniqid'])->get()->pluck('test')->toArray();
-         $sp[$i]['tests'] = TestType::query()->whereIn('uniqid',$t)->where('lab_ref',request('lab_ref'))->get();
+         $sp[$i]['tests'] = TestType::query()->whereIn('uniqid',$t)->where('facility_ref',request('facility_ref'))->get();
 
          if($sp[$i]['uniqid']== $registeredSpecimen['specimen']['uniqid']){
             $registeredSpecimen['specimen']['tests']=$sp[$i]['tests'];
