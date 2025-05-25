@@ -1,19 +1,17 @@
-
-
 <template>
-  <NuxtLayout name="lablayout">
+  <NuxtLayout name="patientlayout">
       
             <!--start breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
               <div class="breadcrumb-title pe-3">
-                <Translate text="Nexus Lab" />
+                <Translate text="Nexus Patients" />
               </div>
               <div class="ps-3">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb mb-0 p-0 align-items-center">
                     <li class="breadcrumb-item">
                       <a href="javascript:;">
-                        <ion-icon name="home-outline"></ion-icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><!-- Icon from Covid Icons by Streamline - https://creativecommons.org/licenses/by/4.0/ --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.25 20.679a3.429 3.429 0 1 0 0-6.858a3.429 3.429 0 0 0 0 6.858m-.571-9.429h1.142m-.571 0v2.571m3.839-1.218l.808.808m-.404-.404l-1.819 1.819m3.576 1.853v1.142m0-.571h-2.571m1.218 3.839l-.808.808m.404-.404l-1.819-1.819m-1.853 3.576h-1.142m.571 0v-2.571m-3.839 1.218l-.808-.808m.404.404l1.819-1.819m-3.576-1.853v-1.142m0 .571h2.571m-1.218-3.839l.808-.808m-.404.404l1.819 1.819M7.5 9a4.125 4.125 0 1 0 0-8.25A4.125 4.125 0 0 0 7.5 9M.75 17.25a6.753 6.753 0 0 1 9.4-6.208"/></svg>
                       </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -90,10 +88,10 @@
                                         <td>{{ u.created_at.split("T")[0] }}</td>
                                         <!-- <td>{{u.created_at.split(".")[0].split("T").join(" ")}}</td> -->
                                         <td>
-                                          <NuxtLink class="btn btn-primary btn-sm me-2" :to="'/nexus.patients/profile/'+u.id"  v-if="hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
+                                          <NuxtLink class="btn btn-primary btn-sm me-2" :to="'/nexus.patients/profile/'+u.id"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PATIENTS) &&hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
                                             <Translate text="View Profile" />
                                           </NuxtLink>
-                                          <NuxtLink class="btn btn-primary btn-sm" :to="'/nexus.lab/addspecimen/'+u.id" v-if="hasPermission('LABORATORY.REGISTER_SPECIMEN')">
+                                          <NuxtLink class="btn btn-primary btn-sm" :to="'/nexus.lab/addspecimen/'+u.id" v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY) && hasPermission('LABORATORY.REGISTER_SPECIMEN')">
                                             <Translate text="Add Specimen" />
                                           </NuxtLink>
                                         </td>

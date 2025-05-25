@@ -177,7 +177,7 @@ export default{
     mounted(){
         const context=this;
 
-        getRequestLoad_('/lab',{},(r)=>{
+        getRequestLoad_('/facility',{},(r)=>{
             context.lab=r;
             const store = useMyPermissionsStore();
             store.labName = r.name;
@@ -234,7 +234,7 @@ export default{
             // lab.meta.sheetfooter = editor2Instance.getContent();
 
 
-            postRequestLoad_('/lab',lab,(configdata)=>{
+            postRequestLoad_('/facility',lab,(configdata)=>{
               const store = useMyPermissionsStore();
               store.labName = lab.name;
                 setAppConfig({

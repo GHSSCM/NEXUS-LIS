@@ -11,26 +11,31 @@
         <div>
           <img src="assets/logo.png" class="logo-icon" alt="logo icon" style="filter:unset;width:50px;margin-top:20px;margin-bottom:20px;">
         </div>
-        <div class="d-flex align-items-center" style="align-items: center;">
-          <p style="color:white" class="mt-4 ms-4">Lang: <select v-model="appLang">
-            <option value="fr">French</option>
-            <option value="en">English</option>
-          </select></p>
-        </div>
+
       </div>
       <!--navigation-->
       <ul class="metismenu" id="menu">
-        <li style="color:white">
-           {{ permissionsStore.labName }}
-        </li>
+
         <li>
           <NuxtLink to="/home">
             <div class="parent-icon">
-              <ion-icon name="home-outline"></ion-icon>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m7.825 13l4.9 4.9q.3.3.288.7t-.313.7q-.3.275-.7.288t-.7-.288l-6.6-6.6q-.15-.15-.213-.325T4.426 12t.063-.375t.212-.325l6.6-6.6q.275-.275.688-.275t.712.275q.3.3.3.713t-.3.712L7.825 11H19q.425 0 .713.288T20 12t-.288.713T19 13z"/></svg>
             </div>
-            <div class="menu-title"><Translate text="Nexus Patient"/></div>
+            <div class="menu-title"><Translate text="Go Home"/></div>
           </NuxtLink>
         </li>
+
+
+        <li>
+          <NuxtLink to="/nexus.patients">
+            <div class="parent-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Sargam Icons by Abhimanyu Rana - https://github.com/planetabhi/sargam-icons/blob/main/LICENSE.txt --><path fill="currentColor" d="M3 5.6A2.6 2.6 0 0 1 5.6 3h2.8A2.6 2.6 0 0 1 11 5.6v2.8A2.6 2.6 0 0 1 8.4 11H5.6A2.6 2.6 0 0 1 3 8.4zm0 10A2.6 2.6 0 0 1 5.6 13h2.8a2.6 2.6 0 0 1 2.6 2.6v2.8A2.6 2.6 0 0 1 8.4 21H5.6A2.6 2.6 0 0 1 3 18.4zm10-10A2.6 2.6 0 0 1 15.6 3h2.8A2.6 2.6 0 0 1 21 5.6v2.8a2.6 2.6 0 0 1-2.6 2.6h-2.8A2.6 2.6 0 0 1 13 8.4zm4 7.4a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/></svg>
+            </div>
+            <div class="menu-title"><Translate text="Patient Dashboard"/></div>
+          </NuxtLink>
+        </li>
+
+
         <li v-if="hasPermission('PATIENT.CREATE_PATIENT')||hasPermission('LABORATORY.MANAGE_BILLING')||hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
@@ -47,141 +52,7 @@
             </NuxtLink></li>
           </ul>
         </li>
-        <li class="menu-label" v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE') || hasPermission('LABORATORY.MANAGE_BILLING')"><Translate text="Laboratory"/></li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <i class="fadeIn animated bx bx-vial me-1 md"></i>
-            </div>
-            <div class="menu-title"><Translate text="Tests"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/tests">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Registered tests"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/testtypes">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All test types"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/testtype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Test type"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/grouptesttype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Group Test type"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_SPECIMEN_TYPE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <i class="fadeIn animated bx bx-donate-blood me-1 md"></i>
-            </div>
-            <div class="menu-title"><Translate text="Specimens"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/specimens">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Registered specimens"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/specimentypes">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All specimen types"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/specimentype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New specimen type"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_BILLING')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Billing"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/bills">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generated Bills"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_META') || hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')" class="menu-label"><Translate text="LAB Configuration"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_META')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Custom fields (CF)"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.config/custom-fields/test">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Test types CF"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/specimen">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Specimen CF"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Patient CF"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Lab Config"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.config">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Parameters"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Lab Section"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/lab-sections">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Lab Sections"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/lab-section/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Lab Section"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li class="menu-label" v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')"><Translate text="Access"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="User accounts"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/accounts">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All accounts"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/accounts/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Account"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li class="menu-label" v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')"><Translate text="Advanced"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Database operations"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink :to="baseUrl+'/export-database'">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Export database"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
+
       </ul>
       <!--end navigation-->
     </aside>

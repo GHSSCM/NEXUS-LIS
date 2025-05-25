@@ -6,20 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-// this is the laboratory bill model. not the nexus
-class Bill extends Model
+class NexusBill extends Model
 {
     use HasFactory;
 
-
     use SoftDeletes;
 
-    protected $fillable = ["uniqid","meta","generatedby","specimen_id","total","patient","facility_ref"] ;
-    //specimen_id is the uniqid of the registered_specimen and should only be used when it is one specimen we are billing for.
 
+    protected $guarded=[];
+    
     protected $casts = [
-        'meta' => 'json',
+        'meta' => 'json'
     ];
     protected static function boot()
     {
@@ -27,6 +24,9 @@ class Bill extends Model
 
         static::creating(function ($bill) {
             $bill->uniqid = gen_uniqid();
+             if(empty($bill->meta)){
+                $bill->meta=['a'=>'b'];
+            }
         });
     }
 

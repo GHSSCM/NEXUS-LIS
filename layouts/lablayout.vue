@@ -20,15 +20,22 @@
       </div>
       <!--navigation-->
       <ul class="metismenu" id="menu">
-        <li style="color:white">
-           {{ permissionsStore.labName }}
-        </li>
+
         <li>
+          <NuxtLink to="/home">
+            <div class="parent-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m7.825 13l4.9 4.9q.3.3.288.7t-.313.7q-.3.275-.7.288t-.7-.288l-6.6-6.6q-.15-.15-.213-.325T4.426 12t.063-.375t.212-.325l6.6-6.6q.275-.275.688-.275t.712.275q.3.3.3.713t-.3.712L7.825 11H19q.425 0 .713.288T20 12t-.288.713T19 13z"/></svg>
+            </div>
+            <div class="menu-title"><Translate text="Go Home"/></div>
+          </NuxtLink>
+        </li>
+
+        <li v-if="hasPermission(Permission.LABORATORY_VIEW_STATS)">
           <NuxtLink to="/nexus.lab">
             <div class="parent-icon">
-              <ion-icon name="home-outline"></ion-icon>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Sargam Icons by Abhimanyu Rana - https://github.com/planetabhi/sargam-icons/blob/main/LICENSE.txt --><path fill="currentColor" d="M3 5.6A2.6 2.6 0 0 1 5.6 3h2.8A2.6 2.6 0 0 1 11 5.6v2.8A2.6 2.6 0 0 1 8.4 11H5.6A2.6 2.6 0 0 1 3 8.4zm0 10A2.6 2.6 0 0 1 5.6 13h2.8a2.6 2.6 0 0 1 2.6 2.6v2.8A2.6 2.6 0 0 1 8.4 21H5.6A2.6 2.6 0 0 1 3 18.4zm10-10A2.6 2.6 0 0 1 15.6 3h2.8A2.6 2.6 0 0 1 21 5.6v2.8a2.6 2.6 0 0 1-2.6 2.6h-2.8A2.6 2.6 0 0 1 13 8.4zm4 7.4a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/></svg>
             </div>
-            <div class="menu-title"><Translate text="Nexus Lab"/> (<Translate text="Home"/>)</div>
+            <div class="menu-title"><Translate text="Lab Dashboard"/></div>
           </NuxtLink>
         </li>
         <li class="menu-label" v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE') || hasPermission('LABORATORY.MANAGE_BILLING')"><Translate text="Laboratory"/></li>
