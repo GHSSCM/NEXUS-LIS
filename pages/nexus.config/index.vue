@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="lablayout">
+  <NuxtLayout name="configurationlayout">
       
             <!--start breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -11,7 +11,7 @@
                         <ion-icon name="home-outline"></ion-icon>
                       </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$t('Lab Config')}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$t('Global Config')}}</li>
                   </ol>
                 </nav>
               </div>
@@ -28,14 +28,15 @@
               <form @submit.prevent="save">
 
                 <br/>
-                <h3><Translate text="Lab Config"/></h3>
+
+                <h3><Translate text="Global Config"/></h3>
                 <hr/>
                 <div class="row">
                   <div class="col-sm-12 col-md-6">
 
                   <div class="mb-4">
-                      <label class="form-label"><Translate text="Laboratory Name"/></label>
-                      <input v-model="lab.name" required class="form-control" type="text" :placeholder="$t('Laboratory Name')"/>
+                      <label class="form-label"><Translate text="Facility Name"/></label>
+                      <input v-model="lab.name" required class="form-control" type="text" :placeholder="$t('Facility Name')"/>
                     </div>
 
                   </div>
@@ -51,46 +52,52 @@
                   </div>
                 </div>
                 <br/>
-                <h3><Translate text="Result Sheet Config"/></h3>
-                <hr/>
+              <!--  result sheet -->
+                <div  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY)">
+
+                  <h3><Translate text="Result Sheet Config"/></h3>
+                  <hr/>
                   <div class="col-sm-12 col-md-12">
 
                     <div class="mb-4">
                       <label class="form-label"><Translate text="Exportation header"/></label>
-                      
+
                       <textarea id="tinymce-editor-sheetheader" style="height:200px;width:100%"></textarea>
 
                     </div>
 
                   </div>
 
-<!-- 
+                  <!--
+                                    <div class="col-sm-12 col-md-12">
+
+                                        <div class="mb-4">
+                                          <label class="form-label">Exportation footer</label>
+
+                                          <textarea id="tinymce-editor-sheetfooter" style="height:200px;width:100%"></textarea>
+
+                                        </div>
+
+                                    </div> -->
+
+
                   <div class="col-sm-12 col-md-12">
 
-                      <div class="mb-4">
-                        <label class="form-label">Exportation footer</label>
-                        
-                        <textarea id="tinymce-editor-sheetfooter" style="height:200px;width:100%"></textarea>
+                    <div class="mb-4">
+                      <label class="form-label"><Translate text="Footer credits"/></label>
 
-                      </div>
+                      <textarea v-model="lab.meta.credits" class="form-control" :placeholder="$t('Footer credits')"></textarea>
 
-                  </div> -->
+                    </div>
 
-
-                   <div class="col-sm-12 col-md-12">
-
-                      <div class="mb-4">
-                        <label class="form-label"><Translate text="Footer credits"/></label>
-                        
-                        <textarea v-model="lab.meta.credits" class="form-control" :placeholder="$t('Footer credits')"></textarea>
-
-                      </div>
-
-                  </div> 
+                  </div>
 
                   <br/>
                   <br/>
-
+                </div>
+              <!--  result sheet end -->
+<!--                result sheet -->
+                <div v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PATIENTS)">
                   <h3><Translate text="Patient Creation Config"/></h3>
                   <hr/>
                   <label><Translate text="Patient ID - Nomenclature"/></label>
@@ -134,7 +141,7 @@
                   <div class="d-flex flex-row justify-content-end">
                       <button type="submit" class="btn btn-primary w-100">+ <Translate text="Save"/></button>
                   </div>
-
+                </div>
               </form>
               </div>
 
@@ -146,19 +153,30 @@
 
   <script>
 
-  import { useMyPermissionsStore } from '~/stores/permissions'
+  import {useMyServicesStore} from "~/stores/services.js";
 export default{
+
+   async setup(){
+
+     const serviceStore = useMyServicesStore();
+
+     return{
+       serviceStore,
+     }
+
+    },
     data(){
         return {
             lab:{
               meta:{
                 credits:""
               }
-            }
+            },
         }
     },
     mounted(){
         const context=this;
+
         getRequestLoad_('/lab',{},(r)=>{
             context.lab=r;
             const store = useMyPermissionsStore();

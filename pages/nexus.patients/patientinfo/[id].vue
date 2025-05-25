@@ -349,6 +349,11 @@ export default{
     }
   },
   mounted(){
+    if(this.pageId=="create"){
+      forceOutPermissionVerify('PATIENT.CREATE_PATIENT',this);
+    }else{
+      forceOutPermissionVerify('PATIENT.MODIFY_PATIENT_INFO',this);
+    }
     const context=this;
       getRequestLoad_('/customfields',{
         category:"patient"

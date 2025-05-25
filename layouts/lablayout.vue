@@ -28,24 +28,8 @@
             <div class="parent-icon">
               <ion-icon name="home-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Nexus Lab"/></div>
+            <div class="menu-title"><Translate text="Nexus Lab"/> (<Translate text="Home"/>)</div>
           </NuxtLink>
-        </li>
-        <li v-if="hasPermission('PATIENT.CREATE_PATIENT')||hasPermission('LABORATORY.MANAGE_BILLING')||hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="person-circle-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Patients"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.patients/patients">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Patients"/>
-            </NuxtLink></li>
-            <li><NuxtLink href="/nexus.patients/new/patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Patient"/>
-            </NuxtLink></li>
-          </ul>
         </li>
         <li class="menu-label" v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE') || hasPermission('LABORATORY.MANAGE_BILLING')"><Translate text="Laboratory"/></li>
         <li v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE')">
@@ -99,86 +83,6 @@
           <ul>
             <li><NuxtLink to="/nexus.lab/bills">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generated Bills"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_META') || hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')" class="menu-label"><Translate text="LAB Configuration"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_META')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Custom fields (CF)"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.config/custom-fields/test">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Test types CF"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/specimen">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Specimen CF"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Patient CF"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Lab Config"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/app-config/data">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Parameters"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Lab Section"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/lab-sections">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Lab Sections"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/lab-section/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Lab Section"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li class="menu-label" v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')"><Translate text="Access"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="User accounts"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/accounts">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All accounts"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/accounts/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Account"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li class="menu-label" v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')"><Translate text="Advanced"/></li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Database operations"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink :to="baseUrl+'/export-database'">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Export database"/>
             </NuxtLink></li>
           </ul>
         </li>
@@ -290,6 +194,9 @@ import { useMyPermissionsStore } from '@/stores/permissions'
     setup () {
     const permissionsStore = useMyPermissionsStore()
     permissionsStore.loadPermissions()
+
+    const serviceStore = useMyServicesStore()
+    serviceStore.loadServices()
     useHead({
       bodyAttrs: {
         class: 'bg-white'
@@ -313,7 +220,8 @@ import { useMyPermissionsStore } from '@/stores/permissions'
    
     return {
       permissionsStore,
-      appLang
+      appLang,
+      serviceStore
     }
   },
   data(){
@@ -331,6 +239,9 @@ import { useMyPermissionsStore } from '@/stores/permissions'
         this.permissionsStore.checkAfterLoad.push({
           func:this.loadScript
         })
+      this.serviceStore.checkAfterLoad.push({
+        func:this.loadScript
+      })
       // }
       if(window.localStorage.getItem("user")==null){
         window.location.href=("/login")

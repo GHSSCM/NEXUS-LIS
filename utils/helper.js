@@ -1,9 +1,17 @@
 import axios from 'axios';
 import { useMyPermissionsStore } from '~/stores/permissions'
 import { useI18n } from 'vue-i18n'
+import {useMyServicesStore} from "~/stores/services.js";
 
 export const BASE_URL="http://localhost:8000/api";
-
+export class ServiceCode {
+    static NEXUS_PATIENTS = "nexus.patients";
+    static NEXUS_LABORATORY = "nexus.lab";
+    static NEXUS_CONFIG = "nexus.config";
+    static NEXUS_BILLING = "nexus.billing";
+    static NEXUS_BLOOD_BANK = "nexus.bloodbank";
+    static NEXUS_PHARMACY = "nexus.pharmacy";
+}
 export const trans_=(x)=>{
     const { t,locale } = useI18n() 
     const { setLocale } = useI18n();
@@ -72,12 +80,12 @@ export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFun
     // setTimeout(function(){
        
     // },500);
-    if (!$('#'+id).length) {
+    if (process.client && !$('#'+id).length) {
         $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
     }
 
    getRequest_(endpoint,params,successFunction,errorFunction,()=>{
-        if ($('#'+id).length) {
+        if (process.client && $('#'+id).length) {
             $('#'+id).remove();
         }
    });
@@ -124,7 +132,20 @@ export const hasPermission=(perm)=>{
         return true;
     }
   }
+
+  console.log("NOPE:", perm, store.permissions.length)
   return false;
+}
+
+export const hasServiceAccess=(service_code)=>{
+    const store = useMyServicesStore()
+    for(let i=0;i<=store.services.length;i++){
+        if(store.services['code'] === service_code){
+            return true;
+        }
+    }
+    console.log("NOPE_SERVICE:", service_code, store.services.length)
+    return false;
 }
 
 export const forceOutPermissionVerify=(perm,context)=>{
@@ -132,8 +153,10 @@ export const forceOutPermissionVerify=(perm,context)=>{
     const store = useMyPermissionsStore();
     //if has not loaded permissions yet, add it to the list.
     if(store.loadedPermissions){
-        console.log("checking perm", perm)
+        // console.log("checking perm", perm)
         if(!hasPermission(perm)){
+            // console.log("not allowed to access this page",perm, store.loadedPermissions);
+            // return;
             if(context){
                 context.$router.push("/");
             }
@@ -141,9 +164,11 @@ export const forceOutPermissionVerify=(perm,context)=>{
                 return;
             }
             return window.location.href='/';
+        }else{
+            console.log("ALL_W_D",perm, store.loadedPermissions);
         }
     }else{
-        console.log("not yet loaded perm. come back later",perm)
+        console.log("NOT_YET_Ld",perm)
         store.checkAfterLoad.push({perm,context});
     }
    

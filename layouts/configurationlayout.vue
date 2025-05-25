@@ -11,98 +11,35 @@
         <div>
           <img src="assets/logo.png" class="logo-icon" alt="logo icon" style="filter:unset;width:50px;margin-top:20px;margin-bottom:20px;">
         </div>
-        <div class="d-flex align-items-center" style="align-items: center;">
-          <p style="color:white" class="mt-4 ms-4">Lang: <select v-model="appLang">
-            <option value="fr">French</option>
-            <option value="en">English</option>
-          </select></p>
-        </div>
+        
       </div>
       <!--navigation-->
       <ul class="metismenu" id="menu">
-        <li style="color:white">
-           {{ permissionsStore.labName }}
-        </li>
+     
         <li>
           <NuxtLink to="/home">
             <div class="parent-icon">
               <ion-icon name="home-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Nexus Patient"/></div>
+            <div class="menu-title"><Translate text="Nexus Configuration"/></div>
           </NuxtLink>
         </li>
-        <li v-if="hasPermission('PATIENT.CREATE_PATIENT')||hasPermission('LABORATORY.MANAGE_BILLING')||hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="person-circle-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Patients"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.patients/patients">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Patients"/>
-            </NuxtLink></li>
-            <li><NuxtLink href="/nexus.patients/new/patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Patient"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li class="menu-label" v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE') || hasPermission('LABORATORY.MANAGE_BILLING')"><Translate text="Laboratory"/></li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_TEST_TYPE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <i class="fadeIn animated bx bx-vial me-1 md"></i>
-            </div>
-            <div class="menu-title"><Translate text="Tests"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/tests">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Registered tests"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/testtypes">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All test types"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/testtype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Test type"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/grouptesttype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Group Test type"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_SPECIMEN_TYPE')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <i class="fadeIn animated bx bx-donate-blood me-1 md"></i>
-            </div>
-            <div class="menu-title"><Translate text="Specimens"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.lab/specimens">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Registered specimens"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/specimentypes">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All specimen types"/>
-            </NuxtLink></li>
-            <li><NuxtLink to="/nexus.lab/specimentype/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New specimen type"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_BILLING')">
+
+
+        <li v-if="hasPermission('CONFIGURATION.MANAGE_META') || hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')" class="menu-label"><Translate text="System Configuration"/></li>
+        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Billing"/></div>
+            <div class="menu-title"><Translate text="Global Config"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.lab/bills">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generated Bills"/>
+            <li><NuxtLink to="/nexus.config">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Parameters"/>
             </NuxtLink></li>
           </ul>
         </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_META') || hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')" class="menu-label"><Translate text="LAB Configuration"/></li>
         <li v-if="hasPermission('CONFIGURATION.MANAGE_META')">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
@@ -111,31 +48,19 @@
             <div class="menu-title"><Translate text="Custom fields (CF)"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.config/custom-fields/test">
+            <li v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)"><NuxtLink to="/nexus.config/custom-fields/test">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Test types CF"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/specimen">
+            <li v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)"><NuxtLink to="/nexus.config/custom-fields/specimen">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Specimen CF"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.config/custom-fields/patient">
+            <li v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PATIENTS)"><NuxtLink to="/nexus.config/custom-fields/patient">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Patient CF"/>
             </NuxtLink></li>
           </ul>
         </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
-          <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon">
-              <ion-icon name="ellipse-outline"></ion-icon>
-            </div>
-            <div class="menu-title"><Translate text="Lab Config"/></div>
-          </a>
-          <ul>
-            <li><NuxtLink to="/nexus.config">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Parameters"/>
-            </NuxtLink></li>
-          </ul>
-        </li>
-        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG')">
+        
+        <li v-if="hasPermission('CONFIGURATION.MANAGE_APP_CONFIG') && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY)">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
@@ -160,10 +85,10 @@
             <div class="menu-title"><Translate text="User accounts"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/accounts">
+            <li><NuxtLink to="/nexus.config/accounts">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="All accounts"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/accounts/create">
+            <li><NuxtLink to="/nexus.config/accounts/create">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Account"/>
             </NuxtLink></li>
           </ul>
@@ -285,8 +210,7 @@
 </template>
 
 <script>
-import { useMyPermissionsStore, } from '@/stores/permissions'
-import {useMyServicesStore} from '@/stores/services.js'
+import { useMyPermissionsStore } from '@/stores/permissions'
   export default {
     setup () {
     const permissionsStore = useMyPermissionsStore()
@@ -294,7 +218,6 @@ import {useMyServicesStore} from '@/stores/services.js'
 
     const serviceStore = useMyServicesStore()
     serviceStore.loadServices()
-
     useHead({
       bodyAttrs: {
         class: 'bg-white'

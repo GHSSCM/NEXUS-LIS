@@ -130,7 +130,7 @@
             <div class="menu-title"><Translate text="Lab Config"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/app-config/data">
+            <li><NuxtLink to="/nexus.config">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Parameters"/>
             </NuxtLink></li>
           </ul>
@@ -290,6 +290,9 @@ import { useMyPermissionsStore } from '@/stores/permissions'
     setup () {
     const permissionsStore = useMyPermissionsStore()
     permissionsStore.loadPermissions()
+
+    const serviceStore = useMyServicesStore()
+    serviceStore.loadServices()
     useHead({
       bodyAttrs: {
         class: 'bg-white'
@@ -313,7 +316,8 @@ import { useMyPermissionsStore } from '@/stores/permissions'
    
     return {
       permissionsStore,
-      appLang
+      appLang,
+      serviceStore
     }
   },
   data(){
@@ -328,9 +332,14 @@ import { useMyPermissionsStore } from '@/stores/permissions'
       // if(this.permissionsStore.loadedPermissions){
       //     // this.loadScript();
       // }else{
-        this.permissionsStore.checkAfterLoad.push({
-          func:this.loadScript
-        })
+      this.permissionsStore.checkAfterLoad.push({
+        func:this.loadScript
+      })
+
+      this.serviceStore.checkAfterLoad.push({
+        func:this.loadScript
+      })
+
       // }
       if(window.localStorage.getItem("user")==null){
         window.location.href=("/login")

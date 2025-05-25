@@ -28,7 +28,7 @@
             <div class="parent-icon">
               <ion-icon name="home-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Nexus Patient"/></div>
+            <div class="menu-title"><Translate text="Nexus Lab"/></div>
           </NuxtLink>
         </li>
         <li v-if="hasPermission('PATIENT.CREATE_PATIENT')||hasPermission('LABORATORY.MANAGE_BILLING')||hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
@@ -285,16 +285,13 @@
 </template>
 
 <script>
-import { useMyPermissionsStore, } from '@/stores/permissions'
-import {useMyServicesStore} from '@/stores/services.js'
+import { useMyPermissionsStore } from '@/stores/permissions'
   export default {
     setup () {
     const permissionsStore = useMyPermissionsStore()
     permissionsStore.loadPermissions()
-
     const serviceStore = useMyServicesStore()
     serviceStore.loadServices()
-
     useHead({
       bodyAttrs: {
         class: 'bg-white'
@@ -337,9 +334,10 @@ import {useMyServicesStore} from '@/stores/services.js'
         this.permissionsStore.checkAfterLoad.push({
           func:this.loadScript
         })
-      this.serviceStore.checkAfterLoad.push({
-        func:this.loadScript
-      })
+
+        this.serviceStore.checkAfterLoad.push({
+          func:this.loadScript
+        })
       // }
       if(window.localStorage.getItem("user")==null){
         window.location.href=("/login")

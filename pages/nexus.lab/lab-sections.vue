@@ -1,10 +1,10 @@
 <template>
-  <NuxtLayout name="lablayout">
+  <NuxtLayout name="configurationlayout">
       
             <!--start breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
               <div class="breadcrumb-title pe-3">
-                <Translate text="Nexus Lab"/>
+                <Translate text="Nexus Configuration"/>
               </div>
               <div class="ps-3">
                 <nav aria-label="breadcrumb">

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="lablayout">
+  <NuxtLayout name="configurationlayout">
       
             <!--start breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -89,7 +89,7 @@
                                         <td>{{ u.phone }}</td>
                                         <td>{{ u.created_at.split(".")[0].split("T").join(" ") }}</td>
                                         <td>
-                                          <NuxtLink class="btn btn-primary btn-sm" :to="'/nexus.lab/accounts/'+u.id">
+                                          <NuxtLink class="btn btn-primary btn-sm" :to="'/nexus.config/accounts/'+u.id">
                                             <Translate text="View/Edit account"/>
                                           </NuxtLink>
                                         </td>

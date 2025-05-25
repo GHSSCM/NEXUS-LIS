@@ -29,13 +29,13 @@ export const useMyPermissionsStore = defineStore('myPermissionsStore',{
                 c.func();
               }else{
 
-              forceOutPermissionVerify(c.perm,c.context);
+                forceOutPermissionVerify(c.perm,c.context);
 
               }
               
             })
             context.checkAfterLoad=[];
-            window.localStorage.getItem(JSON.stringify(permissions))
+            window.localStorage.setItem("current_user_perm",JSON.stringify(permissions))
           });
         } catch (error) {
           console.error('Failed to load permissions:', error);

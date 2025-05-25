@@ -260,6 +260,8 @@
   <script>
   export default{
     mounted(){
+      // forceOutPermissionVerify('PATIENT.VIEW_PATIENT_PROFILE',this); 
+
       const context=this;
       setTimeout(function(){
         getRequestLoad_('/patient/'+context.id,{},(user)=>{

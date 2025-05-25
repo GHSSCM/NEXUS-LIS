@@ -1,6 +1,4 @@
 
-<!-- https://codervent.com/fobia/index.html?storefront=envato-elements -->
- <!-- https://elements.envato.com/fobia-bootstrap5-admin-template-SRGGDJ5 -->
 <template id="fullpage">
   <!--start wrapper-->
   <div class="wrapper mainwrapper">
@@ -111,6 +109,8 @@ import { useMyPermissionsStore } from '@/stores/permissions'
     setup () {
     const permissionsStore = useMyPermissionsStore()
     permissionsStore.loadPermissions()
+    const serviceStore = useMyServicesStore()
+    serviceStore.loadServices()
     useHead({
       bodyAttrs: {
         class: 'bg-white'
@@ -134,7 +134,8 @@ import { useMyPermissionsStore } from '@/stores/permissions'
    
     return {
       permissionsStore,
-      appLang
+      appLang,
+      serviceStore
     }
   },
   data(){
@@ -152,6 +153,9 @@ import { useMyPermissionsStore } from '@/stores/permissions'
         this.permissionsStore.checkAfterLoad.push({
           func:this.loadScript
         })
+      this.serviceStore.checkAfterLoad.push({
+        func:this.loadScript
+      })
       // }
       if(window.localStorage.getItem("user")==null){
         window.location.href=("/login")
