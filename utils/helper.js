@@ -270,18 +270,27 @@ export const calculateAge = (dateString) =>{
 }
 
 export const loadDataTables=()=>{
-    
+    var tableInstances = {};
     var dts = $('.dttable');
     for(var i=0;i<dts.length;i++){
+        var el = $(dts[i]);
+        var id = el.attr('id'); // get table ID
+
         var table = $(dts[i]).DataTable( {
             order:[[1,'asc']],
             lengthChange: false,
             buttons: [ 'copy', 'excel', 'pdf', 'print']
         } );
-     
+
+        if(id){
+            tableInstances[id] = table;
+        }
         table.buttons().container()
             .appendTo( '.dttable_wrapper .col-md-6:eq(0)' );
     }
+
+    return tableInstances;
+
 }
 export const getAppConfig=(param)=>{
     const d=  window.localStorage.getItem("his_config");

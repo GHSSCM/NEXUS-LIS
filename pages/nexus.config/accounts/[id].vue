@@ -190,7 +190,7 @@ export default{
             const context=this;
             if(this.pageId=="create"){
                     postRequestLoad_('/account',this.$data,(fields)=>{
-                        context.$router.push('/accounts')
+                        context.$router.push('/nexus.config/accounts')
                         successToast(this.$t("Account created successfully"))
                     })
             }else{

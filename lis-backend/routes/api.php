@@ -34,8 +34,15 @@ Route::
     ->group(function () {
 
         Route::get('/nexus-bills/',[NexusController::class,'getAllNexusBills']);
+
+
+        // Billing service
         Route::get('/nexus-bill-services/',[NexusController::class,'getAllNexusBillServices']);
         Route::get('/nexus-bill-services/{uniqid}/delete',[NexusController::class,'deleteNexusBillService']);
+        Route::get('/nexus-bill-services/{uniqid}',[NexusController::class,'getNexusBillService']);
+        Route::post('/nexus-bill-services/',[NexusController::class,'createNexusBillService']);
+        Route::post('/nexus-bill-services/{uniqid}',[NexusController::class,'updateNexusBillService']);
+
         Route::get('/nexus-bill-constituents/',[NexusController::class,'getAllNexusBillConstituents']);
         Route::get('/nexus-bill/{id}',function($id){
             $bill = Bill::query()->where('uniqid',$id)->first();

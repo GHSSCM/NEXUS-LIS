@@ -76,10 +76,15 @@ class NexusController extends Controller
             "data"=>$services,
             "columns"=>[
                 
+
                 [
-                    "label"=>"Uniqid",
-                    "attribute"=>"uniqid",
+                    "label"=>"",
+                  
                 ],
+                // [
+                //     "label"=>"Ref",
+                //     "attribute"=>"uniqid",
+                // ],
 
                 [
                     "label"=>"Name",
@@ -119,8 +124,9 @@ class NexusController extends Controller
                         ],
                         [
                             "label"=>"Delete",
-                            "call"=>"/nexus-bill-services/:uniqid/delete",
-                            "ask"=>true
+                            "call"=>"/nx/nexus-bill-services/:uniqid/delete",
+                            "ask"=>true,
+                            "class"=>"btn btn-danger btn-sm me-2"
                         ]
                     ]
                 ]
@@ -140,9 +146,36 @@ class NexusController extends Controller
             return error_response(404,'Service not found');
         }
     }
+
+    public function getNexusBillService($uniqid)
+    {
+        $service = \App\Models\NexusBillService::where('uniqid', $uniqid)->first();
+        if ($service) {
+            return response()->json($service);
+        } else {
+            return error_response(404,'Service not found');
+        }
+    }
+    public function createNexusBillService(Request $request)
+    {
+        $service = \App\Models\NexusBillService::create($request->all());
+        return response()->json($service);
+    }
+    public function updateNexusBillService(Request $request, $uniqid)
+    {
+        $service = \App\Models\NexusBillService::where('uniqid', $uniqid)->first();
+        if ($service) {
+            $service->update($request->all());
+            return response()->json($service);
+        } else {
+            return error_response(404,'Service not found');
+        }
+    }
     public function getAllNexusBillConstituents(Request $request)
     {
         $constituents = \App\Models\NexusBillConstituent::all();
         return response()->json($constituents);
     }
+
+
 }
