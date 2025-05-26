@@ -45,6 +45,13 @@ export class Permission{
     static BILLING_MANAGE_SERVICES="BILLING.MANAGE_BILLING_SERVICES";
     static BILLING_VIEW_STATS = "BILLING.VIEW_STATS";
 
+
+    //pharmacy related permissions
+
+    static  PHARMACY_MANAGE_DRUG="PHARMACY.MANAGE_DRUG";
+    static  PHARMACY_MANAGE_INVENTORY="PHARMACY.MANAGE_INVENTORY";
+    static  PHARMACY_MANAGE_PRESCRIPTION="PHARMACY.MANAGE_PRESCRIPTIONS";
+
 }
 export const trans_=(x)=>{
     const { t,locale } = useI18n() 
@@ -109,8 +116,8 @@ export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunctio
     })
 }
 
-export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
-    var id=endpoint.split("/").join("").split("?").join("").split("&").join("").split("=").join("");
+export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{},overWriteId=null)=>{
+    var id=overWriteId??endpoint.split("/").join("").split("?").join("").split("&").join("").split("=").join("");
     // setTimeout(function(){
        
     // },500);
@@ -122,6 +129,7 @@ export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFun
         if (process.client && $('#'+id).length) {
             $('#'+id).remove();
         }
+        finallyFunction();
    });
    
 }
@@ -277,7 +285,7 @@ export const loadDataTables=()=>{
         var id = el.attr('id'); // get table ID
 
         var table = $(dts[i]).DataTable( {
-            order:[[1,'asc']],
+            order:[[0,'desc']],
             lengthChange: false,
             buttons: [ 'copy', 'excel', 'pdf', 'print']
         } );
@@ -291,6 +299,17 @@ export const loadDataTables=()=>{
 
     return tableInstances;
 
+}
+
+export const getQueryParameter=(name) =>{
+    // Create a regular expression to match the query parameter
+    const regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i');
+    // Get the URL query string
+    const queryString = window.location.search;
+    // Match the query parameter in the URL query string
+    const match = regex.exec(queryString);
+    // If a match is found, decode and return the parameter value, otherwise return null
+    return match ? decodeURIComponent(match[1]) : null;
 }
 export const getAppConfig=(param)=>{
     const d=  window.localStorage.getItem("his_config");

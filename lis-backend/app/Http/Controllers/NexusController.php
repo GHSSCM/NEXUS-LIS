@@ -14,10 +14,10 @@ class NexusController extends Controller
         $facilityRef = request('facility_ref');
 
         // Total sum
-        $totalAmount = NexusBill::where('facility_ref', $facilityRef)->sum('amount');
+        $totalAmount = NexusBill::where('facility_ref', $facilityRef)->where('status','PAID')->sum('amount');
 
         // Total count
-        $totalCount = NexusBill::where('facility_ref', $facilityRef)->count();
+        $totalCount = NexusBill::where('facility_ref', $facilityRef)->where('status','PAID')->count();
 
         $now = Carbon::now();
         $currentMonth = $now->month;
@@ -28,6 +28,7 @@ class NexusController extends Controller
                 COUNT(*) as total_count
             ')
             ->where('facility_ref', $facilityRef)
+            ->where('status','PAID')
             ->whereYear('created_at', $currentYear)
             ->whereMonth('created_at', $currentMonth)
             ->first();
@@ -41,10 +42,48 @@ class NexusController extends Controller
             ]
         ];
     }
+
+
+
+    public function getNexusPharmacyStats(){
+        $facilityRef = request('facility_ref');
+
+        // Total sum
+        $totalAmount = NexusBill::where('facility_ref', $facilityRef)->where('status','PAID')->where('type','PRESCRIPTION')->sum('amount');
+
+        // Total count
+        $totalCount = NexusBill::where('facility_ref', $facilityRef)->where('status','PAID')->where('type','PRESCRIPTION')->count();
+
+        $now = Carbon::now();
+        $currentMonth = $now->month;
+        $currentYear = $now->year;
+
+        $monthData = NexusBill::selectRaw('
+                SUM(amount) as total_amount,
+                COUNT(*) as total_count
+            ')
+            ->where('facility_ref', $facilityRef)
+            ->where('status','PAID')
+            ->where('type','PRESCRIPTION')
+            ->whereYear('created_at', $currentYear)
+            ->whereMonth('created_at', $currentMonth)
+            ->first();
+
+        return [
+            "total_amount" => $totalAmount,
+            "total_count" => $totalCount,
+            "monthly_data" => [
+                "total_amount" => $monthData->total_amount ?? 0,
+                "total_count" => $monthData->total_count ?? 0,
+            ]
+        ];
+    }
+
+
     public function getAllNexusBills(Request $request)
     {
 
-        $bills = \App\Models\NexusBill::query('facility_ref',request('facility_ref'))->get();
+        $bills = \App\Models\NexusBill::query()->where('facility_ref',request('facility_ref'))->get();
 
         $bills->map(function ($bill) {
             $bill->facility = \App\Models\Facility::where('uniqid', $bill->facility_ref)->first();
@@ -103,8 +142,90 @@ class NexusController extends Controller
 
     }
 
+
+
+    public function getAllNexusPrescriptions(Request $request)
+    {
+
+        $bills = \App\Models\NexusBill::query()->where('facility_ref',request('facility_ref'))->where('type','PRESCRIPTION')->get();
+
+        $bills->map(function ($bill) {
+            $bill->facility = \App\Models\Facility::where('uniqid', $bill->facility_ref)->first();
+            $bill->patient = \App\Models\Patient::where('uniqid', $bill->patient_ref)->first();
+            $bill->total =  $bill->amount - $bill->reduction;
+
+            $prescriptions = \App\Models\NexusBillConstituent::where('nexus_bill_ref', $bill->uniqid)
+                // ->where('nexus_bill_service_ref', 'nexus.pharmacy')
+                ->get();
+
+            $html="";
+
+            foreach($prescriptions as $prescription){
+                $html.="<span><div class='badge bg-primary me-1'>".$prescription->name.".</div> ".$prescription->description."</span><br/>";
+            }
+            $bill->prescriptions = $html;
+            return $bill;
+        })->filter(function ($bill) {
+            return $bill->facility && $bill->patient;
+        });
+
+        return response()->json([
+            "data" => $bills,
+            "columns" => [
+                [
+                    "label" => "ID",
+                    "attribute" => "id",
+                ],
+                [
+                    "label" => "Patient",
+                    "attribute" => "patient.name",
+                ],
+                [
+                    "label" => "Prescriptions",
+                    "attribute" => "prescriptions",
+                    "type" => "html",
+                ],
+                // [
+                //     "label" => "Subtotal",
+                //     "attribute" => "amount",
+                // ],
+                // [
+                //     "label" => "Reduction",
+                //     "attribute" => "reduction",
+                // ],
+                [
+                    "label" => "Total",
+                    "attribute" => "total",
+                ],
+                [
+                    "label" => "Status",
+                    "attribute" => "status",
+                ],
+                [
+                    "label" => "Action",
+                    "attribute" => "action",
+                    "type" => "action",
+                    "buttons" => [
+                        [
+                            "label" => "View Prescription",
+                            "route" => "/nexus.pharmacy/prescription/:uniqid?ro=true"
+                        ],
+
+                        [
+                            "label" => "Edit Prescription",
+                            "route" => "/nexus.pharmacy/prescription/:uniqid"
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+    }
+
+
+    
     private function getAllNexusBillServicesArray(){
-   $services = \App\Models\NexusBillService::query('facility_ref',request('facility_ref'))->get()->toArray();
+   $services = \App\Models\NexusBillService::query()->where('facility_ref',request('facility_ref'))->where('state','ACTIVE')->get()->toArray();
 
         $defaultServices =[];
 
@@ -232,6 +353,18 @@ class NexusController extends Controller
         }
     }
 
+    public function deleteDrugs($uniqid){
+    
+        $service = \App\Models\Drug::where('uniqid', $uniqid)->first();
+        if ($service) {
+            $service->delete();
+            return response()->json(['message' => 'Drug deleted successfully']);
+        } else {
+            return error_response(404,'Drug not found');
+        }
+    }
+    
+
     public function getNexusBillService($uniqid)
     {
         $service = \App\Models\NexusBillService::where('uniqid', $uniqid)->first();
@@ -262,6 +395,24 @@ class NexusController extends Controller
 
     public function getNexusBillCreationData(){
         $services = $this->getAllNexusBillServicesArray();
+
+        switch(request('type')){
+            // case 'nexus.lab':
+            //     $services = array_filter($services, function($service) {
+            //         return $service['uniqid'] == 'nexus.lab';
+            //     });
+            //     break;
+            case 'PRESCRIPTION':
+                $services = array_values(array_filter($services, function($service) {
+                    return $service['uniqid'] == 'nexus.pharmacy';
+                }));
+                break;
+            // case 'nexus.bloodbank':
+            //     $services = array_filter($services, function($service) {
+            //         return $service['uniqid'] == 'nexus.bloodbank';
+            //     });
+            //     break;
+        }
         $patient=null;
 
         $constituents=null;
@@ -310,7 +461,30 @@ class NexusController extends Controller
                     });
                 return response()->json($tests);
             case 'nexus.pharmacy':
-                return [];
+                
+                 $drugs=\App\Models\Drug::query()
+                    ->where('facility_ref', request('facility_ref'))
+                    ->where('state', 'ACTIVE')
+                    ->get()
+                    ->map(function ($drug) use($uniqid) {
+                       
+                        return [
+                            'name' => $drug->name,
+                            'subname' => "Pharmacy",
+                            'nexus_bill_service_ref' => $drug->uniqid,
+                            'quantity'=> 1,
+                            'unit_price' => $drug->unit_price,
+                            'subtotal' => $drug->unit_price,
+                            'total' => $drug->unit_price,
+                            'reduction' => 0,
+                            'reduction_rate' => "flat",
+                            "quantifiable"=>true,
+                            "parent"=>$uniqid,
+                            "quantity_unit"=>$drug->unit,
+                        ];
+                    });
+                return response()->json($drugs);
+
             default:
                 return [];
         }
@@ -370,5 +544,72 @@ class NexusController extends Controller
 
     }
 
+
+
+    public function getAllDrugs(){
+        
+        $drugs = \App\Models\Drug::query()
+            ->where('facility_ref', request('facility_ref'))
+            ->where('state', 'ACTIVE')
+            ->get();
+
+        
+        return response()->json([
+            "data" => $drugs,
+            "columns" => [
+                [
+                    "label" => "ID",
+                    "attribute" => "id",
+                ],
+                [
+                    "label" => "Name",
+                    "attribute" => "name",
+                ],
+                [
+                    "label" => "Code",
+                    "attribute" => "code",
+                ],
+                [
+                    "label" => "Type",
+                    "attribute" => "type",
+                ],
+                [
+                    "label" => "Quantity",
+                    "attribute" => "quantity",
+                ],
+                [
+                    "label" => "Unit",
+                    "attribute" => "unit",
+                ],
+                [
+                    "label" => "Unit Price",
+                    "attribute" => "unit_price",
+                    "type" => "currency",
+                ],
+                [
+                    "label" => "State",
+                    "attribute" => "state",
+                ],
+                [
+                    "label" => "Action",
+                    "attribute" => "action",
+                    "type" => "action",
+                    "buttons" => [
+                        [
+                            "label" => "Edit Drug",
+                            "route" => "/nexus.pharmacy/drug/:uniqid"
+                        ],
+                        [
+                            "label" => "Delete Drug",
+                            "call" => "/nx/drugs/:uniqid/delete",
+                            "ask"=>true,
+                            'class'=>'btn btn-danger btn-sm me-2'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+    }
 
 }

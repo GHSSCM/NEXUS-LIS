@@ -2,10 +2,10 @@
 
   <div>
 
-    <h6 class="mb-0 text-uppercase">
-      <Translate :text='title??"Table"' />
+    <h6 class="mb-0 text-uppercase" v-if="title">
+      <Translate :text='title??""' />
     </h6>
-    <hr/>
+    <hr v-if="title"/>
     <div >
 <!--      class="card"-->
       <div >
@@ -31,8 +31,13 @@
                     <td class="" colspan="1" v-for="col in columns">
                       <span v-if="!col.attribute"> </span>
                       <span v-if="col.type==='counter'"> {{ i+1 }}</span>
+
+                      <span v-if="col.type==='html'">
+                        <span v-html="getNestedValue(u,col.attribute)"></span>
+                      </span>
                       <span v-else-if="col.type==='date' || col.attribute==='created_at' || col.attribute==='updated_at'"> {{ getNestedValue(u,col.attribute)? getNestedValue(u,col.attribute).split("T")[0]:''  }}</span>
                       <span v-else-if="col.type==='age'">{{ getNestedValue(u,col.attribute)?calculateAge(getNestedValue(u,col.attribute)):"" }}</span>
+                      <span v-else-if="col.type==='currency'">{{ getNestedValue(u,col.attribute)?`${getNestedValue(u,col.attribute)} ${getAppConfig('currency')}`:"" }}</span>
                       <span v-else-if="col.type==='action' && !u.noaction">
                         <span v-for="btn in col.buttons" >
                           <NuxtLink  :class="btn.class??'btn btn-primary btn-sm me-2'"  v-if='btn.route' :to="btn.route.replace(':uniqid',u.uniqid)">

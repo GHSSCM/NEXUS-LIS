@@ -1,14 +1,14 @@
 <template>
-    <NuxtLayout name="billinglayout">
+    <NuxtLayout name="pharmacylayout">
 
               <!--start breadcrumb-->
               <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3"><Translate text="Nexus Biling"/></div>
+                <div class="breadcrumb-title pe-3"><Translate text="Nexus Pharmacy"/></div>
                 <div class="ps-3">
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0 align-items-center">
                       <li class="breadcrumb-item"><a href="javascript:;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Stash Icons by Pingback LLC - https://github.com/stash-ui/icons/blob/master/LICENSE --><path fill="currentColor" d="M7.179 3.5h5.642c.542 0 .98 0 1.333.029c.365.03.685.093.981.243a2.5 2.5 0 0 1 1.092 1.093c.151.296.214.616.244.98c.029.355.029.792.029 1.334v3.071a.5.5 0 0 1-1 0V7.2c0-.568 0-.964-.026-1.273c-.024-.302-.07-.476-.138-.608a1.5 1.5 0 0 0-.655-.656c-.132-.067-.305-.113-.608-.137c-.309-.026-.705-.026-1.273-.026H7.2c-.568 0-.964 0-1.273.026c-.302.024-.476.07-.608.137a1.5 1.5 0 0 0-.656.656c-.067.132-.113.306-.137.608C4.5 6.236 4.5 6.632 4.5 7.2v9.6c0 .568 0 .965.026 1.273c.024.302.07.476.137.608a1.5 1.5 0 0 0 .646.65l.01.002c.018.004.062.014.144.026q.189.028.495.05c.404.03.92.05 1.466.064c1.089.027 2.265.027 2.826.027a.5.5 0 0 1 0 1h-.001c-.56 0-1.748 0-2.85-.027a33 33 0 0 1-1.515-.066a8 8 0 0 1-.566-.058a1.5 1.5 0 0 1-.453-.122a2.5 2.5 0 0 1-1.093-1.092c-.15-.296-.213-.616-.243-.98C3.5 17.8 3.5 17.362 3.5 16.82V7.18c0-.542 0-.98.029-1.333c.03-.365.093-.685.243-.981a2.5 2.5 0 0 1 1.093-1.093c.296-.15.616-.213.98-.243c.355-.03.793-.03 1.335-.03"/><path fill="currentColor" d="M18.62 12.5c.403 0 .735 0 1.006.022c.281.023.54.072.782.196a2 2 0 0 1 .874.874c.124.243.173.501.196.782c.022.27.022.603.022 1.005v2.242c0 .402 0 .734-.022 1.005c-.023.281-.072.54-.196.782a2 2 0 0 1-.874.874c-.243.124-.501.173-.782.196c-.27.022-.603.022-1.005.022h-4.242c-.402 0-.734 0-1.005-.022c-.281-.023-.54-.072-.782-.196a2 2 0 0 1-.874-.874c-.124-.243-.173-.501-.196-.782c-.022-.27-.022-.603-.022-1.005v-2.242c0-.402 0-.734.022-1.005c.023-.281.072-.54.196-.782a2 2 0 0 1 .874-.874c.243-.124.501-.173.782-.196c.27-.022.603-.022 1.005-.022zm-5.164 1.019c-.22.018-.332.05-.41.09a1 1 0 0 0-.437.437c-.04.078-.072.19-.09.41l-.004.044h7.97l-.004-.044c-.018-.22-.05-.332-.09-.41a1 1 0 0 0-.437-.437c-.078-.04-.19-.072-.41-.09a13 13 0 0 0-.944-.019h-4.2c-.428 0-.72 0-.944.019M20.5 16.5h-8v1.1c0 .428 0 .72.019.944c.018.22.05.332.09.41a1 1 0 0 0 .437.437c.078.04.19.072.41.09c.225.019.516.019.944.019h4.2c.428 0 .72 0 .944-.019c.22-.018.332-.05.41-.09a1 1 0 0 0 .437-.437c.04-.078.072-.19.09-.41c.019-.225.019-.516.019-.944zm-14-10a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zM6 10a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 6 10m.5 2.5a.5.5 0 0 0 0 1H10a.5.5 0 0 0 0-1zM6 17a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 6 17"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 26 26"><!-- Icon from Pepicons Pencil by CyCraft - https://github.com/CyCraft/pepicons/blob/dev/LICENSE --><g fill="currentColor"><path fill-rule="evenodd" d="m18.85 13.192l-6.365-6.364a4 4 0 0 0-5.657 5.657l6.364 6.364a4 4 0 1 0 5.657-5.657M7.535 7.536a3 3 0 0 1 4.242 0l6.364 6.364a3 3 0 1 1-4.242 4.242l-6.364-6.364a3 3 0 0 1 0-4.242" clip-rule="evenodd"/><path d="m16.037 10.58l-.243.97c-1.201-.3-2.223-.154-3.101.432c-.87.58-1.454 1.687-1.73 3.355l-.987-.164c.318-1.917 1.032-3.27 2.162-4.023c1.122-.748 2.434-.936 3.899-.57"/><path fill-rule="evenodd" d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5m0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5" clip-rule="evenodd"/></g></svg>
                         </a>
                       </li>
                       <li class="breadcrumb-item active" aria-current="page"></li>
@@ -18,8 +18,8 @@
 
 
                 <HbOptionsMenu :options="[{
-                    'label':'Create Bill',
-                    'path':'/nexus.billing/select-patient'
+                    'label':'Create Prescription',
+                    'path':'/nexus.pharmacy/select-patient'
                   }]"></HbOptionsMenu>
 
 
@@ -56,7 +56,7 @@
                       <div class="card-body">
                         <div class="d-flex align-items-start gap-2">
                           <div>
-                            <p class="mb-0 fs-6">Paid Bills Generated(this month)</p>
+                            <p class="mb-0 fs-6">Paid Prescriptions (this month)</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
                             <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
@@ -76,7 +76,7 @@
                       <div class="card-body">
                         <div class="d-flex align-items-start gap-2">
                           <div>
-                            <p class="mb-0 fs-6">Total Paid Bills Generated</p>
+                            <p class="mb-0 fs-6">Total Paid Prescriptions</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
                             <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
@@ -119,7 +119,7 @@
 
 
 
-      <HbTable url="/nx/nexus-bills/" title="Generated Bills"></HbTable>
+      <HbTable url="/nx/nexus-prescriptions/" title="Prescriptions Made"></HbTable>
 
 
 
@@ -138,7 +138,7 @@
 export default{
   mounted(){
     getRequestLoad_(
-        '/nx/nexus-billing-stats',
+        '/nx/nexus-prescription-stats',
         {},
         (x)=>{
           this.stats.revenue=x.total_amount;

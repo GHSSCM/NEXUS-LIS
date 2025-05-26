@@ -26,36 +26,36 @@
         </li>
 
         <li v-if="hasPermission(Permission.BILLING_VIEW_STATS)">
-          <NuxtLink to="/nexus.billing">
+          <NuxtLink to="/nexus.pharmacy">
             <div class="parent-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Sargam Icons by Abhimanyu Rana - https://github.com/planetabhi/sargam-icons/blob/main/LICENSE.txt --><path fill="currentColor" d="M3 5.6A2.6 2.6 0 0 1 5.6 3h2.8A2.6 2.6 0 0 1 11 5.6v2.8A2.6 2.6 0 0 1 8.4 11H5.6A2.6 2.6 0 0 1 3 8.4zm0 10A2.6 2.6 0 0 1 5.6 13h2.8a2.6 2.6 0 0 1 2.6 2.6v2.8A2.6 2.6 0 0 1 8.4 21H5.6A2.6 2.6 0 0 1 3 18.4zm10-10A2.6 2.6 0 0 1 15.6 3h2.8A2.6 2.6 0 0 1 21 5.6v2.8a2.6 2.6 0 0 1-2.6 2.6h-2.8A2.6 2.6 0 0 1 13 8.4zm4 7.4a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/></svg>
             </div>
-            <div class="menu-title"><Translate text="Billing Dashboard"/></div>
+            <div class="menu-title"><Translate text="Pharmacy Dash..."/></div>
           </NuxtLink>
         </li>
 
-        <li v-if="hasPermission(Permission.BILLING_MANAGE_SERVICES) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING)" class="menu-label"><Translate text="Billing Services"/></li>
-        <li v-if="hasPermission(Permission.BILLING_MANAGE_SERVICES) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING)">
+        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_PRESCRIPTION) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)" class="menu-label"><Translate text="Prescriptions"/></li>
+        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_PRESCRIPTION) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Services"/></div>
+            <div class="menu-title"><Translate text="Prescriptions"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.billing/services">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Services"/>
+            <li><NuxtLink to="/nexus.pharmacy/prescriptions">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Prescriptions"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.billing/service/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Billing Service"/>
+            <li><NuxtLink to="/nexus.pharmacy/select-patient">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Add New Prescription"/>
             </NuxtLink></li>
           </ul>
         </li>
 
 
-        <li v-if="(hasPermission(Permission.BILLING_VIEW_BILL)||hasPermission(Permission.BILLING_CREATE_BILL)) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING)" class="menu-label"><Translate text="Bills"/></li>
+        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_DRUG) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)" class="menu-label"><Translate text="Drugs"/></li>
 
-        <li v-if="(hasPermission(Permission.BILLING_VIEW_BILL)||hasPermission(Permission.BILLING_CREATE_BILL)) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING)">
+        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_DRUG) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
@@ -63,11 +63,11 @@
             <div class="menu-title"><Translate text="Bills"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.billing/bills">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generated Bills"/>
+            <li><NuxtLink to="/nexus.pharmacy/drugs">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All drugs"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.billing/select-patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generate New Bill"/>
+            <li><NuxtLink to="/nexus.pharmacy/drug/create">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Register new drug"/>
             </NuxtLink></li>
           </ul>
         </li>

@@ -34,7 +34,7 @@ Route::
     ->group(function () {
 
         Route::get('/nexus-bills/',[NexusController::class,'getAllNexusBills']);
-
+        Route::get('/nexus-prescriptions/',[NexusController::class,'getAllNexusPrescriptions']);
 
         // Billing service
         Route::get('/nexus-bill-services/',[NexusController::class,'getAllNexusBillServices']);
@@ -55,6 +55,9 @@ Route::
 
         
         Route::get('/nexus-billing-stats',[NexusController::class,"getNexusBillingStats"]);
+        Route::get('/nexus-prescription-stats',[NexusController::class,"getNexusPharmacyStats"]);
+
+        
         Route::get('/nexus-bill-constituents/',[NexusController::class,'getAllNexusBillConstituents']);
         Route::get('/nexus-bill/{id}',function($id){
             $bill = Bill::query()->where('uniqid',$id)->first();
@@ -66,6 +69,39 @@ Route::
         Route::get('/services', function () {
             return response()->json(['data' => getAllowedServices()]);
         });
+
+
+        Route::get('/drugs',[NexusController::class,'getAllDrugs']);
+        Route::get('/drugs/{uniqid}/delete',[NexusController::class,'deleteDrugs']);
+
+
+        Route::get('/drugs/{uniqid}',function($uniqid){
+            $drug = \App\Models\Drug::where('uniqid', $uniqid)->first();
+            if ($drug) {
+                return response()->json($drug);
+            } else {
+                return error_response(404,'Drug not found');
+            }
+        });
+
+        Route::post('/drugs',function(){
+            $data = request()->all();
+            $data['uniqid'] = gen_uniqid();
+            $drug = \App\Models\Drug::create($data);
+            return response()->json($drug);
+        });
+
+        Route::post('/drugs/{uniqid}',function($uniqid){
+            $drug = \App\Models\Drug::where('uniqid', $uniqid)->first();
+            if ($drug) {
+                $drug->update(request()->all());
+                return response()->json($drug);
+            } else {
+                return error_response(404,'Drug not found');
+            }
+        });
+
+        
     });
 
 

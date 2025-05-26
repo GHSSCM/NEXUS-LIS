@@ -46,7 +46,7 @@
                                    <table id="onetoabc" class="table table-striped table-bordered dttable " role="grid" aria-describedby="example2_info">
                                      <thead>
                                          <tr role="row">
-                                          <th rowspan="1" colspan="1"></th>
+                                          <th rowspan="1" colspan="1">ID</th>
                                           <th rowspan="1" colspan="1"><Translate text="Patient"/></th>
                                           <th rowspan="1" colspan="1"><Translate text="Specimen"/></th>
                                           <th rowspan="1" colspan="1"><Translate text="Test"/></th>
@@ -62,7 +62,7 @@
          
                                          
                                      <tr role="row" v-for="(u,i) in specimens" :class="i%2==0?'even':'odd'" :key="'account-'+i">
-                                             <td class="">{{ i+1 }}</td>
+                                             <td class="">{{ u.id }}</td>
                                              <td class="">{{ u.patient.name }}</td>
                                              <td class="">{{u.specimen.name}}</td>
                                              <td class="">{{u.test.name}}</td>

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->softDeletes();
             $table->json("meta");
             $table->text("facility_ref");
+
+            
             $table->text("patient_ref");
 
             
