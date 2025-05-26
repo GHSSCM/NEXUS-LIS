@@ -34,7 +34,7 @@
                   </button>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
                     <!--  <a class="dropdown-item" href="javascript:;">Action</a> -->
-                    <NuxtLink class="dropdown-item" to="/accounts/create">
+                    <NuxtLink class="dropdown-item" to="/nexus.config/accounts/create">
                       <Translate text="Create new account"/>
                     </NuxtLink>
                     <!-- <a class="dropdown-item" href="javascript:;">Something else here</a> -->

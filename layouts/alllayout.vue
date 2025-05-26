@@ -160,10 +160,10 @@
             <div class="menu-title"><Translate text="User accounts"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/accounts">
+            <li><NuxtLink to="/nexus.config/accounts">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="All accounts"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/accounts/create">
+            <li><NuxtLink to="/nexus.config/accounts/create">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Account"/>
             </NuxtLink></li>
           </ul>

@@ -15,6 +15,9 @@ export const useMyPermissionsStore = defineStore('myPermissionsStore',{
   actions: {
      loadPermissions(){
         try {
+            if(!window){
+                return;
+            }
           this.permissions = window.localStorage.getItem("current_user_perm")?JSON.parse( window.localStorage.getItem("current_user_perm")):[];
           const context = this;
           getRequestLoad_('/permissions/', {}, (data) => {

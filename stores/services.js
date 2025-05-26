@@ -13,6 +13,7 @@ export const useMyServicesStore = defineStore('myServicesStore',{
   },
   actions: {
     async loadServices(){
+
             if(process.client){
                 this.services = window.localStorage.getItem("current_user_services")?JSON.parse( window.localStorage.getItem("current_user_services")):[];
             }

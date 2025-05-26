@@ -105,6 +105,9 @@ export const generateRandomStringWithTimestamp=(length)=> {
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
 export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
+    if(!window){
+        return;
+    }
     params.facility_ref=window.localStorage.getItem("facility_ref")??"facility_abc"
     var currentUser = window.localStorage.getItem("user");
     if(currentUser && endpoint=="/permissions/"){
@@ -158,6 +161,9 @@ export const postRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFu
 
 // 
 export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
+    if(!window){
+        return;
+    }
     params.facility_ref=window.localStorage.getItem("facility_ref")??"facility_abc";
     axios.post((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,params).then((d)=>{
         successFunction(d.data);
@@ -319,6 +325,9 @@ export const getQueryParameter=(name) =>{
     return match ? decodeURIComponent(match[1]) : null;
 }
 export const getAppConfig=(param)=>{
+    if(!window){
+        return null;
+    }
     const d=  window.localStorage.getItem("his_config");
     if(!d){
         return null;
@@ -332,6 +341,9 @@ export const getAppConfig=(param)=>{
 }
 
 export const setAppConfig=(data)=>{
+    if(!window){
+        return;
+    }
    if(typeof data =='string'){
     window.localStorage.setItem("his_config",data);
    }else{
