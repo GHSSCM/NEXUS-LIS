@@ -24,25 +24,25 @@ return new class extends Migration
         ]);
 
 
-        \App\Models\CustomField::create([
-            'facility_ref'=>$labId,
-            'name'=>"Laboratory Section",
-            'type'=>"limitedvalues",
-            'category'=>"test",
-            "meta"=>[
-                "enum"=>["Change me1","Change me2"]
-            ]
-        ]);
+        // \App\Models\CustomField::create([
+        //     'facility_ref'=>$labId,
+        //     'name'=>"Laboratory Section",
+        //     'type'=>"limitedvalues",
+        //     'category'=>"test",
+        //     "meta"=>[
+        //         "enum"=>["Change me1","Change me2"]
+        //     ]
+        // ]);
 
-        \App\Models\CustomField::create([
-            'facility_ref'=>$labId,
-            'name'=>"Hospital Section",
-            'type'=>"limitedvalues",
-            'category'=>"patient",
-            "meta"=>[
-                "enum"=>["Change me1","Change me2"]
-            ]
-        ]);
+        // \App\Models\CustomField::create([
+        //     'facility_ref'=>$labId,
+        //     'name'=>"Hospital Section",
+        //     'type'=>"limitedvalues",
+        //     'category'=>"patient",
+        //     "meta"=>[
+        //         "enum"=>["Change me1","Change me2"]
+        //     ]
+        // ]);
 
         \App\Models\Facility::create([
             'ref'=>$labId,

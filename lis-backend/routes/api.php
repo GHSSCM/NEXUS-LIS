@@ -43,6 +43,18 @@ Route::
         Route::post('/nexus-bill-services/',[NexusController::class,'createNexusBillService']);
         Route::post('/nexus-bill-services/{uniqid}',[NexusController::class,'updateNexusBillService']);
 
+
+
+        Route::get('/nexus-bill-creation-data',[NexusController::class,'getNexusBillCreationData']);
+
+        Route::get('/nexus-bill-subitems/{id}/{patientId}',[NexusController::class,'getNexusBillCreationDataSubItems']);
+
+        Route::post('/nexus-bill-create',action: [NexusController::class,'createNexusBill']);
+
+        Route::post('/nexus-bill-edit/{pid}',action: [NexusController::class,'editNexusBill']);
+
+        
+        Route::get('/nexus-billing-stats',[NexusController::class,"getNexusBillingStats"]);
         Route::get('/nexus-bill-constituents/',[NexusController::class,'getAllNexusBillConstituents']);
         Route::get('/nexus-bill/{id}',function($id){
             $bill = Bill::query()->where('uniqid',$id)->first();
