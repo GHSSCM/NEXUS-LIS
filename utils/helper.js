@@ -48,9 +48,16 @@ export class Permission{
 
     //pharmacy related permissions
 
+    static  PHARMACY_VIEW_STATS="PHARMACY.VIEW_STATS";
     static  PHARMACY_MANAGE_DRUG="PHARMACY.MANAGE_DRUG";
     static  PHARMACY_MANAGE_INVENTORY="PHARMACY.MANAGE_INVENTORY";
     static  PHARMACY_MANAGE_PRESCRIPTION="PHARMACY.MANAGE_PRESCRIPTIONS";
+
+
+    //bloodbank related permissions
+    static  BLOOD_BANK_VIEW_STATS="BLOODBANK.VIEW_STATS";
+    static  BLOOD_BANK_MANAGE_IO="BLOODBANK.MANAGE_IO";
+    static  BLOOD_BANK_MANAGE_INVENTORY="BLOODBANK.MANAGE_INVENTORY";
 
 }
 export const trans_=(x)=>{

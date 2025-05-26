@@ -40,10 +40,10 @@
                       <span v-else-if="col.type==='currency'">{{ getNestedValue(u,col.attribute)?`${getNestedValue(u,col.attribute)} ${getAppConfig('currency')}`:"" }}</span>
                       <span v-else-if="col.type==='action' && !u.noaction">
                         <span v-for="btn in col.buttons" >
-                          <NuxtLink  :class="btn.class??'btn btn-primary btn-sm me-2'"  v-if='btn.route' :to="btn.route.replace(':uniqid',u.uniqid)">
+                          <NuxtLink  :class="btn.class??'btn btn-primary btn-sm me-2'"  v-if='btn.route' :to="btn.route.replace(':uniqid',u.uniqid).replace(':id',u.id)">
                             <Translate :text="btn.label" />
                         </NuxtLink>
-                           <button   :class="btn.class??'btn btn-primary btn-sm me-2'"  v-else-if='btn.call' @click="callQueryUrl(btn.call.replace(':uniqid',u.uniqid),btn.ask)">
+                           <button   :class="btn.class??'btn btn-primary btn-sm me-2'"  v-else-if='btn.call' @click="callQueryUrl(btn.call.replace(':uniqid',u.uniqid).replace(':id',u.id),btn.ask)">
                             <Translate :text="btn.label" />
                         </button>
                         </span>

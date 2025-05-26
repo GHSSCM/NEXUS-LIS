@@ -25,49 +25,52 @@
           </NuxtLink>
         </li>
 
-        <li v-if="hasPermission(Permission.PHARMACY_VIEW_STATS)">
-          <NuxtLink to="/nexus.pharmacy">
+<!--        <li v-if="hasPermission(Permission.BLOOD_BANK_VIEW_STATS)">
+          <NuxtLink to="/nexus.bloodbank">
             <div class="parent-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><!-- Icon from Sargam Icons by Abhimanyu Rana - https://github.com/planetabhi/sargam-icons/blob/main/LICENSE.txt --><path fill="currentColor" d="M3 5.6A2.6 2.6 0 0 1 5.6 3h2.8A2.6 2.6 0 0 1 11 5.6v2.8A2.6 2.6 0 0 1 8.4 11H5.6A2.6 2.6 0 0 1 3 8.4zm0 10A2.6 2.6 0 0 1 5.6 13h2.8a2.6 2.6 0 0 1 2.6 2.6v2.8A2.6 2.6 0 0 1 8.4 21H5.6A2.6 2.6 0 0 1 3 18.4zm10-10A2.6 2.6 0 0 1 15.6 3h2.8A2.6 2.6 0 0 1 21 5.6v2.8a2.6 2.6 0 0 1-2.6 2.6h-2.8A2.6 2.6 0 0 1 13 8.4zm4 7.4a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.6A2.6 2.6 0 0 1 5.6 3h2.8A2.6 2.6 0 0 1 11 5.6v2.8A2.6 2.6 0 0 1 8.4 11H5.6A2.6 2.6 0 0 1 3 8.4zm0 10A2.6 2.6 0 0 1 5.6 13h2.8a2.6 2.6 0 0 1 2.6 2.6v2.8A2.6 2.6 0 0 1 8.4 21H5.6A2.6 2.6 0 0 1 3 18.4zm10-10A2.6 2.6 0 0 1 15.6 3h2.8A2.6 2.6 0 0 1 21 5.6v2.8a2.6 2.6 0 0 1-2.6 2.6h-2.8A2.6 2.6 0 0 1 13 8.4zm4 7.4a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/></svg>
             </div>
-            <div class="menu-title"><Translate text="Pharmacy Dash..."/></div>
+            <div class="menu-title"><Translate text="Blood Bank Dash..."/></div>
           </NuxtLink>
-        </li>
+        </li>-->
 
-        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_PRESCRIPTION) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)" class="menu-label"><Translate text="Prescriptions"/></li>
-        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_PRESCRIPTION) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)">
+        <li v-if="hasPermission(Permission.BLOOD_BANK_MANAGE_IO) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK)" class="menu-label"><Translate text="Donors"/></li>
+        <li v-if="hasPermission(Permission.BLOOD_BANK_MANAGE_IO) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK)">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Prescriptions"/></div>
+            <div class="menu-title"><Translate text="Donors"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.pharmacy/prescriptions">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Prescriptions"/>
+            <li><NuxtLink to="/nexus.bloodbank/donors">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Donors"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.pharmacy/select-patient">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Add New Prescription"/>
+            <li><NuxtLink to="/nexus.bloodbank/donations">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Donations"/>
+            </NuxtLink></li>
+            <li><NuxtLink to="/nexus.bloodbank/select-patient">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Add New Donation"/>
             </NuxtLink></li>
           </ul>
         </li>
 
 
-        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_DRUG) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)" class="menu-label"><Translate text="Drugs"/></li>
+        <li v-if=" hasPermission(Permission.BLOOD_BANK_MANAGE_IO) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK)" class="menu-label"><Translate text="Transfusions"/></li>
 
-        <li v-if="hasPermission(Permission.PHARMACY_MANAGE_DRUG) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PHARMACY)">
+        <li v-if=" hasPermission(Permission.BLOOD_BANK_MANAGE_IO) && serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK)">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
             </div>
-            <div class="menu-title"><Translate text="Drugs"/></div>
+            <div class="menu-title"><Translate text="Transfusions"/></div>
           </a>
           <ul>
-            <li><NuxtLink to="/nexus.pharmacy/drugs">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All drugs"/>
+            <li><NuxtLink to="/nexus.bloodbank/transfusions">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Transfusions"/>
             </NuxtLink></li>
-            <li><NuxtLink to="/nexus.pharmacy/drug/create">
-              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Register new drug"/>
+            <li><NuxtLink to="/nexus.bloodbank/select-patient-trans">
+              <ion-icon name="ellipse-outline"></ion-icon><Translate text="Record Transfusion"/>
             </NuxtLink></li>
           </ul>
         </li>

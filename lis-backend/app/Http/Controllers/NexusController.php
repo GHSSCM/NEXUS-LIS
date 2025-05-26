@@ -612,4 +612,135 @@ class NexusController extends Controller
 
     }
 
+
+
+    public function getAllDonations(){
+        
+        $drugs = \App\Models\Donation::query()
+            ->where('facility_ref', request('facility_ref'))
+            ->where('operation', request('operation','DONATION'))
+            ->get()->map(function($donation){
+                $donation->donor = \App\Models\Patient::where('uniqid', $donation->patient_ref)->first();
+                if(!$donation->donor){
+                    $donation->donor = (object)[
+                        'name' => 'Unknown Donor',
+                        'uniqid' => 'unknown'
+                    ];
+                }
+                return $donation;
+            });
+
+        
+        return response()->json([
+            "data" => $drugs,
+            "columns" => [
+                [
+                    "label" => "ID",
+                    "attribute" => "id",
+                ],
+                [
+                    "label" => "Donor",
+                    "attribute" => "donor.name",
+                ],
+                [
+                    "label" => "Quantity",
+                    "attribute" => "quantity",
+                ],
+                [
+                    "label" => "Donated On",
+                    "attribute" => "donated_at",
+                    "type" => "date",
+                ],
+                [
+                    "label" => "Blood Type",
+                    "attribute" => "blood_type",
+                ],
+                [
+                    "label" => "Details",
+                    "attribute" => "details",
+                ],
+
+                [
+                    "label" => "Action",
+                    "attribute" => "action",
+                    "type" => "action",
+                    "buttons" => [
+                        [
+                            "label" => request('operation','DONATION')=='DONATION'?"Edit Donation":"Edit Transfusion",
+                            "route" => request('operation','DONATION')=='DONATION'?"/nexus.bloodbank/donation/:uniqid":"/nexus.bloodbank/transfusion/:uniqid"
+                        ],
+                        [
+                            "label" => request('operation','DONATION')=='DONATION'?"Delete Donation":"Delete Transfusion",
+                            "call" => request('operation','DONATION')=='DONATION'?"/nx/donations/:uniqid/delete":"/nx/donations/:uniqid/delete",
+                            "ask"=>true,
+                            'class'=>'btn btn-danger btn-sm me-2'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+    }
+
+
+
+    public function getAllDonors(){
+        
+        $people = \App\Models\Donation::query()
+            ->where('facility_ref', request('facility_ref'))
+            ->get()->pluck('patient_ref')->unique()->filter(function($uniqid) {
+                return $uniqid !== null && $uniqid !== 'unset' && $uniqid !== 'unknown' && $uniqid !== '' ;
+            });
+
+        $donors = \App\Models\Patient::query()
+            ->whereIn('uniqid', $people)
+            ->get();
+        
+    
+        $columns = [
+                [
+                    "label" => "Ref",
+                    "attribute" => "reference",
+                ],
+                [
+                    "label" => "Donor",
+                    "attribute" => "name",
+                ],
+
+              
+            ];
+            if(hasServiceAccess('nexus.patients')){
+                $columns = array_values(array_merge($columns,  [[
+                    "label" => "Action",
+                    "attribute" => "action",
+                    "type" => "action",
+                    "buttons" => [
+                        [
+                            "label" => "View Profile",
+                            "route" => "/nexus.patients/profile/:id"
+                        ]
+                    ]
+                ]]));
+            }
+        return response()->json([
+            "data" => $donors,
+            "columns" => $columns
+        ]);
+
+    }
+
+
+
+    public function deleteDonations($uniqid){
+    
+        $service = \App\Models\Donation::where('uniqid', $uniqid)->first();
+        if ($service) {
+            $service->delete();
+            return response()->json(['message' => 'Donation deleted successfully']);
+        } else {
+            return error_response(404,'Donation not found');
+        }
+    }
+
+
 }

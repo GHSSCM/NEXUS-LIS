@@ -152,6 +152,13 @@ export default{
           loadDataTables();
         }, 1000);
       })
+  },
+
+  setup(){
+    const serviceStore = useMyServicesStore();
+    return{
+      serviceStore
+    }
   }
 }
 </script>

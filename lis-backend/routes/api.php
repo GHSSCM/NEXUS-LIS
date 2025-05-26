@@ -101,6 +101,52 @@ Route::
             }
         });
 
+
+
+
+
+
+        // donation
+
+
+
+        Route::get('/donors',[NexusController::class,'getAllDonors']);
+        Route::get('/donations',[NexusController::class,'getAllDonations']);
+        Route::get('/donations/{uniqid}/delete',[NexusController::class,'deleteDonations']);
+
+
+        Route::get('/donations/{uniqid}',function($uniqid){
+            $drug = \App\Models\Donation::where('uniqid', $uniqid)->first();
+            if ($drug) {
+                return response()->json([
+                    "donation"=>$drug,
+                    "patient"=>Patient::query()->where('uniqid',$drug->patient_ref)->first(),
+                ]);
+            } else {
+                return error_response(404,'Donation not found');
+            }
+        });
+
+        Route::post('/donations',function(){
+            $data = request()->all();
+            $data['uniqid'] = gen_uniqid();
+            $drug = \App\Models\Donation::create($data);
+            return response()->json($drug);
+        });
+
+        Route::post('/donations/{uniqid}',function($uniqid){
+            $drug = \App\Models\Donation::where('uniqid', $uniqid)->first();
+            if ($drug) {
+                $drug->update(request()->all());
+                return response()->json($drug);
+            } else {
+                return error_response(404,'Donation not found');
+            }
+        });
+
+
+
+
         
     });
 

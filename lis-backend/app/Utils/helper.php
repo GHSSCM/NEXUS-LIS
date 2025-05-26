@@ -225,3 +225,14 @@ function getAllowedServices($facility_ref=null){
                 ],
             ];
 }
+
+function hasServiceAccess($serviceCode,$facility_ref=null){
+    $facility_ref =  $facility_ref??request('facility_ref');
+    $allowedServices = getAllowedServices($facility_ref);
+    foreach($allowedServices as $service){
+        if($service['code']==$serviceCode){
+            return true;
+        }
+    }
+    return false;
+}
