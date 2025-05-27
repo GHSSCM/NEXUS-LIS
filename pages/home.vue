@@ -15,7 +15,7 @@
 
                 <div class="row row-cols-1 row-cols-lg-3">
                   <div class="col"  v-for="service in services" :key="service.name">
-                    <a class="card radius-10 service-card-content " :href="service.route" >
+                    <NuxtLink class="card radius-10 service-card-content " :to="service.route" >
                       <div class="card-body text-white">
                         <div class="service-box bg-white text-primary bg-gradient ">
                             <span v-html="service.icon" class="text-white"></span>
@@ -23,7 +23,7 @@
                         <h5 class="text-black">{{service.name}}</h5>
                         <p class="mb-0 text-black-50">{{service.description}}</p>
                       </div>
-                    </a>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>

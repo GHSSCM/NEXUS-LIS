@@ -42,7 +42,7 @@
             <li><NuxtLink to="/nexus.patients/patients">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="All Patients"/>
             </NuxtLink></li>
-            <li><NuxtLink href="/nexus.patients/new/patient">
+            <li><NuxtLink to="/nexus.patients/new/patient">
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="New Patient"/>
             </NuxtLink></li>
           </ul>

@@ -47,7 +47,7 @@ Route::
 
         Route::get('/nexus-bill-creation-data',[NexusController::class,'getNexusBillCreationData']);
 
-        Route::get('/nexus-bill-subitems/{id}/{patientId}',[NexusController::class,'getNexusBillCreationDataSubItems']);
+        Route::get('/nexus-bill-subitems/{id}',[NexusController::class,'getNexusBillCreationDataSubItems']);
 
         Route::post('/nexus-bill-create',action: [NexusController::class,'createNexusBill']);
 

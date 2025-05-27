@@ -19,11 +19,11 @@ if %errorlevel% equ 0 (
 echo ==============WELCOME TO THE LIS INSTALLATION ================
 echo Please wait for the installation to complete....
 REM Define the lis directory
-set "lis_dir=C:\lis"
+set "lis_dir=C:\HealthBridge"
 
-set "lis_dir_two=C:\lis\core"
+set "lis_dir_two=C:\HealthBridge\core"
 
-set "lis_dir_three=C:\lis\components"
+set "lis_dir_three=C:\HealthBridge\components"
 
 
 set "lis_dir_four=C:\xampp"
@@ -76,9 +76,9 @@ if not exist "%lis_dir_four%" (
     copy .\php.ini "C:\xampp\php\php.ini" 
 )
 
-call lis_uz.bat ".\www.zip" "C:\lis\core" 
+call lis_uz.bat ".\www.zip" "C:\HealthBridge\core" 
 
-copy .\lis_st.bat "C:\lis\LIS.bat"  
+copy .\lis_st.bat "C:\HealthBridge\HealthBridge.bat"  
 
 echo Installation Completed Successfully....
 

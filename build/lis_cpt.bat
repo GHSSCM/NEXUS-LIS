@@ -1,13 +1,13 @@
 @echo off
 
 REM Define the path to the batch file
-set "target=C:\lis\LIS.bat"
+set "target=C:\HealthBridge\HealthBridge.bat"
 
 REM Get the desktop path for the current user
 set "desktop=%USERPROFILE%\Desktop"
 
 REM Define the shortcut path
-set "shortcut=%desktop%\LIS.lnk"
+set "shortcut=%desktop%\HealthBridge.lnk"
 
 REM Use PowerShell to create the shortcut
 powershell -command ^

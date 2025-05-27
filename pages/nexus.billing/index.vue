@@ -39,7 +39,8 @@
                             <p class="mb-0 fs-6">Revenue (this month)</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
-                            <ion-icon name="wallet-outline" role="img" class="md hydrated" aria-label="wallet outline"></ion-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><!-- Icon from Prime Icons by PrimeTek - https://github.com/primefaces/primeicons/blob/master/LICENSE --><path fill="currentColor" d="M19 7.25h-.25V5A1.76 1.76 0 0 0 17 3.25a.7.7 0 0 0-.24 0l-11.9 4h-.27l-.17.06h-.14l-.16.09l-.12.17l-.14.12l-.11.1l-.12.15a.4.4 0 0 0-.08.1a2 2 0 0 0-.1.18l-.06.11a2 2 0 0 0-.07.22a.5.5 0 0 1 0 .11a2 2 0 0 0 0 .34v10A1.76 1.76 0 0 0 5 20.75h14A1.76 1.76 0 0 0 20.75 19V9A1.76 1.76 0 0 0 19 7.25m-1.92-2.49a.26.26 0 0 1 .17.24v2.25H9.62ZM19.25 19a.25.25 0 0 1-.25.25H5a.25.25 0 0 1-.25-.25V9A.25.25 0 0 1 5 8.75h14a.25.25 0 0 1 .25.25Z"/><circle cx="16.5" cy="14" r="1.25" fill="currentColor"/></svg>
+                            <!-- <ion-icon name="wallet-outline" role="img" class="md hydrated" aria-label="wallet outline"></ion-icon> -->
                           </div>
                         </div>
                         <div class="d-flex align-items-center mt-3">
@@ -59,7 +60,9 @@
                             <p class="mb-0 fs-6">Paid Bills Generated(this month)</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
-                            <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M8.117 16.539q.327 0 .548-.222q.22-.221.22-.549t-.222-.548t-.549-.22t-.548.222t-.22.549t.222.547t.549.22m0-3.769q.327 0 .548-.221q.22-.222.22-.55t-.222-.547t-.549-.22t-.548.221t-.22.55t.222.547t.549.22m0-3.769q.327 0 .548-.221q.22-.222.22-.55t-.222-.547t-.549-.22t-.548.221q-.22.222-.22.549t.222.548t.549.22m3.575 7.27h4.385q.213 0 .356-.145t.144-.356t-.144-.356t-.356-.144h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143m0-3.769h4.385q.213 0 .356-.144t.144-.357t-.144-.356t-.356-.143h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143m0-3.77h4.385q.213 0 .356-.143q.144-.144.144-.357t-.144-.356t-.356-.143h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h12.769q.69 0 1.153.463T20 5.616v12.769q0 .69-.462 1.153T18.384 20zm0-1h12.769q.23 0 .423-.192t.192-.424V5.616q0-.231-.192-.424T18.384 5H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192M5 5v14z"/></svg>
+
+                            <!-- <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon> -->
                           </div>
                         </div>
                         <div class="d-flex align-items-center mt-3">
@@ -79,7 +82,8 @@
                             <p class="mb-0 fs-6">Total Paid Bills Generated</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
-                            <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M8.117 16.539q.327 0 .548-.222q.22-.221.22-.549t-.222-.548t-.549-.22t-.548.222t-.22.549t.222.547t.549.22m0-3.769q.327 0 .548-.221q.22-.222.22-.55t-.222-.547t-.549-.22t-.548.221t-.22.55t.222.547t.549.22m0-3.769q.327 0 .548-.221q.22-.222.22-.55t-.222-.547t-.549-.22t-.548.221q-.22.222-.22.549t.222.548t.549.22m3.575 7.27h4.385q.213 0 .356-.145t.144-.356t-.144-.356t-.356-.144h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143m0-3.769h4.385q.213 0 .356-.144t.144-.357t-.144-.356t-.356-.143h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143m0-3.77h4.385q.213 0 .356-.143q.144-.144.144-.357t-.144-.356t-.356-.143h-4.385q-.212 0-.356.144t-.144.357t.144.356t.356.143M5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h12.769q.69 0 1.153.463T20 5.616v12.769q0 .69-.462 1.153T18.384 20zm0-1h12.769q.23 0 .423-.192t.192-.424V5.616q0-.231-.192-.424T18.384 5H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192M5 5v14z"/></svg>
+                            <!-- <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon> -->
                           </div>
                         </div>
                         <div class="d-flex align-items-center mt-3">
@@ -99,7 +103,9 @@
                             <p class="mb-0 fs-6">Total Revenue</p>
                           </div>
                           <div class="ms-auto widget-icon-small text-white bg-gradient-info">
-                            <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24"><!-- Icon from Prime Icons by PrimeTek - https://github.com/primefaces/primeicons/blob/master/LICENSE --><path fill="currentColor" d="M19 7.25h-.25V5A1.76 1.76 0 0 0 17 3.25a.7.7 0 0 0-.24 0l-11.9 4h-.27l-.17.06h-.14l-.16.09l-.12.17l-.14.12l-.11.1l-.12.15a.4.4 0 0 0-.08.1a2 2 0 0 0-.1.18l-.06.11a2 2 0 0 0-.07.22a.5.5 0 0 1 0 .11a2 2 0 0 0 0 .34v10A1.76 1.76 0 0 0 5 20.75h14A1.76 1.76 0 0 0 20.75 19V9A1.76 1.76 0 0 0 19 7.25m-1.92-2.49a.26.26 0 0 1 .17.24v2.25H9.62ZM19.25 19a.25.25 0 0 1-.25.25H5a.25.25 0 0 1-.25-.25V9A.25.25 0 0 1 5 8.75h14a.25.25 0 0 1 .25.25Z"/><circle cx="16.5" cy="14" r="1.25" fill="currentColor"/></svg>
+
+                            <!-- <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon> -->
                           </div>
                         </div>
                         <div class="d-flex align-items-center mt-3">

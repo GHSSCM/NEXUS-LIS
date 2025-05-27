@@ -125,8 +125,10 @@ export default {
 
       if (newItem && newItem.has_more_selection) {
         getRequestLoad_(
-            `/nx/nexus-bill-subitems/${newItem.uniqid}/${getQueryParameter("uid")??window.currentPatientId}`,
-            {},
+            `/nx/nexus-bill-subitems/${newItem.uniqid}`,
+            {
+              "patient":`${getQueryParameter("uid")??window.currentPatientId}`
+            },
             (x) => {
               subitems.value = x;
             },

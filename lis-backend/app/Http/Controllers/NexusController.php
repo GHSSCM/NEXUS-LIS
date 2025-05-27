@@ -433,12 +433,12 @@ class NexusController extends Controller
             "bill"=>$bill
         ];
     }
-    public function getNexusBillCreationDataSubItems($uniqid,$patientUId){
+    public function getNexusBillCreationDataSubItems($uniqid){
     
         switch($uniqid){
             case 'nexus.lab':
                  $tests=\App\Models\RegisteredSpecimen::query()
-                    ->where('patient', $patientUId)
+                    ->where('patient', request(key: 'patient'))
                     ->get()
                     ->map(function ($registeredSpecimen) use($uniqid) {
                         $specimen=\App\Models\SpecimenType::query()->where("uniqid",$registeredSpecimen['specimen'])->first();

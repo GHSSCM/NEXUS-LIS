@@ -82,7 +82,7 @@ REM set "env_true=%current_dir%\core\.env"
 
 php artisan migrate --force
 
-php -S 0.0.0.0:80
+php -S 0.0.0.0:80 router.php
 
 REM End local settings
 
