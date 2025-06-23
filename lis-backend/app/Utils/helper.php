@@ -261,3 +261,76 @@ function getFacilityRef(){
 function getCurrentUserId(){
     return request()->header('X-User-ID');  
 }
+
+/**
+ * ----------------------------------------------------------------
+ *  Public helper – call this when you have the full array / JSON
+ * ----------------------------------------------------------------
+ */
+function describeMetaList($list): string
+{
+    $out = '';
+
+    // Accept arrays **or** Traversable objects
+    if (is_array($list) || $list instanceof Traversable) {
+        foreach ($list as $element) {
+            $out .= describeMetaItem($element, 0);
+        }
+    }
+
+    return $out;
+}
+
+/**
+ * ----------------------------------------------------------------
+ *  Recursive worker – handles ONE element (array|object)
+ * ----------------------------------------------------------------
+ */
+function describeMetaItem($item, int $indent = 0): string
+{
+    // ⚠️ Coerce anything that’s not an array into an array safely
+    $data = is_array($item)
+        ? $item
+        : (is_object($item) ? get_object_vars($item) : []);
+
+    // Nothing usable → bail out early
+    if (empty($data)) {
+        return str_repeat('  ', $indent) . "[unknown]: null\n";
+    }
+
+    /** -----------------------
+     *  1. Detect & walk subs
+     * ---------------------*/
+    $subs = $data['subs'] ?? null;
+    if (is_array($subs) && !empty($subs)) {
+        $buffer = '';
+        foreach ($subs as $sub) {
+            $buffer .= describeMetaItem($sub, $indent + 1);
+        }
+        return $buffer;
+    }
+
+    /** -----------------------
+     *  2. Leaf node – print it
+     * ---------------------*/
+    $name   = isset($data['name'])   ? (string)$data['name']   : '[no name]';
+    $unit   = isset($data['unit'])   ? (string)$data['unit']   : null;
+    $remark = isset($data['remark']) ? (string)$data['remark'] : null;
+
+    // Prefer `value`; fall back to `values` (array) → join with “, ”
+    if (array_key_exists('value', $data)) {
+        $value = $data['value'];
+    } elseif (isset($data['values']) && is_array($data['values'])) {
+        $value = implode(', ', array_map('strval', $data['values']));
+    } else {
+        $value = null;
+    }
+    $valueString = isset($value) ? (string)$value : 'null';
+
+    // Build the label piecemeal so missing parts don’t break anything
+    $label = $name;
+    if ($unit   !== null && $unit   !== '') { $label .= " [$unit]"; }
+    if ($remark !== null && $remark !== '') { $label .= " ($remark)"; }
+
+    return str_repeat('  ', $indent) . $label . ': ' . $valueString . "\n";
+}

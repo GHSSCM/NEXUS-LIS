@@ -141,9 +141,9 @@ Route::
                     // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
                     $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
                     EmrHelper::queueTransfusionTask('create', $meta['linked_emr_patient']['user_id'], [
-                        'type' =>  $donation->type == "DONATION"?"Donation":"Reception",
+                        'type' =>  $donation->operation != "DONATION"?"Donation":"Reception",
                         'facility' => $facility? $facility->name:'',
-                        'qty' => $donation->quantity,
+                        'qty' => (string)$donation->quantity,
                         'date' => $donation->donated_at??now()->toDateTimeString(),
                         'group' => $donation->blood_type,
                         'offlineID' => $donation->uniqid
@@ -173,9 +173,9 @@ Route::
                         // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
                         $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
                         EmrHelper::queueTransfusionTask('edit', $meta['linked_emr_patient']['user_id'], [
-                            'type' => $donation->type == "DONATION"?"Donation":"Reception",
+                            'type' => $donation->operation == "DONATION"?"Donation":"Reception",
                             'facility' => $facility? $facility->name:'',
-                            'qty' => $donation->quantity,
+                            'qty' => (string)$donation->quantity,
                             'date' => $donation->donated_at??now()->toDateTimeString(),
                             'group' => $donation->blood_type,
                             'offlineID' => $donation->uniqid
@@ -900,7 +900,42 @@ Route::post("/addspecimen",function(){
         $specimen->validatedat = now();
         $specimen->save();
         $resp[]=$specimen;
+
+      
+         if($specimen->patient && $patient = \App\Models\Patient::where('uniqid', $specimen->patient)->first()){
+                
+                    $meta = $patient->meta ?? [];
+                    if(isset($meta['linked_emr_patient']['user_id'])){
+                        $description="";
+
+                        
+
+                        // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
+                        $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
+                        $test = \App\Models\TestType::where('uniqid', request('test','null'))->first();
+                        EmrHelper::queueDiagnosticTask('edit', $meta['linked_emr_patient']['user_id'], [
+                            'type' => "Lab Test",
+                            'facility' => $facility? $facility->name:'',
+                            'referring_doctor' => $specimen->physician??'',
+                            'cost'=> $test? $test->cost:0,
+                            'date' => now()->toDateTimeString(),
+                            // 'qty' => (string)$donation->quantity,
+                            // 'group' => $donation->blood_type,
+                            'offlineID' => $specimen->uniqid,
+                            // 'meta'=>$specimen->meta['results'],
+                            'diagnosis' => describeMetaList($specimen->meta['results'])
+                        ], [
+                            'facility_ref' => $specimen->facility_ref,
+                            'patient_ref' => $specimen->patient,
+                            'object_ref' => $specimen->uniqid
+                        ]);    
+                    }
+                
+            
+            }
     }
+
+
 
     return $resp;
  });

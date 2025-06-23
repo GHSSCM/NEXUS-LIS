@@ -178,7 +178,8 @@
             </div>
             
                 <div v-if="canValidate&& hasPermission('LABORATORY.VALIDATE_RESULTS')">
-                    <button :disabled="meta[0].validated " @click="validate" type="button" class="btn btn-success btn-sm w-100 mt-4">
+                    <!-- :disabled="meta[0].validated " -->
+                    <button  @click="validate" type="button" class="btn btn-success btn-sm w-100 mt-4">
                       &check; {{ meta[0].validated ? ($t("Verified by ") + meta[0].verifiedby) : $t("Validate Results") }}
                     </button>
                 </div>
