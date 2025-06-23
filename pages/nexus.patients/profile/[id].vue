@@ -59,7 +59,7 @@
 
               <!-- start -->
               <div class="row">
-                  <div class="col-12">
+                  <div class="col-sm-12 col-md-7">
                     <div class="card overflow-hidden radius-10">
                       <div class="profile-cover bg-dark position-relative mb-4">
                         <div class="user-profile-avatar shadow position-absolute top-50 start-0 translate-middle-x" style="width: 80px; height: 80px; margin-left: 4.5rem;">
@@ -75,11 +75,17 @@
                             </p>
                             <p>Reference: {{user.reference}}</p>
                             <div class="">
-                              <NuxtLink class="btn btn-primary me-2" :to="'/nexus.lab/addspecimen/'+user.id"  v-if=" servicesStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY) && hasPermission('LABORATORY.REGISTER_SPECIMEN')">
+                              <NuxtLink class="btn btn-primary me-2 mt-2" :to="'/nexus.lab/addspecimen/'+user.id"  v-if=" servicesStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY) && hasPermission('LABORATORY.REGISTER_SPECIMEN')">
                                 <Translate text="Register Specimen" />
                               </NuxtLink>
-                              <NuxtLink class="btn btn-primary me-2" :to="'/nexus.billing/initbilling/patient/'+user.id"  v-if="servicesStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING) && hasPermission('LABORATORY.MANAGE_BILLING')">
+                              <NuxtLink class="btn btn-primary me-2 mt-2" :to="`/nexus.billing/bill/create?name=${urlEncode(user.name)}&uid=${user.uniqid}&ref=${user.reference}`"  v-if="servicesStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING) && hasPermission('LABORATORY.MANAGE_BILLING')">
                                 <Translate text="Create a bill" />
+                              </NuxtLink>
+                              <NuxtLink class="btn btn-primary me-2 mt-2" :to="`/nexus.bloodbank/transfusion/create?name=${urlEncode(user.name)}&uid=${user.uniqid}&ref=${user.reference}`"  v-if="servicesStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK) && hasPermission('BLOODBANK.MANAGE_IO')">
+                                <Translate text="Register Blood Transfusion" />
+                              </NuxtLink>
+                              <NuxtLink class="btn btn-primary me-2 mt-2" :to="`/nexus.bloodbank/donation/create?name=${urlEncode(user.name)}&uid=${user.uniqid}&ref=${user.reference}`"  v-if="servicesStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK) && hasPermission('BLOODBANK.MANAGE_IO')">
+                                <Translate text="Register Blood Donation" />
                               </NuxtLink>
                               <!-- <span class="badge rounded-pill bg-primary">UX Research</span>
                               <span class="badge rounded-pill bg-primary">CX Strategy</span>
@@ -94,8 +100,16 @@
                     </div>
                    
                   </div>
-                
-                  <div class="col-sm-4">
+                  <div class="col-sm-12 col-md-5">
+                     <VerifyPatientEmr 
+                     :user-id="user.id"
+                    :linked-patient="user.meta?.linked_emr_patient ?? null"
+                    @linked="(p) => user.meta.linked_emr_patient = p"
+                    @unlinked="() => user.meta.linked_emr_patient = null"
+                      />
+            
+                  </div>
+                  <div class="col-sm-12 col-md-4">
                       <div class="card radius-10">
                         <div class="card-body">
                           <h5 class="mb-3">
@@ -112,7 +126,10 @@
                         </div>
                       </div>
                   </div>
-                  <div class="col-sm-8">
+
+            
+
+                  <div class="col-sm-12 col-md-8">
                     <div class="card radius-10">
                       <div class="card-body">
                         <h5 class="mb-3">
@@ -258,6 +275,8 @@
 </template>
 
   <script>
+import VerifyPatientEmrVue from '~/components/verify-patient-emr.vue';
+
   export default{
     setup(){
       const servicesStore =  useMyServicesStore();
@@ -285,7 +304,10 @@
     methods:{
       calculateAge(dob){
           return calculateAge(dob);
-      } 
+      } ,
+    urlEncode(string){
+      return encodeURI(string)
+    },
     }, 
     data(){
       const route=useRoute();

@@ -4,6 +4,7 @@
 <template>
   <!--start wrapper-->
   <div class="wrapper mainwrapper">
+    <CheckEmrConnectivity></CheckEmrConnectivity>
     <!--start sidebar -->
     <aside class="sidebar-wrapper" data-simplebar="true" style="background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgb(2 100 125)); overflow-y: auto;  background: rgba(26, 88, 162, 1.0);
     background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(26, 88, 162, 1.0));border:none; ">

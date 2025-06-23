@@ -83,6 +83,27 @@ export const getUserLang=()=>{
    return window.localStorage.getItem("user_lang")??"en"
 }
 
+export const getUser=(attribute=null)=>{
+    if(!process.client){
+        return null;
+    }
+    
+    const user = window.localStorage.getItem("user");
+    if(!user){
+        return null;
+    }
+    try{
+        var u= JSON.parse(user);
+        if(attribute){
+            return u[attribute]??null;
+        }
+        return u;
+    }catch(e){
+        console.error("Error parsing user data:", e);
+        return null;
+    }
+}
+
 export const setUserLang=(lgn)=>{
     if(!process.client){
         return;
@@ -104,27 +125,48 @@ export const generateRandomStringWithTimestamp=(length)=> {
 
 // const BASE_URL="https://d1a6-41-202-219-172.ngrok-free.app/api";
 // const BASE_URL="http://ghsscm-lis.novobyte-sarl.com/api";
-export const getRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
-    if(!window){
-        return;
+export const getRequest_ = (
+  endpoint,
+  params = {},
+  successFunction = () => {},
+  errorFunction = () => {},
+  finallyFunction = () => {}
+) => {
+  if (typeof window === 'undefined') return;
+
+  const currentUserId = getUser("id") ?? null;
+
+  const queryParams = { ...params };
+  queryParams.facility_ref = window.localStorage.getItem("facility_ref") ?? "facility_abc";
+
+  // Inject user_id if calling specific endpoint
+  if (currentUserId && endpoint === "/permissions/") {
+    queryParams.user_id = currentUserId;
+  }
+
+  axios.get(
+    (isLocal ? window.location.origin + "/api" : BASE_URL) + endpoint,
+    {
+      headers: {
+        'X-User-ID': currentUserId
+      },
+      params: queryParams
     }
-    params.facility_ref=window.localStorage.getItem("facility_ref")??"facility_abc"
-    var currentUser = window.localStorage.getItem("user");
-    if(currentUser && endpoint=="/permissions/"){
-        currentUser = JSON.parse(currentUser).id;
-        params.user_id = currentUser;
-    }
-    axios.get((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,{params}).then((d)=>{
-        successFunction(d.data);
-        window.reloadComps();
-    }).catch(e=>{
-        console.error(e);
-        handleAxiosError(e);
-        errorFunction(e);
-    }).finally(()=>{
-        finallyFunction();
-    })
-}
+  )
+  .then(response => {
+    successFunction(response.data);
+    window.reloadComps?.();
+  })
+  .catch(error => {
+    console.error(error);
+    handleAxiosError(error);
+    errorFunction(error);
+  })
+  .finally(() => {
+    finallyFunction();
+  });
+};
+
 
 export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{},overWriteId=null)=>{
     var id=overWriteId??endpoint.split("/").join("").split("?").join("").split("&").join("").split("=").join("");
@@ -132,7 +174,7 @@ export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFun
        
     // },500);
     if (process.client && !$('#'+id).length) {
-        $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
+        $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center glass" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
     }
 
    getRequest_(endpoint,params,successFunction,errorFunction,()=>{
@@ -149,7 +191,7 @@ export const getRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFun
 export const postRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
     var id=endpoint.split("/").join("");
     if (!$('#'+id).length) {
-        $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
+        $(".mainwrapper").append('<div id="'+id+'" class="d-flex flex-column align-items-center justify-content-center glass" style="height:100vh;width:100vw;position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.1);z-index:9999999;"><div class="spinner-border text-primary" role="status"> <span class="visually-hidden">Loading...</span></div></div>');
     }
     postRequest_(endpoint,params,successFunction,errorFunction,()=>{
         if ($('#'+id).length) {
@@ -160,22 +202,41 @@ export const postRequestLoad_=(endpoint,params={},successFunction=()=>{},errorFu
  
 
 // 
-export const postRequest_=(endpoint,params={},successFunction=()=>{},errorFunction=()=>{},finallyFunction=()=>{})=>{
-    if(!window){
-        return;
+export const postRequest_ = (
+  endpoint,
+  data = {},
+  successFunction = () => {},
+  errorFunction = () => {},
+  finallyFunction = () => {}
+) => {
+  if (typeof window === 'undefined') return;
+
+  data.facility_ref = window.localStorage.getItem("facility_ref") ?? "facility_abc";
+  const currentUserId = getUser("id") ?? null;
+
+  return axios.post(
+    (isLocal ? window.location.origin + "/api" : BASE_URL) + endpoint,
+    data,
+    {
+      headers: {
+        'X-User-ID': currentUserId
+      }
     }
-    params.facility_ref=window.localStorage.getItem("facility_ref")??"facility_abc";
-    axios.post((isLocal?(window.location.origin+"/api"):BASE_URL)+endpoint,params).then((d)=>{
-        successFunction(d.data);
-        window.reloadComps();
-    }).catch(e=>{
-        console.error(e);
-        handleAxiosError(e);
-        errorFunction(e);
-    }).finally(()=>{
-        finallyFunction();
-    })
-}
+  )
+  .then(response => {
+    successFunction(response.data);
+    window.reloadComps?.();  // Optional chaining if reloadComps isn't always defined
+  })
+  .catch(error => {
+    console.error(error);
+    handleAxiosError(error);
+    errorFunction(error);
+  })
+  .finally(() => {
+    finallyFunction();
+  });
+};
+
 
 export const hasPermission=(perm)=>{
     // console.log("TESTING FOR "+perm)

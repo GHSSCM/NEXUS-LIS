@@ -20,6 +20,9 @@
                 <HbOptionsMenu :options="[{
                     'label':'Create Prescription',
                     'path':'/nexus.pharmacy/select-patient'
+                  },{
+                    'label':'Create Anonymous Prescription',
+                    'path':'/nexus.pharmacy/prescription/create'
                   }]"></HbOptionsMenu>
 
 

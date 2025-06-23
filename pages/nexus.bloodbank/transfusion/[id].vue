@@ -15,7 +15,7 @@
           <div class="col-sm-12 col-md-6">
             <div class="mb-4">
               <label class="form-label">
-                <Translate text="Quantity (litres) * "/>
+                <Translate text="Quantity (in ml) * "/>
               </label>
               <input v-model="donation.quantity" required class="form-control" type="number" :placeholder="$t('Enter The Quantity')"/>
             </div>

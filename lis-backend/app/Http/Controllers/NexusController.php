@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\NexusBill;
+use App\Utils\EmrHelper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -457,6 +458,7 @@ class NexusController extends Controller
                             "quantifiable"=>false,
                             "parent"=>$uniqid,
                             "quantity_unit"=>null,
+                            "type"=>"lab"
                         ];
                     });
                 return response()->json($tests);
@@ -481,6 +483,7 @@ class NexusController extends Controller
                             "quantifiable"=>true,
                             "parent"=>$uniqid,
                             "quantity_unit"=>$drug->unit,
+                            "type"=>"drug"
                         ];
                     });
                 return response()->json($drugs);
@@ -499,14 +502,42 @@ class NexusController extends Controller
         $billRequest= request()->input('bill');
 
         $billRequest['facility_ref'] = request('facility_ref');
-        
+       
         $createdBill = \App\Models\NexusBill::create($billRequest);
 
+        $prescriptions = "";
         $consituents =  request()->input('constituents',[]);
         foreach($consituents as $const){
             $const['nexus_bill_ref'] = $createdBill->uniqid;
             \App\Models\NexusBillConstituent::create($const);
+            $prescriptions .= $const['name']. (!empty($const['description'])?(": ".$const['description']):'')."\n";
         }
+
+        
+        if($createdBill->type =="PRESCRIPTION" && $createdBill->patient_ref && $patient = \App\Models\Patient::where('uniqid', $createdBill->patient_ref)->first()){
+            
+            $meta = $patient->meta ?? [];
+            if(isset($meta['linked_emr_patient']['user_id'])){
+                $personnel = \App\Models\UserAccount::find( getCurrentUserId());
+                $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
+                EmrHelper::queuePrescriptionTask('edit', $meta['linked_emr_patient']['user_id'], [
+                    'doctor_name' => $personnel? $personnel->name : 'Unknown Personnel',
+                    'pharmacy' => $facility? $facility->name:'',
+                    'medications_prescribed' => $prescriptions,
+                    'date' => now()->toDateTimeString(),
+                    'cost' => $createdBill->amount,
+                    'offlineID' => $createdBill->uniqid
+                ], [
+                    'facility_ref' => $createdBill->facility_ref,
+                    'patient_ref' => $createdBill->patient_ref,
+                    'nexus_bill_ref' => $createdBill->uniqid
+                ]);    
+            }
+            
+           
+        }
+
+
 
         return response()->json([
             "message" => "Bill created successfully",
@@ -531,11 +562,37 @@ class NexusController extends Controller
         
         \App\Models\NexusBillConstituent::where('nexus_bill_ref', $billUId)->delete();
 
+        $prescriptions = "";
         $consituents =  request()->input('constituents',[]);
         foreach($consituents as $const){
             $const['nexus_bill_ref'] = $bill->uniqid;
             \App\Models\NexusBillConstituent::create($const);
+            $prescriptions .= $const['name']. (!empty($const['description'])?(": ".$const['description']):'')."\n";
         }
+        if($bill->type =="PRESCRIPTION" && $bill->patient_ref && $patient = \App\Models\Patient::where('uniqid', $bill->patient_ref)->first()){
+            
+            $meta = $patient->meta ?? [];
+            if(isset($meta['linked_emr_patient']['user_id'])){
+                $personnel = \App\Models\UserAccount::find( request('user_id','null'));
+                $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
+                EmrHelper::queuePrescriptionTask('edit', $meta['linked_emr_patient']['user_id'], [
+                    'doctor_name' => $personnel? $personnel->name : 'Unknown Personnel',
+                    'pharmacy' => $facility? $facility->name:'',
+                    'medications_prescribed' => $prescriptions,
+                    'date' => now()->toDateTimeString(),
+                    'cost' => $bill->amount,
+                    'offlineID' => $bill->uniqid
+                ], [
+                    'facility_ref' => $bill->facility_ref,
+                    'patient_ref' => $bill->patient_ref,
+                    'nexus_bill_ref' => $bill->uniqid
+                ]);    
+            }
+            
+           
+        }
+
+       
 
         return response()->json([
             "message" => "Bill updated successfully",
@@ -643,7 +700,7 @@ class NexusController extends Controller
                     "attribute" => "donor.name",
                 ],
                 [
-                    "label" => "Quantity",
+                    "label" => "Quantity (ml)",
                     "attribute" => "quantity",
                 ],
                 [

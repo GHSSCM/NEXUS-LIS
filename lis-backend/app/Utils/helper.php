@@ -236,3 +236,28 @@ function hasServiceAccess($serviceCode,$facility_ref=null){
     }
     return false;
 }
+
+function getMeta($key=null,$facility_ref=null){
+     $facility_ref = $facility_ref??request()->get("facility_ref");
+    if(empty($facility_ref)){
+        throw new \Exception("[TKC] Facility ref is required");
+    }
+    $facility =  Facility::query()->where('ref',$facility_ref)->first();
+    if(empty($facility)){
+        throw new \Exception("[TKC] Facility not found with ref: $facility_ref");
+    }
+    return $key?(isset($facility->meta[$key])?$facility->meta[$key]:null):$facility->meta;
+}
+
+function getEmrAddress($facility_ref=null){
+    $emr_address = getMeta("emr_address",$facility_ref);
+    return ($emr_address ?? "http://173.212.247.224:8090")."/api/v1";
+}
+
+function getFacilityRef(){
+    return request('facility_ref')??null;
+}
+
+function getCurrentUserId(){
+    return request()->header('X-User-ID');  
+}

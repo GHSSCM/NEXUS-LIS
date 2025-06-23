@@ -36,6 +36,9 @@
                     <NuxtLink class="dropdown-item" to="/nexus.patients/new/patient">
                       <Translate text="New patient" />
                     </NuxtLink>
+
+          
+
                   </div>
                 </div>
               </div>
@@ -87,13 +90,26 @@
                                         <td>{{ calculateAge(u.dob) }}</td>
                                         <td>{{ u.created_at.split("T")[0] }}</td>
                                         <!-- <td>{{u.created_at.split(".")[0].split("T").join(" ")}}</td> -->
-                                        <td>
-                                          <NuxtLink class="btn btn-primary btn-sm me-2" :to="'/nexus.patients/profile/'+u.id"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PATIENTS) &&hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
+                                        <td >
+                                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 5px;max-width:400px">
+                                              <NuxtLink class="btn btn-primary btn-sm me-2 mt-2" :to="'/nexus.patients/profile/'+u.id"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_PATIENTS) &&hasPermission('PATIENT.VIEW_PATIENT_PROFILE')">
                                             <Translate text="View Profile" />
                                           </NuxtLink>
-                                          <NuxtLink class="btn btn-primary btn-sm" :to="'/nexus.lab/addspecimen/'+u.id" v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY) && hasPermission('LABORATORY.REGISTER_SPECIMEN')">
+                                          <NuxtLink class="btn btn-primary btn-sm me-2 mt-2" :to="'/nexus.lab/addspecimen/'+u.id" v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY) && hasPermission('LABORATORY.REGISTER_SPECIMEN')">
                                             <Translate text="Add Specimen" />
                                           </NuxtLink>
+                                        
+                                          <NuxtLink class="btn btn-primary btn-sm me-2 mt-2" :to="`/nexus.billing/bill/create?name=${urlEncode(u.name)}&uid=${u.uniqid}&ref=${u.reference}`"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BILLING) && hasPermission('LABORATORY.MANAGE_BILLING')">
+                                              <Translate text="Create a bill" />
+                                          </NuxtLink>
+                                          <NuxtLink class="btn btn-primary btn-sm me-2 mt-2" :to="`/nexus.bloodbank/transfusion/create?name=${urlEncode(u.name)}&uid=${u.uniqid}&ref=${u.reference}`"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK) && hasPermission('BLOODBANK.MANAGE_IO')">
+                                            <Translate text="Register Blood Transfusion" />
+                                          </NuxtLink>
+                                         
+                                          <NuxtLink class="btn btn-primary btn-sm me-2 mt-2" :to="`/nexus.bloodbank/donation/create?name=${urlEncode(u.name)}&uid=${u.uniqid}&ref=${u.reference}`"  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_BLOOD_BANK) && hasPermission('BLOODBANK.MANAGE_IO')">
+                                            <Translate text="Register Blood Donation" />
+                                          </NuxtLink>
+                                            </div>
                                         </td>
                                       </tr>
                                   </tbody>
@@ -142,7 +158,10 @@ export default{
   methods:{
     calculateAge(dob){
       return calculateAge(dob);
-    }
+    },
+    urlEncode(string){
+      return encodeURI(string)
+    },
   },
   mounted(){
     const context=this;

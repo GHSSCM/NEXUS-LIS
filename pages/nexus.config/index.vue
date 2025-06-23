@@ -108,7 +108,7 @@
                       <div class="mb-4">
                         <label class="form-label"><Translate text="Prefix (Optional)"/></label>
                         
-                        <input v-model="lab.meta.patient_prefix" class="form-control" :placeholder="$t('Prefix')" required/>
+                        <input v-model="lab.meta.patient_prefix" class="form-control" :placeholder="$t('Prefix')" />
 
                       </div>
 
@@ -117,7 +117,7 @@
 
                         <div class="mb-4">
                             <label class="form-label"><Translate text="Reset counter period"/></label>
-                            <select class="form-control" v-model="lab.meta.patient_counterperiod" required>
+                            <select class="form-control" v-model="lab.meta.patient_counterperiod" >
                               <option value="daily">{{$t("Daily")}}</option>
                               <option value="monthly">{{$t("Monthly")}}</option>
                               <option value="yearly">{{$t("Yearly")}}</option>
@@ -130,10 +130,35 @@
                         <div class="mb-4">
                           <label class="form-label"><Translate text="Suffix (Optional)"/></label>
                           
-                          <input v-model="lab.meta.patient_suffix" class="form-control" :placeholder="$t('Suffix')" required/>
+                          <input v-model="lab.meta.patient_suffix" class="form-control" :placeholder="$t('Suffix')" />
                         </div>
 
                   </div> 
+                  </div>
+
+
+                </div>
+
+
+              <br/>
+              <br/>
+              <div>
+                  <h3><Translate text="Online Configuration"/></h3>
+                  <hr/>
+                  <h5><label>1. <Translate text="EMR Server"/></label></h5>
+                  <div class="row">
+
+                    <div class="col-sm-12 col-md-4" >
+
+                      <div class="mb-4">
+                        <br/>
+                        <label class="form-label"><Translate text="EMR Server Address"/></label>
+                        
+                        <input v-model="lab.meta.emr_address" class="form-control mt-3" :placeholder="$t('https://...')" />
+
+                      </div>
+
+                    </div> 
                   </div>
 
 
@@ -142,6 +167,8 @@
                       <button type="submit" class="btn btn-primary w-100">+ <Translate text="Save"/></button>
                   </div>
                 </div>
+
+
               </form>
               </div>
 

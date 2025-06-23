@@ -2,6 +2,7 @@
 <template id="fullpage">
   <!--start wrapper-->
   <div class="wrapper mainwrapper">
+    <CheckEmrConnectivity></CheckEmrConnectivity>
     <!--start sidebar -->
 
     <!--end sidebar -->

@@ -17,6 +17,7 @@ use App\Models\UserAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
+use App\Http\Controllers\EmrTaskController;
 use App\Http\Controllers\PDFController;
 use App\Models\Bill;
 use App\Models\LabSection;
@@ -25,7 +26,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\ImageUploadController;
-
+use App\Utils\EmrHelper;
 
 Route::
 // ->middleware('api')
@@ -130,15 +131,66 @@ Route::
         Route::post('/donations',function(){
             $data = request()->all();
             $data['uniqid'] = gen_uniqid();
-            $drug = \App\Models\Donation::create($data);
-            return response()->json($drug);
+            $donation = \App\Models\Donation::create($data);
+
+
+            if($donation->patient_ref && $patient = \App\Models\Patient::where('uniqid', $donation->patient_ref)->first()){
+            
+                $meta = $patient->meta ?? [];
+                if(isset($meta['linked_emr_patient']['user_id'])){
+                    // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
+                    $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
+                    EmrHelper::queueTransfusionTask('create', $meta['linked_emr_patient']['user_id'], [
+                        'type' =>  $donation->type == "DONATION"?"Donation":"Reception",
+                        'facility' => $facility? $facility->name:'',
+                        'qty' => $donation->quantity,
+                        'date' => $donation->donated_at??now()->toDateTimeString(),
+                        'group' => $donation->blood_type,
+                        'offlineID' => $donation->uniqid
+                    ], [
+                        'facility_ref' => $donation->facility_ref,
+                        'patient_ref' => $donation->patient_ref,
+                        'nexus_bill_ref' => $donation->uniqid
+                    ]);    
+                }
+            
+           
+             }
+
+
+            return response()->json($donation);
         });
 
         Route::post('/donations/{uniqid}',function($uniqid){
-            $drug = \App\Models\Donation::where('uniqid', $uniqid)->first();
-            if ($drug) {
-                $drug->update(request()->all());
-                return response()->json($drug);
+            $donation = \App\Models\Donation::where('uniqid', $uniqid)->first();
+            if ($donation) {
+                $donation->update(request()->all());
+
+                if($donation->patient_ref && $patient = \App\Models\Patient::where('uniqid', $donation->patient_ref)->first()){
+                
+                    $meta = $patient->meta ?? [];
+                    if(isset($meta['linked_emr_patient']['user_id'])){
+                        // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
+                        $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
+                        EmrHelper::queueTransfusionTask('edit', $meta['linked_emr_patient']['user_id'], [
+                            'type' => $donation->type == "DONATION"?"Donation":"Reception",
+                            'facility' => $facility? $facility->name:'',
+                            'qty' => $donation->quantity,
+                            'date' => $donation->donated_at??now()->toDateTimeString(),
+                            'group' => $donation->blood_type,
+                            'offlineID' => $donation->uniqid
+                        ], [
+                            'facility_ref' => $donation->facility_ref,
+                            'patient_ref' => $donation->patient_ref,
+                            'nexus_bill_ref' => $donation->uniqid
+                        ]);    
+                    }
+                
+            
+                }
+
+
+                return response()->json($donation);
             } else {
                 return error_response(404,'Donation not found');
             }
@@ -1197,5 +1249,14 @@ function parseListOfSpecimens($specimens){
         $requestData['specimen_id']=null;
     }
     return Bill::query()->create($requestData);
+
+ });
+
+
+ Route::group(["prefix"=>"/emr"],function(){
+    Route::get("/process-pending",[EmrTaskController::class,'processPending']);
+    Route::get("/verify-patient",[EmrTaskController::class,'verifyPatient']);
+    Route::post('/link-patient', [EmrTaskController::class, 'linkPatient']);
+    Route::post('/unlink-patient', [EmrTaskController::class, 'unlinkPatient']);
 
  });

@@ -5,7 +5,7 @@
       <h5 class="mb-4">Prescription Information</h5>
 
       <div class="mb-3">
-        <p><strong>Patient Name :</strong> {{ patientName }}</p>
+         <p><strong>Donor Name :</strong> {{ patientName??"Unknown Patient" }}</p>
         <p><strong>Reference :</strong> {{ patientRef }}</p>
       </div>
 
@@ -234,9 +234,9 @@ export default {
   },
 
   mounted() {
-    if (!this.patientId && this.pageId==='create') {
-      return this.$router.push('/nexus.pharmacy/prescriptions');
-    }
+    // if (!this.patientId && this.pageId==='create') {
+    //   return this.$router.push('/nexus.pharmacy/prescriptions');
+    // }
     this.loadData();
   },
 
