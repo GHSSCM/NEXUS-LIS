@@ -8,17 +8,7 @@
     <!--start sidebar -->
     <aside class="sidebar-wrapper" data-simplebar="true" style="background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgb(2 100 125)); overflow-y: auto;  background: rgba(26, 88, 162, 1.0);
     background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(26, 88, 162, 1.0));border:none; ">
-      <div class="sidebar-header" style="align-items: center; background-color: transparent; ">
-        <div>
-          <img src="assets/logo.png" class="logo-icon" alt="logo icon" style="filter:unset;width:50px;margin-top:20px;margin-bottom:20px;">
-        </div>
-        <!-- <div class="d-flex align-items-center" style="align-items: center;">
-          <p style="color:white" class="mt-4 ms-4">Lang: <select v-model="appLang">
-            <option value="fr">French</option>
-            <option value="en">English</option>
-          </select></p>
-        </div> -->
-      </div>
+        <FacilityBrand></FacilityBrand>
       <!--navigation-->
       <ul class="metismenu" id="menu">
 
@@ -81,7 +71,7 @@
             </NuxtLink></li>
           </ul>
         </li>
-        <li v-if="hasPermission('LABORATORY.MANAGE_BILLING')">
+        <!--<li v-if="hasPermission('LABORATORY.MANAGE_BILLING')">
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="ellipse-outline"></ion-icon>
@@ -93,7 +83,7 @@
               <ion-icon name="ellipse-outline"></ion-icon><Translate text="Generated Bills"/>
             </NuxtLink></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
       <!--end navigation-->
     </aside>

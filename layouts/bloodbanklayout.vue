@@ -8,12 +8,7 @@
     <!--start sidebar -->
     <aside class="sidebar-wrapper" data-simplebar="true" style="background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgb(2 100 125)); overflow-y: auto;  background: rgba(26, 88, 162, 1.0);
     background: linear-gradient(135deg, rgba(26, 88, 162, 1.0), rgba(26, 88, 162, 1.0));border:none; ">
-      <div class="sidebar-header" style="align-items: center; background-color: transparent; ">
-        <div>
-          <img src="assets/logo.png" class="logo-icon" alt="logo icon" style="filter:unset;width:50px;margin-top:20px;margin-bottom:20px;">
-        </div>
-
-      </div>
+      <FacilityBrand></FacilityBrand>
       <!--navigation-->
       <ul class="metismenu" id="menu">
 

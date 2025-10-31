@@ -13,10 +13,12 @@
     "@nuxtjs/i18n": "^9.2.1",
     "@pinia/nuxt": "^0.10.1",
     "axios": "^1.6.8",
+    "cropperjs": "^2.0.0",
     "esbuild": "^0.25.0",
     "nuxt": "^3.11.1",
     "primevue": "^4.0.5",
     "vue": "^3.4.21",
+    "vue-cropperjs": "^5.0.0",
     "vue-multiselect": "^3.0.0",
     "vue-router": "^4.3.0"
   },

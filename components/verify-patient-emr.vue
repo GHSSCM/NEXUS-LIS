@@ -13,7 +13,7 @@
           Phone: {{ linkedPatient.phone }}<br />
           Gender: {{ linkedPatient.gender }}<br />
           DOB: {{ linkedPatient.dob }}<br />
-          <small class="text-muted">EMR ID: {{ linkedPatient.user_id }}</small>
+          <small class="text-muted">SYSTEM ID: {{ linkedPatient.user_id }}</small>
         </div>
         <button class="btn btn-sm btn-outline-danger" @click="unlinkPatient">
           Unlink
@@ -55,7 +55,7 @@
         Phone: {{ patient.phone }}<br />
         Gender: {{ patient.gender }}<br />
         DOB: {{ patient.dob }}<br />
-        <small class="text-muted">EMR ID: {{ patient.user_id }}</small><br />
+        <small class="text-muted">SYSTEM ID: {{ patient.user_id }}</small><br />
 
         <!-- Link Button -->
         <button class="btn btn-success btn-sm mt-2" @click="linkPatient">

@@ -24,14 +24,22 @@
               <h6 class="mb-0 text-uppercase"><Translate text="Configuration Data"/></h6>
               <hr/>
           
-
-              <form @submit.prevent="save">
-
-                <br/>
+              <br/>
 
                 <h3><Translate text="Global Config"/></h3>
                 <hr/>
+                
+              <!-- </div> -->
+              <form @submit.prevent="save">
+
+            
                 <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <ProfileImageUploader
+                    :initialImageUrl="lab.meta.logo"
+                    @uploaded="handleNewImageUrl"
+                  />
+                  </div>
                   <div class="col-sm-12 col-md-6">
 
                   <div class="mb-4">
@@ -39,23 +47,22 @@
                       <input v-model="lab.name" required class="form-control" type="text" :placeholder="$t('Facility Name')"/>
                     </div>
 
-                  </div>
-
-               
-                  <div class="col-sm-12 col-md-6">
-
-                      <div class="mb-4">
-                          <label class="form-label"><Translate text="Currency Unit"/></label>
-                          <input v-model="lab.meta.currency" required class="form-control" type="text" :placeholder="$t('Currency Unit')"/>
+                     <div class="mb-4">
+                          <label class="form-label"><Translate text="Slogan"/></label>
+                          <input v-model="lab.meta.slogan" required class="form-control" type="text" :placeholder="$t('Slogan')"/>
                         </div>
 
+                     <div class="mb-4">
+                          <label class="form-label"><Translate text="Currency Unit"/></label>
+                          <input v-model="lab.meta.currency" required class="form-control" type="text" :placeholder="$t('Currency Unit')"/>
+                      </div>
                   </div>
                 </div>
                 <br/>
               <!--  result sheet -->
                 <div  v-if="serviceStore.serviceCodes.includes(ServiceCode.NEXUS_LABORATORY)">
 
-                  <h3><Translate text="Result Sheet Config"/></h3>
+                  <h3><Translate text="Exportation Config"/></h3>
                   <hr/>
                   <div class="col-sm-12 col-md-12">
 
@@ -84,9 +91,9 @@
                   <div class="col-sm-12 col-md-12">
 
                     <div class="mb-4">
-                      <label class="form-label"><Translate text="Footer credits"/></label>
+                      <label class="form-label"><Translate text="Footer"/></label>
 
-                      <textarea v-model="lab.meta.credits" class="form-control" :placeholder="$t('Footer credits')"></textarea>
+                      <textarea v-model="lab.meta.credits" class="form-control" :placeholder="$t('Footer')"></textarea>
 
                     </div>
 
@@ -269,6 +276,9 @@ export default{
                 });
                 successToast(this.$t("Saved successfully"));
             })
+        },
+         handleNewImageUrl(url) {
+          this.lab.meta.logo = url
         }
     }
 }

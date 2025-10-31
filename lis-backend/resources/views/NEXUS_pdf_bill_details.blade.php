@@ -106,10 +106,19 @@
     <table style="width: 100%; border-collapse: collapse;" >
         <tr style="margin:0;padding:0">
       
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{$bill['patient']['name']}}</p></td>
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">NAME: {{isset($bill['patient']['name'])?$bill['patient']['name']:""}}</p></td>
  
 
             <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px">Date: {{formatDate($bill['created_at']??"")}}</p></td>
+        </tr>
+
+
+        <tr style="margin:0;padding:0">
+      
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px" class="highlight">BILL No:{{ $bill['id'] }}</p></td>
+ 
+
+            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"></p></td>
         </tr>
 
 
@@ -118,37 +127,57 @@
 
     <hr/>
     <br/>
-    <center><h2><u>BILL REPORT</u></h2></center>
+    <center><h2><u>{{$bill['type']!=="PRESCRIPTION"?"BILL DETAILS":"PHARMACY PRESCRIPTION"}}: </u></h2></center>
     <br/>
     <?php $total=0;?>
     <table class="table">
             
         <tr>
-            <th colspan="1" style="text-align:start">TEST</th>
-            <th colspan="1" style="text-align:start">SPECIMEN</th>
-            <th colspan="1" style="text-align:start">BASE AMOUNT</th>
+            <th colspan="1" style="text-align:start">ITEM</th>
+            <th colspan="1" style="text-align:start">
+                {{ $bill['type']==="PRESCRIPTION" ? "DETAILS":"QUANTITY" }}
+            </th>
+            <th colspan="1" style="text-align:start">UNIT PRICE</th>
             <th colspan="1" style="text-align:start">DISCOUNT</th>
             <th colspan="1" style="text-align:start">TOTAL</th>
         </tr>
-            
-        @foreach ($bill['meta']['specimens'] as $specimenBillingData )
+        <?php
+        
+        $constituents = \App\Models\NexusBillConstituent::where('nexus_bill_ref', $bill['uniqid'])->get();
+        ?>
+        @foreach ($constituents as $consty )
         <tr>
             <td>
-                {{$specimenBillingData['test']}}
+                <p style="margin-bottom: 0;">{{$consty['name']}}  
+                    @if($bill['type']==="PRESCRIPTION" && !empty($consty['quantifiable']))
+                        ({{$consty['quantity']??""}}  {{ $consty['consty.quantity_unit']??'' }})
+                    @endif 
+                </p>
+
+                @if(isset($consty['subname']))
+                    <small style="opacity: 0.5">{{$consty['subname']}}</small>
+                @endif
             </td>
             <td>
-                {{$specimenBillingData['specimen']}}
+               @if(!$bill['type']==="PRESCRIPTION" && !empty($consty['quantifiable']))
+                    {{$consty['quantity']??""}}  {{ $consty['consty.quantity_unit']??'' }}
+               @endif 
+
+               @if($bill['type']==="PRESCRIPTION")
+                    {{$consty['description']}}
+               @endif
+           
             </td>
             <td>
-                {{$specimenBillingData['amount']}}
+                {{$consty['unit_price']??""}}
             </td>
             <?php
-                $discounttype = $specimenBillingData['discounttype']??"NONE";
-                $finalAmount=$specimenBillingData['amount'];
+                $discounttype = strtoupper( $consty['reduction_rate']??"NONE");
+                $finalAmount=($consty['quantity']??1)*($consty['unit_price']??0);
                 switch($discounttype){
-                    case "NONE":$finalAmount=$specimenBillingData['amount'];break;
-                    case "PERC":$finalAmount=$specimenBillingData['amount']-($specimenBillingData['amount']*(($specimenBillingData['discountamount']??0)/100));break;
-                    case "FLAT":$finalAmount=$specimenBillingData['amount'] - ($specimenBillingData['discountamount']??0) ;break;
+                    case "NONE":break;
+                    case "PERCENTAGE":$finalAmount=$finalAmount-($finalAmount*(($consty['reduction']??0)/100));break;
+                    case "FLAT":$finalAmount=$finalAmount - ($consty['reduction']??0) ;break;
                 }
                 $total+=$finalAmount;
             ?>
@@ -156,20 +185,20 @@
                 @if($discounttype=='NONE')
                     NONE
                 @elseif($discounttype=='PERC')
-                    {{$specimenBillingData['discountamount']??0}}%
+                    {{$consty['reduction']??0}}%
                 @else
-                    {{$specimenBillingData['discountamount']??0}} {{$bill['meta']['currency']}}
+                    {{$consty['reduction']??0}} {{$bill['labMeta']['currency']??''}}
                 @endif
             </td>
                  
             <td>
-            {{$finalAmount}} {{$bill['meta']['currency']}}
+            {{$finalAmount}} {{$bill['labMeta']['currency']??'XAF'}}
             </td>
         </tr>
         @endforeach
             <tr>
                 <td colspan="4"> <strong>TOTAL</strong></td>
-                <td><strong>{{$total}} {{$bill['meta']['currency']}}</strong></td>
+                <td><strong>{{$total}} {{$bill['labMeta']['currency']??'XAF'}}</strong></td>
             </tr>
            
         </table>
@@ -181,7 +210,7 @@
         <table style="width: 100%; border-collapse: collapse;" >
         <tr style="margin:0;padding:0">
     
-            <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>FINANCE:</b></p></td>
+            <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>FINANCE:</b></p></td> -->
         
             <!-- <td style="width:50%;padding:0!important;margin:0!important;"><p style="margin:3px"><b>VALIDATOR:</b></p></td> -->
         </tr>

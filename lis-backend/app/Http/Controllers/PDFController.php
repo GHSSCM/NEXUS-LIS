@@ -121,7 +121,7 @@ class PDFController extends Controller
     //
 
 
-    public function generatePDFBill()
+       public function generatePDFBill()
     {
       
         header('Content-Type: text/html; charset=utf-8');
@@ -145,6 +145,48 @@ class PDFController extends Controller
 
         // <i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>
         $pdf = Pdf::loadView('pdf_bill_details', compact( 'bill','footerContent','headerContent','credits'))->setPaper('a4')
+        ->setWarnings(false);
+        $pdf->set_option('isPhpEnabled', true);
+        $pdf->set_option('isRemoteEnabled', true); 
+        
+
+        if(request('dl')){
+            return $pdf->download('document.pdf');
+        }
+        return $pdf->stream('document.pdf');
+    }
+
+
+    //THE NEW GENERATE PDF BILL FUNCTION
+    public function generateNexusPDFBill()
+    {
+      
+        header('Content-Type: text/html; charset=utf-8');
+
+        $id= request('id');
+        if(empty($id)){
+            return abort(404);
+        }
+        
+
+        $bill=\App\Models\NexusBill::query()->where('uniqid',$id)->first();
+        if(!$bill){
+            return abort(404, 'Bill not found');
+        }
+        $bill['patient']=Patient::query()->where('uniqid',$bill->patient_ref)->get()->first();
+
+        $labData=getCurrentLab($bill->facility_ref);
+        $labMeta = !empty($labData['meta'])?$labData['meta']:[];
+
+        // $htmlContent = '<h1>Hello World</h1>'; // Replace with your dynamic content
+        $footerContent = $labMeta['sheetfooter']??'';
+        $headerContent = $labMeta['sheetheader']??'';
+        $credits = addslashes($labMeta['credits']??'');
+
+        $bill['labMeta']=$labMeta;
+
+        // <i>QUALITY DIAGNOSTICS, QUALITY CARE<br/>Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon</i>
+        $pdf = Pdf::loadView('NEXUS_pdf_bill_details', compact( 'bill','footerContent','headerContent','credits'))->setPaper('a4')
         ->setWarnings(false);
         $pdf->set_option('isPhpEnabled', true);
         $pdf->set_option('isRemoteEnabled', true); 

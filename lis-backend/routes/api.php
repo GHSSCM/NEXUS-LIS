@@ -34,6 +34,8 @@ Route::
     // ->namespace('App\Http\Controllers\Api')
     ->group(function () {
 
+        Route::get('/branding',[NexusController::class,'getBranding']);
+        Route::post('/upload-profile-image',[NexusController::class,'uploadProfileLogo']);
         Route::get('/nexus-bills/',[NexusController::class,'getAllNexusBills']);
         Route::get('/nexus-prescriptions/',[NexusController::class,'getAllNexusPrescriptions']);
 
@@ -141,7 +143,7 @@ Route::
                     // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
                     $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
                     EmrHelper::queueTransfusionTask('create', $meta['linked_emr_patient']['user_id'], [
-                        'type' =>  $donation->operation != "DONATION"?"Donation":"Reception",
+                        'type' =>  $donation->operation == "DONATION"?"Donation":"Reception",
                         'facility' => $facility? $facility->name:'',
                         'qty' => (string)$donation->quantity,
                         'date' => $donation->donated_at??now()->toDateTimeString(),
@@ -261,6 +263,8 @@ Route::get('/test-report-delete',function(){
 Route::post('/upload/image', [ImageUploadController::class, 'upload'])->name('tinymce.upload');
 
 Route::get('/bill-report', [PDFController::class, 'generatePDFBill']);
+
+Route::get('/nexus-bill-report', [PDFController::class, 'generateNexusPDFBill']);
 
 Route::get('/export-database', [DatabaseController::class, 'exportDatabase']);
 Route::post('/import-database', [DatabaseController::class, 'importDatabase'])->name('importDatabase');
@@ -912,9 +916,10 @@ Route::post("/addspecimen",function(){
 
                         // $personnel = \App\Models\UserAccount::find( getCurrentUserId());
                         $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
-                        $test = \App\Models\TestType::where('uniqid', request('test','null'))->first();
+                        $test = \App\Models\TestType::where('uniqid', $specimen->test)->first();
+                    
                         EmrHelper::queueDiagnosticTask('edit', $meta['linked_emr_patient']['user_id'], [
-                            'type' => "Lab Test",
+                            'type' => $test?$test->name:"Lab Test",
                             'facility' => $facility? $facility->name:'',
                             'referring_doctor' => $specimen->physician??'',
                             'cost'=> $test? $test->cost:0,

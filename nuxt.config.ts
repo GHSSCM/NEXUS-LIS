@@ -114,7 +114,9 @@ export default defineNuxtConfig({
 
         {rel:'stylesheet',href:'/assets/plugins/notifications/css/lobibox.min.css'},
 
-            { rel: 'stylesheet', href: '/assets/css/nexus.css' },
+        { rel: 'stylesheet', href: '/assets/css/nexus.css' },
+
+        { rel: 'stylesheet', href: 'cropperjs/dist/cropper.css' },
       ]
     },
   },

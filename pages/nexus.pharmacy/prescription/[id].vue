@@ -108,6 +108,10 @@
       <div class="text-end" v-if="!readOnly">
         <button class="btn btn-primary" @click="createPrescription"><Translate text="Submit"/></button>
       </div>
+
+      <div class="text-end" v-else>
+        <NuxtLink class="btn btn-primary btn me-3" target="_blank"  :to="baseUrl+'/nexus-bill-report?id='+pageId" ><Translate text="Export Prescription"/></NuxtLink>
+      </div>
     </div>
   </HbPage>
 </template>

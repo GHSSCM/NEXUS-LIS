@@ -15,7 +15,7 @@
         
       </div> -->
 
-      <HospitalBrand></HospitalBrand>
+      <FacilityBrand></FacilityBrand>
       <!--navigation-->
       <ul class="metismenu" id="menu">
 

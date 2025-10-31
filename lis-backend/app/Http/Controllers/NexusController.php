@@ -8,6 +8,9 @@ use App\Utils\EmrHelper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 class NexusController extends Controller
 {
 
@@ -523,6 +526,7 @@ class NexusController extends Controller
                 EmrHelper::queuePrescriptionTask('edit', $meta['linked_emr_patient']['user_id'], [
                     'doctor_name' => $personnel? $personnel->name : 'Unknown Personnel',
                     'pharmacy' => $facility? $facility->name:'',
+                    'phamarcy' => $facility? $facility->name:'', //there is a typo in the emr side. so it considers this for now.
                     'medications_prescribed' => $prescriptions,
                     'date' => now()->toDateTimeString(),
                     'cost' => $createdBill->amount,
@@ -573,11 +577,12 @@ class NexusController extends Controller
             
             $meta = $patient->meta ?? [];
             if(isset($meta['linked_emr_patient']['user_id'])){
-                $personnel = \App\Models\UserAccount::find( request('user_id','null'));
+                $personnel = \App\Models\UserAccount::find( getCurrentUserId());
                 $facility = \App\Models\Facility::where('ref', request('facility_ref','null'))->first();
                 EmrHelper::queuePrescriptionTask('edit', $meta['linked_emr_patient']['user_id'], [
                     'doctor_name' => $personnel? $personnel->name : 'Unknown Personnel',
                     'pharmacy' => $facility? $facility->name:'',
+                    'phamarcy' => $facility? $facility->name:'', //there is a typo in the emr side. so it considers this for now.
                     'medications_prescribed' => $prescriptions,
                     'date' => now()->toDateTimeString(),
                     'cost' => $bill->amount,
@@ -798,6 +803,51 @@ class NexusController extends Controller
             return error_response(404,'Donation not found');
         }
     }
+
+     public function uploadProfileLogo(Request $request)
+    {
+        $data = $request->input('image');
+
+        if (!$data || !preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+            return response()->json(['error' => 'Invalid image data'], 422);
+        }
+
+        $image = substr($data, strpos($data, ',') + 1);
+        $image = base64_decode($image);
+
+        if ($image === false) {
+            return response()->json(['error' => 'Base64 decode failed'], 422);
+        }
+
+        $extension = strtolower($type[1]) === 'jpeg' ? 'jpg' : $type[1];
+        $filename = Str::uuid() . '.' . $extension;
+        $path = "uploads/profile_images/{$filename}";
+
+        Storage::disk('public')->put($path, $image);
+
+        // $url = Storage::disk('public')->url($path);
+        $url = request()->getSchemeAndHttpHost() . '/storage/' . $path;
+        $facility = \App\Models\Facility::where('ref', request('facility_ref'))->first();
+        $meta = $facility->meta ?? [];
+        $meta['logo'] = $url;
+        $facility->meta = $meta;
+        $facility->save();
+        return response()->json([
+            'message' => 'Upload successful',
+            'url' => $url
+        ]);
+    }
+
+    public function getBranding(){
+        $facility = \App\Models\Facility::where('ref', request('facility_ref'))->first();
+        $meta = $facility->meta ?? [];
+        return [
+            "name"=>$facility->name,
+            "logo"=>$meta['logo'] ?? null,
+            "slogan"=>$meta['slogan'] ?? null,
+        ];
+    }
+
 
 
 }

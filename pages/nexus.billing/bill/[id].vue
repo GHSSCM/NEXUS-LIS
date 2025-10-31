@@ -25,6 +25,8 @@
         </div>
       </div>
 
+                                          
+
       <hr/>
 
       <table class="table" v-if="constituents">
@@ -100,6 +102,9 @@
 
       <div class="text-end" v-if="!readOnly">
         <button class="btn btn-primary" @click="createBilling"><Translate text="Submit"/></button>
+      </div>
+      <div class="text-end" v-else>
+        <NuxtLink class="btn btn-primary btn me-3" target="_blank"  :to="baseUrl+'/nexus-bill-report?id='+pageId" ><Translate text="Export Bill"/></NuxtLink>
       </div>
     </div>
   </HbPage>
@@ -247,7 +252,8 @@ export default {
           "PAID",
           "CANCELED",
       ],
-      billStatus:"PENDING"
+      billStatus:"PENDING",
+      baseUrl:getBaseUrl()
     };
   },
 

@@ -345,7 +345,7 @@
 
                 // Text content
                 $pageText = "Page " . $PAGE_NUM . " | " . $PAGE_COUNT;
-                $headerText = "QUALITY DIAGNOSTIC, QUALITY CARE";
+                $headerText = "";//"QUALITY DIAGNOSTIC, QUALITY CARE";
                 //$footerTextDouala = "Akwa at the Rue Prince des Galles, about 100m to Immeuble Activa, Douala, Littoral Region, Republic of Cameroon";
                 $footerText = "Aminatou Square, Mokindi layout, Isokolo. P.O. Box 729, Limbe, South West Region - Republic of Cameroon";
 
