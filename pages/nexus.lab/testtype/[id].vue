@@ -91,7 +91,8 @@
                        </div>
                        <div class="col-sm-2">
                             <label class="mb-2">{{$t('Data type')}}</label>
-                            <select v-model="meta.fields.measures[i].type" class="form-control single-select-field " :data-placeholder="$t('Data type')">
+                            <!-- single-select-field  -->
+                            <select v-model="meta.fields.measures[i].type" class="form-control " :data-placeholder="$t('Data type')">
                 
                                 <option value="numericrange">{{$t('Numeric Range')}}</option>
                                 <option value="alphanumeric">{{$t('Alpha numeric')}}</option>
@@ -224,7 +225,8 @@
                        </div>
                        <div class="col-sm-2">
                             <label class="mb-2">{{$t('Data type')}}</label>
-                            <select required v-model="meta.fields.measures[i].subs[s].type" class="form-control single-select-field " :data-placeholder="$t('Data type')">
+                            <!-- single-select-field -->
+                            <select required v-model="meta.fields.measures[i].subs[s].type" class="form-control  " :data-placeholder="$t('Data type')">
                 
                                 <option value="numericrange">{{$t('Numeric Range')}}</option>
                                 <option value="alphanumeric"> {{$t('Alpha numeric')}} </option>

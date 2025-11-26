@@ -40,8 +40,9 @@ export default defineNuxtConfig({
         //datatables
         { src: '/assets/plugins/datatable/js/jquery.dataTables.min.js' },  
         { src: '/assets/plugins/datatable/js/dataTables.bootstrap5.min.js' },  
-     
-        {src:'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'},
+
+        //https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js TRANSFORMED AND HOSTED LOCALLY
+        {src:'/assets/plugins/select2@4.1.0-rc.0/js/select2.min.js'},
         
 
 
@@ -97,9 +98,12 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/assets/css/header-colors.css' },
 
         { rel: 'stylesheet', href:'/assets/plugins/datatable/css/dataTables.bootstrap5.min.css' },  
-        
-        { rel: 'stylesheet',href:'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'},
-        { rel: 'stylesheet',href:'https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css'},
+
+        // https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.cs TRANSFORMED AND HOSTED LOCALLY
+        { rel: 'stylesheet',href:'/assets/plugins/select2@4.1.0-rc.0/css/select2.min.css'},
+
+        // https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.cs TRANSFORMED AND HOSTED LOCALLY
+        { rel: 'stylesheet',href:'/assets/plugins/select2-bootstrap-5-theme@1.3.0/css/select2-bootstrap-5-theme.min.css'},
         
 
 
