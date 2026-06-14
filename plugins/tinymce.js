@@ -9,5 +9,4 @@
 // import 'tinymce/plugins/table';
 // import 'tinymce/plugins/code';
 export default defineNuxtPlugin((nuxtApp) => {
-
 })
